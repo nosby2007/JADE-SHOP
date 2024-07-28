@@ -14,9 +14,9 @@ export class OderDetailsService {
   "products":[
     {
         "id": 1,
-        "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-        "price": 109.95,
-        "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+        "title": "DEVOPS ENGENNERS",
+        "price": 250,
+        "description": "Our DevOps courses are designed to equip you with the skills and knowledge necessary to excel in the fast-paced world of DevOps.",
         "category": "men's clothing",
         "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
         "rating": {
@@ -256,13 +256,17 @@ export class OderDetailsService {
 
   clothesDetails = [
     {
-      id: 1,
-      clothesName: 'BABYTALE',
-      clothesDescription: 'Disponible partout, en douzaines',
-      clothesPrice: '15000 FCFA',
-      clothesImg: 'https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867825/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.19_1_gc9ojv.jpg',
-      clothesVideo: 'https://res.cloudinary.com/dtdpx59sc/video/upload/br_3908k,c_fit,q_auto,vc_auto,w_1080/v1718603310/VID_20230427_194048_oj6oms.mp4'
-    },
+      "id": 1,
+      "clothesName": "DEVOPS ENGENNERS",
+      "clothesPrice": 250,
+      "clothesDescription": "Our DevOps courses are designed to equip you with the skills and knowledge necessary to excel in the fast-paced world of DevOps.",
+      "category": "men's clothing",
+      "clothesImg": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      "rating": {
+          "rate": 3.9,
+          "count": 120
+      }
+  },
     {
       id: 2,
       clothesName: 'Démembrés',
