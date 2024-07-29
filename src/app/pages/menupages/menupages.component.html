@@ -11,7 +11,7 @@
                         <img src="./assets/img/video-poster.jpg" class="img-fluid thumblin" width="80%">
                     </ng-container>
                     <ng-template #videoblock>
-                        <iframe width="100%" height="100%" src="{{menuData[0].clothesVideo}}" allowfullscreen>{{menuData[0].clothesVideo}}  </iframe>
+                        <iframe width="100%" height="100%" src="'https://dev.vdocipher.com/api/videos/1234567890/otp'" allowfullscreen>{{menuData[0].clothesVideo}}  </iframe>
                     </ng-template>
                     <div class="play-icon-box ">
                         <img (click)="changeImg()" [title]="play" [src]="videoIcon" alt="">
@@ -23,15 +23,6 @@
             <!---form-->
             </div>
         </div>
-        <div class="col-lg-6 m-100">
-                <h1>Enter your Details</h1>
-                <form>
-                    <input type="text" class="form-control" placeholder="Enter Your full Name" />
-                    <input type="text" class="form-control" placeholder="Enter Your Mobile" />
-                    <textarea class="form-control" placeholder="Enter your Adress"></textarea>
-                    <button class="btn-md btn-dark mt-3">Place Order</button>
-                </form>
-            </div>
 
     </div>
 </div>

@@ -273,7 +273,7 @@ export class OderDetailsService {
       clothesDescription: 'pour les dessous de vos tout petits',
       clothesPrice: '2000 FCFA',
       clothesImg: 'https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867823/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.07.50_tz16ui.jpg',
-      clothesVideo: 'https://youtu.be/FQMCsPXeXcA?si=HUW8FT_qOLXsPHGg'
+      clothesVideo: 'https://dev.vdocipher.com/api/videos/1234567890/otp'
     },
     {
       id: 3,

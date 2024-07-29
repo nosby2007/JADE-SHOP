@@ -44,6 +44,6 @@ export class MenupagesComponent implements OnInit {
       this.videodisabled = true
     }
   }
-
+ 
 
 }
