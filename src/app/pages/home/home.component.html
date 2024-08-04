@@ -1,99 +1,26 @@
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active" style="height: 500px;" >
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867901/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.33_1_eoh6wz.jpg" class="d-block w-100" alt="pijama">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867899/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.29_kwq5km.jpg" class="d-block w-100" alt="caleçon">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867899/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.27_vnmqlo.jpg" class="d-block w-100" alt="chaussure">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867899/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.28_1_lqv8sn.jpg" class="d-block w-100" alt="sac">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867899/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.08.27_2_b6yiss.jpg" class="d-block w-100" alt="chaussure">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867898/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.09.30_1_mtagnk.jpg" class="d-block w-100" alt="foulard">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867897/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.09.28_pesavy.jpg" class="d-block w-100" alt="soutif">
-      </div>
-      <div class="carousel-item" style="height: 500px;">
-        <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1670867897/samples/jade_picture/WhatsApp_Image_2022-10-16_at_19.09.27_big0iv.jpg" class="d-block w-100" alt="barbouches">
-      </div>
-    </div> 
-</div>
+<section class="section-course" id="courses" aria-label="course">
+    <div class="container">
+        <p class="section-subtitle">NOS FORMATIONS</p>
 
-<div class="content"> 
-    <h1 class="mb-5">JADE <br> SHOPPING</h1>
-    <a routerLink="menu" >Découvrir<i class="bi bi-arrow-right-circle-fill"></i></a>
-</div>
-
-<div class="marquee">
-    <marquee class="well" direction="right">BENVENUE CHEZ JADE SHOP</marquee>
-</div>
+        <h2 class="h2 section-title">LES PLUS POPULAIRES</h2>
+    </div>
+</section>
 
 <!---produits-->
-<div class="container mt-5 mb-5">
-    <h1 style="text-align: center; color: goldenrod; font-weight: bold; font-style: italic;">COLLECTION BB JADE</h1>
+<div class="container">
     <div class="row">
-        <div class="col-lg-3 mt-3"  *ngFor="let fd of clothesData; index as i">
-            <div class="braidBox" *ngIf="i<=3">
+        <div class="col-lg-4"  *ngFor="let fd of clothesData; index as i">
+            <div class="braidBox" *ngIf="i<=10">
                 <img src="{{fd.clothesImg}}">
                 <h1>{{fd.clothesName}}</h1>
-                <p>{{fd.clothesDescription}}
-                <p>{{fd.clothesPrice}}
+                <p>{{fd.clothesDescription}}</p>
+                <p>{{fd.clothesPrice | currency}}</p>
+                <span><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                </span>
                 
-                  <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                </p>
-                <a routerLink="/menu" class="viewmorebtn" >Acheter<i class="bi bi-arrow-right-circle-fill"></i></a>
-            </div>
-        </div>
-    </div>
-    
-</div>
-
-
-<!---Jade Caleçon-->
-<div class="container mt-5 mb-5">
-    <h1 style="text-align: center; color: rgb(63, 4, 213); font-weight: bold; font-style: italic;">COLLECTION Caleçon JADE</h1>
-    <div class="row">
-        <div class="col-lg-3 mt-3"  *ngFor="let fd of caleconData; index as i">
-            <div class="braidBox" *ngIf="i<=3">
-                <img src="{{fd.caleconImg}}">
-                <h1>{{fd.caleconName}}</h1>
-                <p>{{fd.caleconPrice}}
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                <i class="bi bi-star"></i>
-                </p>
-                <a routerLink="/calecon" class="viewmorebtn" >plus<i class="bi bi-arrow-right-circle-fill"></i></a>
-            </div>
-        </div>
-    </div>
-    
-</div>
-<!---Jade Pantalon-->
-<div class="container mt-5 mb-5">
-    <h1 style="text-align: center; color: rgb(120, 233, 0); font-weight: bold; font-style: italic;">COLLECTION Pantalon JADE</h1>
-    <div class="row">
-        <div class="col-lg-3 mt-3"  *ngFor="let fd of pantalonData; index as i">
-            <div class="braidBox" *ngIf="i<=3">
-                <img src="{{fd.pantalonImg}}">
-                <h1>{{fd.pantalonName}}</h1>
-                <p>{{fd.pantalonPrice}}
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                <i class="bi bi-star"></i>
-                </p>
-                <a routerLink="/pantalon" class="viewmorebtn" >plus<i class="bi bi-arrow-right-circle-fill"></i></a>
+                <a routerLink="/menu" class="btn btn-primary" >Acheter<i class="bi bi-arrow-right-circle-fill"></i></a>
             </div>
         </div>
     </div>

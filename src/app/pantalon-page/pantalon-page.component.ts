@@ -11,11 +11,11 @@ export class PantalonPageComponent implements OnInit {
 
   constructor(private param:ActivatedRoute, private service:OderDetailsService) {}
  
-  getpantalonId:any;
+ getpantalonId:any;
   pantalonData: any;
 
   ngOnInit(): void {
-    this.getpantalonId = this.param.snapshot.paramMap.get('id');
+    /* this.getpantalonId = this.param.snapshot.paramMap.get('id');
     console.log(this.getpantalonId,'getpantalon');
 
     if (this.getpantalonId) {
@@ -23,7 +23,7 @@ export class PantalonPageComponent implements OnInit {
         return value.id == this.getpantalonId
       });
       console.log(this.pantalonData,'calecondata>>');
-    }
+    }*/
 
   }
 

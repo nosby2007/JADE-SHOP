@@ -11,7 +11,6 @@ export class CaleconComponent implements OnInit {
   caleconData : any;
 
   ngOnInit(): void {
-    this.caleconData = this.service.calecon
   }
 
 }

@@ -13,7 +13,7 @@ export class PantalonComponent implements OnInit {
 pantalonData : any;
 
   ngOnInit(): void {
-    this.pantalonData = this.service.pantalon
+    
   }
 
 }

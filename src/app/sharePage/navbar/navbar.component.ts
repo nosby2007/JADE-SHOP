@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   public searchTerm !: string;
   public filterCategory: any;
   public productList: any;
+loggedInUser: any;
   constructor(private cartServiceServive: CartServiceService) { }
 
 
@@ -35,6 +36,4 @@ export class NavbarComponent implements OnInit {
     })
 
   }
-
-
 }

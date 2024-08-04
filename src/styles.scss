@@ -1,17 +1,232 @@
-
-*
-{
-    padding: 0;
-    margin: 0;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-:root {
-    --primary-color: #06fb43; 
-    --secondary-color: #142f3a;
-}
-
 
 body {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     height: 100vh;
+    background-color:rgba(95, 178, 255, 0.708);
+    color: var(--old-lavender);
 }
+/*-----------------------------------*\
+  #style.css
+\*-----------------------------------*/
+
+/**
+ * copyright 2022 codewithsadee
+ */
+
+
+
+
+
+/*-----------------------------------*\
+  #CUSTOM PROPERTY
+\*-----------------------------------*/
+
+:root {
+
+    /**
+     * colors
+     */
+  
+    --ultramarine-blue_10: hsla(235, 70%, 60%, 0.1);
+    --ultramarine-blue: hsl(235, 70%, 60%);
+    --orange-peel_10: hsla(36, 100%, 55%, 0.1);
+    --space-cadet_20: hsla(248, 32%, 23%, 0.2);
+    --space-cadet_80: hsla(247, 35%, 19%, 0.8);
+    --space-cadet-2: hsl(247, 35%, 19%);
+    --old-lavender: hsl(251, 9%, 46%);
+    --orange-peel: hsl(36, 100%, 55%);
+    --tart-orange: hsl(0, 100%, 63%);
+    --light-gray: hsl(0, 0%, 80%);
+    --cultured-1: hsl(0, 0%, 96%);
+    --cultured-2: hsl(0, 0%, 93%);
+    --coral_10: hsla(14, 95%, 66%, 0.1);
+    --white_10: hsla(0, 0%, 100%, 0.1);
+    --black_80: hsla(0, 0%, 0%, 0.8);
+    --pumpkin: hsl(26, 98%, 49%);
+    --white: hsl(0, 0%, 100%);
+  
+    /**
+     * typography
+     */
+  
+    --ff-urbanist: 'Urbanist', sans-serif;
+  
+    --fs-1: 4rem;
+    --fs-2: 3.2rem;
+    --fs-3: 2.4rem;
+    --fs-4: 2rem;
+    --fs-5: 1.8rem;
+    --fs-6: 1.4rem;
+  
+    --fw-500: 500;
+    --fw-600: 600;
+    --fw-700: 700;
+    --fw-800: 800;
+  
+    /**
+     * spacing
+     */
+  
+    --section-padding: 80px;
+  
+    /**
+     * box shadow
+     */
+  
+    --shadow-1: 0 8px 20px hsla(0, 0%, 0%, 0.06);
+    --shadow-2: 0px 4px 10px hsla(0, 0%, 0%, 0.05);
+  
+    /**
+     * border radius
+     */
+  
+    --radius-4: 4px;
+    --radius-6: 6px;
+  
+    /**
+     * transition
+     */
+  
+    --transition-1: 0.25s ease;
+    --transition-2: 0.5s ease;
+    --cubic-in: cubic-bezier(0.51, 0.03, 0.64, 0.28);
+    --cubic-out: cubic-bezier(0.33, 0.85, 0.4, 0.96);
+  
+  }
+  
+  
+  
+  
+  
+  /*-----------------------------------*\
+    #RESET
+  \*-----------------------------------*/
+
+  li { list-style: none; }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a,
+  img,
+  span,
+  input,
+  button,
+  ion-icon { display: block; }
+  
+  img { height: auto; }
+  
+  input,
+  button {
+    background: none;
+    border: none;
+    font: inherit;
+  }
+  
+  input { width: 100%; }
+  
+  button { cursor: pointer; }
+  
+  ion-icon { pointer-events: none; }
+  
+  address { font-style: normal; }
+  
+  
+  :focus-visible { outline-offset: 4px; }
+  
+  ::-webkit-scrollbar { width: 12px; }
+  
+  ::-webkit-scrollbar-track { background-color: var(--cultured-1); }
+  
+  ::-webkit-scrollbar-thumb { background-color: hsl(0, 0%, 80%); }
+  
+  ::-webkit-scrollbar-thumb:hover { background-color: hsl(0, 0%, 70%); }
+  
+  
+  
+  
+  
+  /*-----------------------------------*\
+    #REUSED STYLE
+  \*-----------------------------------*/
+  
+
+  
+  .abs-img { display: none; }
+  
+  .section-subtitle {
+    color: var(--ultramarine-blue);
+    text-transform: uppercase;
+    font-weight: var(--fw-800);
+    letter-spacing: 2px;
+    margin-block-end: 5px;
+  }
+  
+
+  .btn {
+    min-height: 30px;
+    max-width: max-content;
+    font-size: var(--fs-5);
+    font-weight: var(--fw-700);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 30px;
+    border-radius: var(--radius-6);
+    transition: var(--transition-1);
+  }
+  
+  .btn-primary {
+    background-color: var(--ultramarine-blue);
+    color: var(--white);
+  }
+  
+  .btn-primary:is(:hover, :focus) { background-color: var(--space-cadet-2); }
+  
+  .btn-secondary {
+    background-color: var(--white);
+    color: var(--ultramarine-blue);
+  }
+  
+  .btn-secondary:is(:hover, :focus) {
+    background-color: var(--pumpkin);
+    color: var(--white);
+  }
+  
+ 
+  .section { padding-block: var(--section-padding); }
+  
+  .grid-list {
+    display: grid;
+    gap: 30px;
+  }
+  
+  .img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  
+  
+  
+ 
+  
+  
+  
+  
+ 
+  
+ 
+  
+  
+ 

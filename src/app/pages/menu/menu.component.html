@@ -1,17 +1,31 @@
-<div class="container">
 
-    <div class="row">
-
-        <div class="col-lg-4" *ngFor="let fd of clothesData">
-
-            <div class="braidBox">
-                <img src="{{fd.clothesImg}}">
-                <h1>{{fd.clothesName}}</h1>
-                <p>{{fd.clothesDescription}}</p>
-                <p>{{fd.clothesPrice}}</p>
-                <br>
-                <a class="buybtn" [routerLink]="['/menu', fd.id]">achetez &nbsp;<i class="bi bi-cart4"></i></a>
-            </div>
+    <div class="container">
+        <div class="row">
+            <ng-container *ngFor="let fd of clothesData">
+                <div class="card col-md-3">
+                    <img src="{{ fd.clothesImg }}" alt="" />
+                    <h5 style="
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 100ch;
+            ">
+                        {{ fd.clothesName }}
+                    </h5>
+                    <p style="
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 100ch;
+            ">
+                        {{ fd.clothesDescription }}
+                    </p>
+                    <p>price :FCFA{{ fd.clothesPrice }}</p>
+                    <p>{{ fd.rating.rate.count }}</p>
+                    <button class="btn btn-primary" [routerLink]="['/menu', fd.id]">
+                        Ajoutez au Panier
+                    </button>
+                </div>
+            </ng-container>
         </div>
     </div>
-</div>

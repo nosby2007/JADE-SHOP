@@ -11,13 +11,11 @@ export class HomeComponent implements OnInit {
   constructor(private service:OderDetailsService){}
   
   clothesData: any;
-  caleconData: any;
-  pantalonData: any;
+
 
   ngOnInit(): void {
     this.clothesData = this.service.clothesDetails;
-    this.caleconData = this.service.calecon;
-    this.pantalonData = this.service.pantalon
+
 
   };
 }
