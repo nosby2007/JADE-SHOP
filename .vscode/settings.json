@@ -1,3 +1,9 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/0506f33d-64d3-4e30-81f8-7e7f46456adf/resourceGroups/deploy/providers/Microsoft.Web/sites/nelix",
+    "appService.deploySubpath": "dist"
 }

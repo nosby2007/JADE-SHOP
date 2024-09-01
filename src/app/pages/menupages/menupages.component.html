@@ -1,42 +1,37 @@
-<section class="section category" aria-label="category">
-  <div class="container container col-6-sm">
-    <p class="section-subtitle">Champs d'Action</p>
 
-    <h2 class="h2 section-title">Les Fondamentaux</h2>
-  </div>
-  <div class="container col-6-sm">
-    <ul class="grid-list col-6-ms">
-      <li>
-        <div class="category-card">
-          <div class="card-icon">
-            <i class="fa-solid fa-briefcase"></i>
-          </div>
 
-          <div>
-            <h3 class="h3 card-title">
-              <a href="#">Proffesion Infirmière</a>
-            </h3>
-
-            <span class="card-meta">Textes Et Lois</span>
-          </div>
+<!--order-->
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-lg-6" *ngIf="menuData">
+            <a routerLink="../../menu" class="btn btn-sm btn-dark mt-3">Back</a>
+            <div class="image-video-wrp">
+                <figure>
+                    <ng-container *ngIf="videodisabled; else videoblock">
+                        <a href="{{menuData[0].video}}" target="_top"><img width="560" height="315" src="{{menuData[0].clothesImg}}"></a>
+                    </ng-container>
+                    <ng-template #videoblock>
+    
+                    </ng-template>
+                    <div class="play-icon-box ">
+                        <img (click)="changeImg()" [title]="play" [src]="videoIcon" alt="">
+                    </div>
+                </figure>
+                <h1 class="m-3">{{menuData[0].clothesName}}</h1>
+                <p>{{menuData[0].clothesDescription}}</p>
+                <p>{{menuData[0].clothesPrice}}</p>
+            <!---form-->
+            </div>
         </div>
-      </li>
+        <div class="col-lg-6 m-100">
+                <h1>Enter your Details</h1>
+                <form>
+                    <input type="text" class="form-control" placeholder="Enter Your full Name" />
+                    <input type="text" class="form-control" placeholder="Enter Your Mobile" />
+                    <textarea class="form-control" placeholder="Enter your Adress"></textarea>
+                    <button class="btn-md btn-dark mt-3">Place Order</button>
+                </form>
+            </div>
 
-      <li>
-        <div class="category-card">
-          <div class="card-icon">
-            <i class="fa-solid fa-file"></i>
-          </div>
-
-          <div>
-            <h3 class="h3 card-title">
-              <a href="#">SAGE FEMME</a>
-            </h3>
-
-            <span class="card-meta">Maïeuticiens</span>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+    </div>
+</div>
