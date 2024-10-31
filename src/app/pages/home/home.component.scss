@@ -1,3 +1,50 @@
+/* Style the tab buttons */
+.header{
+    height: 400px;
+}
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+    
+  }
+  
+  /* Change background color of buttons on hover */
+  .tablink:hover {
+    background-color: #aef3f493;
+  }
+  
+  /* Set default styles for tab content */
+  .tabcontent {
+    color: white;
+    display: none;
+    padding: 50px;
+    text-align: center;
+    height: 400px;
+  }
+  .tabcontent h1,p,a{
+    position: relative;
+    top: 50%;
+    font-weight: bold;
+  }
+  
+  
+  /* Style each tab content individually */
+  #SmartCare {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730355384/Designer_2_ljfa7e.jpg");
+background-size: cover;}
+  #Certification {background-color:green;}
+  #Carriere {background-color:blue;}
+  #Boutique {background-color:orange;}
+
+
+
+
 .banner {
     height: 900px;
     background-position: center;

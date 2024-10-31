@@ -16,7 +16,7 @@ import { PantalonPageComponent } from './pantalon-page/pantalon-page.component';
 import { AddProductComponent } from './pages/add-product/add-product.component';
 
 const routes: Routes = [
-  {path: '', redirectTo:'login', pathMatch:'full'},
+  {path: '', redirectTo:'home', pathMatch:'full'},
   {path: "login", component:LoginComponent},
   {path: "register", component:RegisterComponent},
   {path: "home", component:HomeComponent},

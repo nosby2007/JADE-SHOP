@@ -1,28 +1,70 @@
-<section class="section-course" id="courses" aria-label="course">
-    <div class="container">
-        <p class="section-subtitle">NOS FORMATIONS</p>
-
-        <h2 class="h2 section-title">LES MEILLEURS</h2>
-    </div>
-</section>
-
-<!---produits-->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-4"  *ngFor="let fd of clothesData; index as i">
-            <div class="braidBox" *ngIf="i<=10">
-                <img src="{{fd.clothesImg}}">
-                <h1>{{fd.clothesName}}</h1>
-                <p>{{fd.clothesDescription}}</p>
-                <p>{{fd.clothesPrice | currency}}</p>
-                <span><i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                </span>
-                
-                <a routerLink="/menu" class="btn btn-primary" >Acheter<i class="bi bi-arrow-right-circle-fill"></i></a>
-            </div>
-        </div>
-    </div>
+<section class="header">
+  <div id="SmartCare" class="tabcontent"><a href="">
+    <h1 style=" 
+    font-size: 3.5rem;
+    color: #f9d403;
+    font-weight: bold;">SmartCare</h1>
+    <p style="
     
-</div>
+    font-size: 1.5rem;
+    color: #f9d403;
+    font-weight: 400;"> Connexion au Portail
+      
+    </p>
+    <span class="material-symbols-outlined" style="
+    
+    font-size: 2.5rem;
+    color: #f6f6f6;
+    font-weight: bold;"><i class="fa fa-sign-in" style="font-size: 20rem;color:red"></i>
+        login
+      </span>
+  </a>
+    
+  </div>
+
+  <div id="Certification" class="tabcontent">
+    
+    <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"><h1>Certification WCprovider</h1>
+    <p>portail login</p><i class="fa fa-sign-in" style="font: size 20rem;color:red"></i>
+      <span class="material-symbols-outlined">
+        login
+      </span></a>
+  </div>
+
+  <div id="Carriere" class="tabcontent">
+    <h1>Carriere Chez WCP</h1>
+    <p>Comment Travailler chez WCP? <br> Nos offres sont reparties dans le monde entier</p>
+    <p>Postulez des aujourd'hui</p>
+  </div>
+
+  <div id="Boutique" class="tabcontent">
+    <h1>Notre boutique en ligne</h1>
+    <p>Trouvez ici tous les produits utile pour la prise en charge des Plaies</p>
+  </div>
+
+  <button class="tablink" onclick="openCity('SmartCare', this, 'gold')" id="defaultOpen">SmartCare Portail
+    Login</button>
+  <button class="tablink" onclick="openCity('Certification', this, 'green')">Certification en soins de Plaies</button>
+  <button class="tablink" onclick="openCity('Carriere', this, 'blue')">Carrieres chez WCP</button>
+  <button class="tablink" onclick="openCity('Boutique', this, 'orange')">Boutique WCP</button>
+
+</section>
+<script>
+  function openCity(cityName, elmnt, color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+    }
+    document.getElementById(cityName).style.display = "block";
+    elmnt.style.backgroundColor = color;
+
+  }
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+</script>
