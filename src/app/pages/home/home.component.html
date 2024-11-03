@@ -1,56 +1,306 @@
-<section class="header">
-  <div id="SmartCare" class="tabcontent"><a href="">
-    <h1 style=" 
-    font-size: 3.5rem;
-    color: #f9d403;
-    font-weight: bold;">SmartCare</h1>
-    <p style="
-    
-    font-size: 1.5rem;
-    color: #f9d403;
-    font-weight: 400;"> Connexion au Portail
-      
-    </p>
-    <span class="material-symbols-outlined" style="
-    
-    font-size: 2.5rem;
-    color: #f6f6f6;
-    font-weight: bold;"><i class="fa fa-sign-in" style="font-size: 20rem;color:red"></i>
-        login
-      </span>
-  </a>
-    
+<div class="header">
+  <section class="header">
+    <div id="SmartCare" class="tabcontent">
+      <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <h1 style="font-size: 3.5rem; color: #ffffff; font-weight: bold">
+          SmartCare
+        </h1>
+        <p style="font-size: 1.5rem; color: white; font-weight: 400">
+          Connexion au Portail
+        </p>
+        <i class="fa fa-sign-in" style="font-size: 3rem; color: red"></i>
+      </a>
+    </div>
+
+    <div id="Certification" class="tabcontent">
+      <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <h1 style="font-size: 3.5rem; color: #ffffff; font-weight: bold">
+          Certification WCprovider
+        </h1>
+        <p style="font-size: 1.5rem; color: white; font-weight: 400">
+          portail login
+        </p>
+        <i class="fa fa-sign-in" style="font: size 3rem; color: red"></i>
+      </a>
+    </div>
+
+    <div id="Carriere" class="tabcontent">
+      <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <h1 style="font-size: 3.5rem; color: #ffffff; font-weight: bold">
+          Carriere Chez WCP
+        </h1>
+        <p style="font-size: 1.5rem; color: white; font-weight: 400">
+          Postulez des aujourd'hui
+        </p>
+        <i class="fa fa-sign-in" style="font: size 10rem; color: red"></i>
+      </a>
+    </div>
+
+    <div id="Boutique" class="tabcontent">
+      <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <h1 style="font-size: 3.5rem; color: #ffffff; font-weight: bold">
+          WCP SHOP
+        </h1>
+        <p style="font-size: 1.5rem; color: white; font-weight: 400">
+          Produits Soins
+        </p>
+        <i class="fa fa-sign-in" style="font: size 3rem; color: red"></i>
+      </a>
+    </div>
+
+    <button class="tablink" onclick="openCity('SmartCare', this, 'gold')" id="defaultOpen">
+      SmartCare Portail Login
+    </button>
+    <button class="tablink" onclick="openCity('Certification', this, 'green')">
+      Certification en soins de Plaies
+    </button>
+    <button class="tablink" onclick="openCity('Carriere', this, 'blue')">
+      Carrieres chez WCP
+    </button>
+    <button class="tablink" onclick="openCity('Boutique', this, 'orange')">
+      Boutique WCP
+    </button>
+  </section>
+</div>
+
+<div class="container">
+  <section class="section banner banner-section">
+    <div class="container banner-column">
+      <img class="banner-image" style="border-radius: 50%"
+        src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1730531285/Designer_2_dneghg.jpg" alt="banner" />
+      <div class="banner-inner">
+        <h2 class="heading-xl" style="color: blue; font-weight: bold; text-align: center">
+          WCP sait que vos patients et leur famille comptent sur vous pour des
+          soins de haute qualité
+        </h2>
+        <h3 style="
+            color: blue;
+            margin-left: 50px;
+            font-weight: bold;
+            text-align: justify;
+          ">
+          C'est Un Honeur de Servir vos Patients
+        </h3>
+        <div class="icone" style="margin-left: 200px">
+          <span style="
+              font-weight: bold;
+              font-size: 2rem;
+              color: rgb(255, 193, 37);
+              justify-content: center;
+            " class="material-symbols-outlined"
+            tyle="color: blue;margin-left: 50px; font-weight: bold; text-align: justify;">
+            star_rate
+          </span>
+          <span style="
+              font-weight: bold;
+              font-size: 2rem;
+              color: rgb(255, 188, 20);
+              justify-content: center;
+            " class="material-symbols-outlined">
+            star_rate
+          </span>
+          <span style="
+              font-weight: bold;
+              font-size: 2rem;
+              color: rgb(255, 189, 24);
+              justify-content: center;
+            " class="material-symbols-outlined">
+            star_rate
+          </span>
+          <span style="
+              font-weight: bold;
+              font-size: 2rem;
+              color: rgb(255, 190, 26);
+              justify-content: center;
+            " class="material-symbols-outlined">
+            star_rate
+          </span>
+          <span style="
+              font-weight: bold;
+              font-size: 2rem;
+              color: rgb(255, 189, 23);
+              justify-content: center;
+            " class="material-symbols-outlined">
+            star_rate
+          </span>
+        </div>
+        <h4>
+          Les Autres Compgnies de soins de plaies traitent les plaies.... Chez
+          WC Providers, nous Soignons des Patients
+        </h4>
+
+        <p class="paragraph" style="
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            text-align: center;
+            justify-content: center;
+          ">
+          Nous nous engageons à fournir un niveau de soins exceptionnel aux
+          patients souffrant de plaies dans les établissements de soins
+          infirmiers qualifiés et autres établissements résidentiels. Nos
+          professionnels de la santé certifiés collaborent avec le personnel de
+          l’établissement pour apporter une gestion des soins des plaies de
+          pointe directement au chevet du patient
+        </p>
+        <br /><br /><br />
+
+        <button class="btn btn-primary btn-inline">
+          Our Products<i class="bx bx-right-arrow-alt"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="hero-banner">
+  <div class="banner col-6">
+    <h1 style="color: #ffffff; justify-content: center; text-align: center">
+      Soins attentionnés pour les patients de votre établissement
+    </h1>
+    <article style="justify-content: left;color: #ffffff;  margin-left: 20px">
+      <h3>
+        Nous comprenons votre engagement à fournir les meilleurs soins possibles
+        à vos patients. Lorsqu'ils présentent une plaie, vous souhaitez un
+        partenaire qui peut vous aider à respecter cet engagement en fournissant
+        :
+      </h3>
+    </article>
+
+    <ul style="
+        color: rgb(246, 176, 0);
+        font-weight: bold;
+        justify-content: center;
+        font-size: 20px;
+      ">
+      <li>
+        <i class="fa-solid fa-star"></i>
+        Gestion avancée des soins des plaies
+      </li>
+      <li>
+        <i class="fa-solid fa-star"></i>
+        Des dossiers détaillés et à jour
+      </li>
+      <li>
+        <i class="fa-solid fa-star"></i>
+        Communication et collaboration efficaces avec votre personnel
+      </li>
+      <li>
+        <i class="fa-solid fa-star"></i>
+        Données et analyses exploitables pour guider les décisions en matière de
+        gestion des plaies
+      </li>
+
+      <li>
+        <i class="fa-solid fa-star"></i>
+        Soutien non clinique pour rationaliser la facturation, la logistique et
+        d’autres tâches administratives
+      </li>
+    </ul>
+<p style="color: #ffffff; text-align: justify; margin-left: 20px; font-size: 20px;">
+  Lorsque vous vous associez à WC Provider, vos patients bénéficient de notre expérience et de notre expertise en matière de gestion avancée des plaies, et votre établissement bénéficie de notre formation, de notre documentation et de notre soutien exceptionnels.
+</p>
   </div>
-
-  <div id="Certification" class="tabcontent">
-    
-    <a class="nav-link active" routerLink="/login" routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"><h1>Certification WCprovider</h1>
-    <p>portail login</p><i class="fa fa-sign-in" style="font: size 20rem;color:red"></i>
-      <span class="material-symbols-outlined">
-        login
-      </span></a>
-  </div>
-
-  <div id="Carriere" class="tabcontent">
-    <h1>Carriere Chez WCP</h1>
-    <p>Comment Travailler chez WCP? <br> Nos offres sont reparties dans le monde entier</p>
-    <p>Postulez des aujourd'hui</p>
-  </div>
-
-  <div id="Boutique" class="tabcontent">
-    <h1>Notre boutique en ligne</h1>
-    <p>Trouvez ici tous les produits utile pour la prise en charge des Plaies</p>
-  </div>
-
-  <button class="tablink" onclick="openCity('SmartCare', this, 'gold')" id="defaultOpen">SmartCare Portail
-    Login</button>
-  <button class="tablink" onclick="openCity('Certification', this, 'green')">Certification en soins de Plaies</button>
-  <button class="tablink" onclick="openCity('Carriere', this, 'blue')">Carrieres chez WCP</button>
-  <button class="tablink" onclick="openCity('Boutique', this, 'orange')">Boutique WCP</button>
-
+  <div class="container col-6"></div>
 </section>
+
+<div class="container">
+  <h2>Our Services</h2>
+  <section class="services">
+    <a href="">
+      <div class="card">
+        <div class="content">
+          <div class="icon"><i class="fa fa-code"></i></div>
+          <div class="title">Partenariat WC Providers</div>
+          <p>Partenaires avec compassion. Pour les Structures de soin</p>
+        </div>
+      </div>
+    </a>
+    <div class="card">
+      <div class="content">
+        <div class="icon"><i class="fa fa-mobile"></i></div>
+        <div class="title">AHome WC PRovider</div>
+        <p>Soins Au Chevet du Patient; les soins de plaies a domicile</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <div class="icon"><i class="fa fa-paint-brush"></i></div>
+        <div class="title">Formation WC Providers</div>
+        <p>
+          Obtenez les Certifications WC Provider et faites vous mieux rémunéré
+        </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <div class="icon"><i class="fa fa-laptop"></i></div>
+        <div class="title">Infirmier de Soin De plaies</div>
+        <p>
+          devenez Infirmier de soins de plaie et bénéficiez d'une totale
+          libertéde soin!
+        </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <div class="icon"><i class="fa fa-line-chart"></i></div>
+        <div class="title">Wound Data base</div>
+        <p>
+          consultez la base de donné des plaies efficace pour ne prise en charge
+          optimal
+        </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <div class="icon"><i class="fa fa-wordpress"></i></div>
+        <div class="title">Carrière</div>
+        <p>
+          NOus Offrons des emplois après votre formation et certification WCP
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
+  const navbarMenu = document.getElementById(" menu");
+  const burgerMenu = document.getElementById("burger");
+  const headerMenu = document.getElementById("header");
+  // Open Close Navbar  Menu on Click Burger
+  if (burgerMenu && navbarMenu) {
+    burgerMenu.addEventListener("click", () => {
+      burgerMenu.classList.toggle("is-active");
+      navbarMenu.classList.toggle("is-active");
+    });
+  }
+  // Close Navbar Menu on Click Menu Links
+  document.querySelectorAll(".menu-link").forEach((link) => {
+    link.addEventListener("click", () => {
+      burgerMenu.classList.remove("is-active");
+      navbarMenu.classList.remove("is-active");
+    });
+  });
+  // Change Header Background on Scrolling
+  window.addEventListener("scroll", () => {
+    if (this.scrollY >= 85) {
+      headerMenu.classList.add("on-scroll");
+    } else {
+      headerMenu.classList.remove("on-scroll");
+    }
+  });
+  // Fixed Navbar Menu on Window Resize
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      if (navbarMenu.classList.contains("is-active")) {
+        navbarMenu.classList.remove("is-active");
+      }
+    }
+  });
   function openCity(cityName, elmnt, color) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -63,7 +313,6 @@
     }
     document.getElementById(cityName).style.display = "block";
     elmnt.style.backgroundColor = color;
-
   }
   // Get the element with id="defaultOpen" and click on it
   document.getElementById("defaultOpen").click();

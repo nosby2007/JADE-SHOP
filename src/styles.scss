@@ -9,7 +9,11 @@
 body {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     height: 100vh;
-    background-color:rgba(95, 178, 255, 0.708);
+    background-color:linear-gradient(
+      180deg,
+      rgb(204, 200, 200) 0%,
+      rgba(235, 240, 255, 1) 100%
+    );
     color: var(--old-lavender);
 }
 /*-----------------------------------*\
