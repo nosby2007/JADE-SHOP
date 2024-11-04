@@ -254,6 +254,7 @@ background-size: cover; background-position: top;}
           font-size: 1.25rem;
           line-height: 1.25;
           color: var(--color-white-100);
+          text-align: justify;
        }
        &::before {
           position: absolute;
@@ -285,7 +286,12 @@ background-size: cover; background-position: top;}
     max-width: 100%;
     background-size: cover;
     margin-bottom: 5cqi;
+
+    
 }
+
+
+
 
 /*services stles*/
 
@@ -329,7 +335,7 @@ background-size: cover; background-position: top;}
 
 .container .services .card .content .icon{
     padding: 5px 0;
-    color: white;
+    color: gold;
 }
 
 .container .services .card .content .icon i{
@@ -348,12 +354,18 @@ background-size: cover; background-position: top;}
     transition: 0.3s;
 }
 
-@media screen and (max-width: 600px) 
+@media screen and (max-width: 300px) 
 {
     .banner {
         height: 700px;
     }
     .stepBox{
+        padding-top: 0px;
+        padding-bottom: 5px;
+        margin: 5px 5px;
+        transition: 0.3 ease-in-out;
+    }
+    .hero-banner{
         padding-top: 0px;
         padding-bottom: 5px;
         margin: 5px 5px;
@@ -366,7 +378,7 @@ background-size: cover; background-position: top;}
     }
 
 }
-@media screen and (max-width: 991px) 
+@media screen and (max-width: 591px) 
 {
         .stepBox{
         padding-top: 5px;
