@@ -1,3 +1,186 @@
+<style>
+  :root {
+   --color-white-100: hsl(206, 5%, 100%);
+   --color-white-200: hsl(206, 5%, 90%);
+   --color-white-300: hsl(206, 5%, 80%);
+   --color-white-400: hsl(206, 5%, 65%);
+   --color-white-500: hsl(206, 5%, 50%);
+   --color-black-100: hsl(213, 20%, 10%);
+   --color-black-200: hsl(213, 23%, 8%);
+   --color-black-300: hsl(214, 21%, 6%);
+   --color-black-400: hsl(210, 21%, 6%);
+   --color-black-500: hsl(216, 22%, 4%);
+   --color-black-600: hsl(220, 18%, 3%);
+   --color-black-700: hsl(220, 27%, 2%);
+   --color-black-800: hsl(180, 20%, 1%);
+   --color-blue-100: hsl(214, 95%, 93%);
+   --color-blue-200: hsl(213, 97%, 87%);
+   --color-blue-300: hsl(212, 96%, 78%);
+   --color-blue-400: hsl(213, 94%, 68%);
+   --color-blue-500: hsl(217, 91%, 60%);
+   --color-blue-600: hsl(221, 83%, 53%);
+   --color-blue-700: hsl(224, 76%, 48%);
+   --color-blue-800: hsl(226, 71%, 40%);
+   --color-blue-900: hsl(224, 64%, 33%);
+   --shadow-small: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+   --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+   --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+ /* Style each tab content individually */
+ #SmartCare {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730355384/Designer_2_ljfa7e.jpg");
+background-size: cover; background-position: top;}
+ #Certification {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730531285/Designer_2_dneghg.jpg");background-size: cover; background-position: top;}
+ #Carriere {background-image:url("https://i.ibb.co/89CkTnL/Designer.jpg");background-size: cover;}
+ #Boutique {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730355384/Designer_c1wbjk.jpg");background-size: cover;}
+ 
+ .header{
+   height: 100px;
+}
+.tablink {
+   background-color: #555;
+   color: white;
+   float: left;
+   border: none;
+   outline: none;
+   cursor: pointer;
+   padding: 14px 16px;
+   font-size: 17px;
+   width: 25%;
+   height: 100px;
+   margin: 1 1;
+   
+ }
+ 
+ /* Change background color of buttons on hover */
+ .tablink:hover {
+   background-color: #aef3f493;
+ }
+ 
+ /* Set default styles for tab content */
+ .tabcontent {
+   color: white;
+   display: none;
+   padding: 50px;
+   text-align: center;
+   height: 600px;
+ }
+ .tabcontent h1,p,a{
+   position: relative;
+   top: 50%;
+   font-weight: bold;
+ }
+ 
+ 
+
+ main {
+   overflow: hidden;
+}
+a,
+button {
+   cursor: pointer;
+   border: none;
+   color: azure;
+   outline: none;
+   user-select: none;
+   background: none;
+   background-color: var(--color-blue-800);
+   box-shadow: coral;
+   text-decoration: none;
+}
+img,
+video {
+   display: block;
+   max-width: 200%;
+   height: auto;
+   object-fit: cover;
+}
+
+.section {
+   margin: 0 auto;
+   padding: 6rem 0 1rem;
+}
+.container {
+   max-width: 75rem;
+   height: auto;
+   margin: 0 auto;
+   padding: 0 1.25rem;
+   background-color: var(--color-black-500)
+}
+.centered {
+   text-align: center;
+   vertical-align: middle;
+   margin-bottom: 1rem;
+}
+
+.container h2{
+   text-align: center;
+   text-transform: uppercase;
+   font-size: 35px;
+   margin-bottom: 25px;
+   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container .services{
+   justify-content: space-around;
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+}
+
+.container .services .card{
+   width: 330px;
+   text-align: center;
+   background: #222;
+   padding: 20px 15px;
+   margin-bottom: 30px;
+   border-radius: 10px;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.container .services .card:hover{
+   background: blueviolet;
+}
+
+.container .services .card .content{
+   transition: 0.3s;
+}
+
+.container .services .card:hover .content{
+   transform: scale(1.07);
+}
+
+.container .services .card .content .icon{
+   padding: 5px 0;
+   color: gold;
+}
+
+.container .services .card .content .icon i{
+   font-size: 40px;
+}
+
+.container .services .card:hover .content .title{
+   color: white;
+}
+
+.container .services .card .content .title{
+   padding: 5px 0;
+   font-size: 24px;
+   font-weight: 500;
+   color: blueviolet;
+   transition: 0.3s;
+ }
+ .paragraph {
+   font-family: inherit;
+   font-size: clamp(1rem, 2vw, 1.125rem);
+   text-wrap: balance;
+   color: var(--color-blue-900);
+}
+</style>
 <!-- header -->
 
 <div class="header">
