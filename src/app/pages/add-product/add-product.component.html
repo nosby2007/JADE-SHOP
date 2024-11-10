@@ -1,1 +1,14 @@
-<p>add-product works!</p>
+<app-navbar></app-navbar>
+<form action="">
+    <input type="number" [(ngModel)]="id" name="id" placeholder="id">
+    <input type="text" [(ngModel)]="category" name="category" placeholder="category">
+<input type="number" [(ngModel)]="prix" name=" prix" placeholder="price">
+<input type="text" [(ngModel)]="nom" name="nom" placeholder="nom">
+<input type="url" [(ngModel)]="image" name="nom" placeholder="image">
+<input type="text" [(ngModel)]="rating" name="rating" placeholder="rating">
+<textarea name="description" [(ngModel)]="description" placeholder="description"></textarea>
+<input type="submit" value="add a post" (click)="addPost()">
+</form>
+
+
+
