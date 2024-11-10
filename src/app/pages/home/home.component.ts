@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.clothesData = this.service.clothesDetails;
+    
     this.postsCol =this.afs.collection('produit');
     this.posts = this.postsCol.valueChanges();
 

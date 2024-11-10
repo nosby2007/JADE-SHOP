@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
-<form action="">
+<fieldset>
+    <form action="">
     <input type="number" [(ngModel)]="id" name="id" placeholder="id">
     <input type="text" [(ngModel)]="category" name="category" placeholder="category">
 <input type="number" [(ngModel)]="prix" name=" prix" placeholder="price">
@@ -9,6 +9,8 @@
 <textarea name="description" [(ngModel)]="description" placeholder="description"></textarea>
 <input type="submit" value="add a post" (click)="addPost()">
 </form>
+
+</fieldset>
 
 
 

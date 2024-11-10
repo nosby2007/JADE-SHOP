@@ -607,7 +607,7 @@ nos ideaux -->
 </div>
 
 
-<div class="container">
+<div class="container col-4-md container-responsive">
   <h2>collection</h2>
   <section class="services" >
     <a href="">
@@ -622,6 +622,14 @@ nos ideaux -->
       </div>
     </a>
   </section>
+</div>
+
+<div class="card" style="width: 18rem;"   *ngFor="let post of posts| async">
+  <img src="{{post.image}}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text"> {{post.description}} </p>
+    <p class="card-text"> {{post.prix}} </p>
+  </div>
 </div>
 
 <!-- script -->
