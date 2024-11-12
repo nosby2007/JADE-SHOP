@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import { ProduitServiceService } from 'src/app/produit-service.service';
 import { OderDetailsService } from 'src/app/service/oder-details.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { OderDetailsService } from 'src/app/service/oder-details.service';
 })
 export class MenupagesComponent implements OnInit {
 
-  constructor(private param:ActivatedRoute, private service:OderDetailsService) {}
+  constructor(private param:ActivatedRoute, private service:OderDetailsService, private afs:ProduitServiceService) {}
  
   getMenuId:any;
   menuData: any;

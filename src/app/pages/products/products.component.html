@@ -1,15 +1,15 @@
 <div class="container">
     <div class="row">
         <ng-container>
-            <div class="card col-md-3" *ngFor="let post of posts | async">
-                <img src="{{ post.image }}"  alt="..." />
+            <div class="card col-md-3" *ngFor="let item of items">
+                <img src="{{ item.image }}" alt="..." />
                 <h5 style="
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100ch;
           ">
-                    {{ post.title }}
+                    {{ item.nom }}
                 </h5>
                 <p style="
             white-space: nowrap;
@@ -17,13 +17,16 @@
             text-overflow: ellipsis;
             max-width: 100ch;
           ">
-                    {{ post.description }}
+                    {{ item.description }}
                 </p>
-                <p>price :FCFA{{ post.prix }}</p>
-                <p>{{ post.category }}</p>
-                <p>{{ post.rating }}</p>
-                <button class="btn btn-primary">Ajoutez au Panier</button>
+                <p>price :FCFA{{ item.prix }}</p>
+                <p>{{ item.category }}</p>
+                <p>{{ item.rating }}</p>
+                <button class="btn btn-warning"> découvrir</button>
             </div>
+            
         </ng-container>
+           
     </div>
 </div>
+

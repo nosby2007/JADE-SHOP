@@ -88,7 +88,7 @@
 </div>
 
 <!-- a propos -->
-<div class="container container-sm">
+<div class="container container-md">
   <section class="section banner banner-section">
     <div class="container banner-column">
       <img
@@ -278,7 +278,7 @@
 
 <!-- services -->
 
-<div class="container">
+<div class="container container-md">
   <h2>Our Services</h2>
   <section class="services">
     <a href="">
@@ -561,7 +561,7 @@
 <!-- 
 nos ideaux -->
 
-<div class="container container-sm">
+<div class="container container-md">
   <section class="section banner banner-section">
     <div class="container banner-column">
       <img
@@ -607,30 +607,8 @@ nos ideaux -->
 </div>
 
 
-<div class="container col-4-md container-responsive">
-  <h2>collection</h2>
-  <section class="services" >
-    <a href="">
-      <div class="card" *ngFor="let post of posts| async">
-        <div class="content">
-          <div class="image">
-            <img src="{{post.image}}" alt="image">
-          </div>
-          <div class="title">Partenariat WC Providers</div>
-          <p>Partenaires avec compassion. Pour les Structures de soin</p>
-        </div>
-      </div>
-    </a>
-  </section>
-</div>
 
-<div class="card" style="width: 18rem;"   *ngFor="let post of posts| async">
-  <img src="{{post.image}}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <p class="card-text"> {{post.description}} </p>
-    <p class="card-text"> {{post.prix}} </p>
-  </div>
-</div>
+
 
 <!-- script -->
 <script>

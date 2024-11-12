@@ -1,5 +1,4 @@
-<fieldset>
-    <form action="">
+<!--<form action="">
     <input type="number" [(ngModel)]="id" name="id" placeholder="id">
     <input type="text" [(ngModel)]="category" name="category" placeholder="category">
 <input type="number" [(ngModel)]="prix" name=" prix" placeholder="price">
@@ -7,10 +6,62 @@
 <input type="url" [(ngModel)]="image" name="nom" placeholder="image">
 <input type="text" [(ngModel)]="rating" name="rating" placeholder="rating">
 <textarea name="description" [(ngModel)]="description" placeholder="description"></textarea>
-<input type="submit" value="add a post" (click)="addPost()">
-</form>
+<input type="submit" value="add a post" (click)="addItem()" >
+</form>   -->
 
-</fieldset>
+<div class="form-group">
+    <label for="nom">Nom:</label>
+    <input [(ngModel)]="newItem.nom" id="nom" placeholder="Enter item name" class="form-control" />
+    
+    <label for="description">Description:</label>
+    <input [(ngModel)]="newItem.description" id="description" placeholder="Enter description" class="form-control" />
+    
+    <label for="category">Category:</label>
+    <input [(ngModel)]="newItem.category" id="category" placeholder="Enter category" class="form-control" />
+    
+    <label for="prix">Prix:</label>
+    <input [(ngModel)]="newItem.prix" type="number" id="prix" placeholder="Enter price" class="form-control" />
+    
+    <label for="image">Image URL:</label>
+    <input [(ngModel)]="newItem.image" id="image" placeholder="Enter image URL" class="form-control" />
+    
+    <label for="rating">Rating:</label>
+    <input [(ngModel)]="newItem.rating" type="number" id="rating" placeholder="Enter rating" class="form-control" />
+  
+    <button (click)="addItem()" class="btn btn-primary mt-2">Add Item</button>
+    <button (click)="updateItem(editingId!)" class="btn btn-primary mt-2">Save Changes</button>
+    <button (click)="cancelEdit()" class="btn btn-secondary mt-2">Cancel</button>
+  </div>
+
+>
+<table class="table table-responsive table-shadow table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">image</th>
+        <th scope="col">nom</th>
+        <th scope="col">categorie</th>
+        <th scope="col">description</th>
+        <th scope="col">prix</th>
+        <th scope="col">rating</th>
+        <th scope="col">ACTION</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let item of items">
+      <tr>
+        <th scope="row"></th>
+        <td>{{ item.nom }}</td>
+        <td>{{item.category}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.prix}}</td>
+        <td>{{item.rating}}</td>
+      <button (click)="editItemForm(item)" class="btn btn-warning">Edit</button>
+    <button (click)="deleteItem(item.id!)" class="btn btn-danger">Delete</button>
+</tr>
+    
+    </tbody>
+  </table>
+
+
 
 
 

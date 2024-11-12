@@ -29,6 +29,14 @@
     --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
        0 4px 6px -2px rgba(0, 0, 0, 0.05);
  }
+
+  /* Style each tab content individually */
+  #SmartCare {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730355384/Designer_2_ljfa7e.jpg");
+   background-size: cover; background-position: top;}
+    #Certification {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730531285/Designer_2_dneghg.jpg");background-size: cover; background-position: top;}
+    #Carriere {background-image:url("https://i.ibb.co/89CkTnL/Designer.jpg");background-size: cover;}
+    #Boutique {background-image:url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1730355384/Designer_c1wbjk.jpg");background-size: cover;}
+    
  
 
   .header{
