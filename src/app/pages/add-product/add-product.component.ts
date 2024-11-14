@@ -42,7 +42,7 @@ export class AddProductComponent implements OnInit {
   image: '',
   rating:0
   }
-  editingId: string | null = null
+  editingId: any
 
 
 
@@ -114,23 +114,29 @@ export class AddProductComponent implements OnInit {
 
   editItemForm(item: Item): void {
     this.editingId = item.id!;
-    this.editItem = { ...item }; // Create a copy of the item to edit
+    this.editItem = { ...item };
   }
 
-  updateItem(id:any): void {
-    this.itemService.updateItem(id, this.editItem)
-      .then(() => {
+  // Update item, guarding against null
+  async updateItem(): Promise<void> {
+    if (this.editingId && this.editItem) {
+      try {
+        await this.itemService.updateItem(this.editingId, this.editItem);
         console.log('Item updated successfully');
-        this.cancelEdit(); // Reset edit fields after successful update
-      })
-      .catch(error => console.error('Error updating item:', error));
+        this.cancelEdit(); // Reset after updating
+      } catch (error) {
+        console.error('Error updating item:', error);
+      }
+    } else {
+      console.error('No item selected for update');
+    }
   }
 
-  // Cancel edit and clear form fields
+  // Cancel edit
   cancelEdit(): void {
     this.editingId = null;
-    this.editItem = { nom: '', description: '', category: '', prix: 0, image: '', rating: 0 };
   }
+
 deleteItem(id: string): void {
     this.itemService.deleteItem(id)
       .then(() => console.log('Item deleted successfully'))

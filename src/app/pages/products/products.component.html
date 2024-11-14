@@ -22,7 +22,36 @@
                 <p>price :FCFA{{ item.prix }}</p>
                 <p>{{ item.category }}</p>
                 <p>{{ item.rating }}</p>
-                <button class="btn btn-warning"> découvrir</button>
+                <button class="btn btn-warning" [routerLink]="['/menu', item.id]"> découvrir</button>
+            </div>
+            
+        </ng-container>
+           
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <ng-container>
+            <div class="card col-md-3" *ngFor="let message of message">
+                <img src="{{ message.nom }}" alt="..." />
+                <h5 style="
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100ch;
+          ">
+                    {{ message.email }}
+                </h5>
+                <p style="
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100ch;
+          ">
+                    {{ message.message }}
+                </p>
+                
+                <button class="btn btn-warning" [routerLink]="['/menu', message.id]"> découvrir</button>
             </div>
             
         </ng-container>

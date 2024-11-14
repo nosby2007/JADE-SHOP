@@ -1,4 +1,89 @@
 
-.container img {
-    border-radius: 50%;
+
+
+/* General Reset */
+
+/* Container */
+.container {
+  max-width: 1200px;
+  padding: 20px;
+  width: 100%;
+  border-radius: 50%;
+}
+wound-care-image{
+    border: 215 solid gray;
+    max-width: 1200px;
+    padding: 20px;
+    width: 100%;
+}
+
+/* About Us Section */
+.about-us {
+  text-align: center;
+  padding: 20px;
+}
+
+.about-us h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #006699;
+}
+
+.about-us p {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Objectives Section */
+.objectives {
+  margin-top: 40px;
+}
+
+.objectives h2 {
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: #006699;
+  text-align: center;
+}
+
+.objectives ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  text-align: left;
+  color: #555;
+}
+
+.objectives ul li {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+/* Image Section */
+.wound-care-image {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.wound-care-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-us h1 {
+    font-size: 2em;
+  }
+
+  .objectives h2 {
+    font-size: 1.8em;
+  }
+
+  .objectives ul li {
+    font-size: 1em;
+  }
 }

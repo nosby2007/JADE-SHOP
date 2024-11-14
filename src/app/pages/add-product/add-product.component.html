@@ -8,8 +8,8 @@
 <textarea name="description" [(ngModel)]="description" placeholder="description"></textarea>
 <input type="submit" value="add a post" (click)="addItem()" >
 </form>   -->
-
-<div class="form-group">
+<div class="contact-form col-6">
+    <div class="form-group">
     <label for="nom">Nom:</label>
     <input [(ngModel)]="newItem.nom" id="nom" placeholder="Enter item name" class="form-control" />
     
@@ -29,9 +29,11 @@
     <input [(ngModel)]="newItem.rating" type="number" id="rating" placeholder="Enter rating" class="form-control" />
   
     <button (click)="addItem()" class="btn btn-primary mt-2">Add Item</button>
-    <button (click)="updateItem(editingId!)" class="btn btn-primary mt-2">Save Changes</button>
+    <button (click)="updateItem()" class="btn btn-primary mt-2">Save Changes</button>
     <button (click)="cancelEdit()" class="btn btn-secondary mt-2">Cancel</button>
   </div>
+</div>
+
 
 >
 <table class="table table-responsive table-shadow table-bordered">
@@ -48,7 +50,7 @@
     </thead>
     <tbody *ngFor="let item of items">
       <tr>
-        <th scope="row"></th>
+        <th scope="row">{{item.id}} </th>
         <td>{{ item.nom }}</td>
         <td>{{item.category}}</td>
         <td>{{item.description}}</td>

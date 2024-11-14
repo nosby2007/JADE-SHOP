@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Message, MessageService } from 'src/app/message.service';
 import { ProduitServiceService, Item } from 'src/app/produit-service.service';
 import { ApiService } from 'src/app/services/api.service';
 import { CartServiceService } from 'src/app/services/cart-service.service';
@@ -34,12 +35,14 @@ editItem: Item = {
   rating:0
   }
   
+message: Message[] = [];
+  
 
 postsCol!: AngularFirestoreCollection<Post>;
   posts!: any;
 editingId: string | null = null
 
-  constructor(private api : ApiService, private cartServiceService: CartServiceService,  private afs:AngularFirestore, private itemService: ProduitServiceService  ) { }
+  constructor(private api : ApiService, private cartServiceService: CartServiceService,  private afs:AngularFirestore, private itemService: ProduitServiceService, private msg: MessageService  ) { }
 
   ngOnInit(): void {
 
@@ -49,10 +52,12 @@ editingId: string | null = null
     
       this.itemService.items$.subscribe(data => {
         this.items = data;
+      
       });
-    
+    this.msg.items$.subscribe(data => {
+        this.message = data;
+      });
 
 }
 
 }
-

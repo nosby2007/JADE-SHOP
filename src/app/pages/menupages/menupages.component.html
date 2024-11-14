@@ -3,35 +3,21 @@
 <!--order-->
 <div class="container mt-5 mb-5">
     <div class="row">
-        <div class="col-lg-6" *ngIf="menuData">
-            <a routerLink="../../menu" class="btn btn-sm btn-dark mt-3">Back</a>
-            <div class="image-video-wrp">
-                <figure>
-                    <ng-container *ngIf="videodisabled; else videoblock">
-                        <a href="{{menuData[0].video}}" target="_top"><img width="560" height="315" src="{{menuData[0].clothesImg}}"></a>
-                    </ng-container>
-                    <ng-template #videoblock>
-    
-                    </ng-template>
-                    <div class="play-icon-box ">
-                        <img (click)="changeImg()" [title]="play" [src]="videoIcon" alt="">
-                    </div>
-                </figure>
-                <h1 class="m-3">{{menuData[0].clothesName}}</h1>
-                <p>{{menuData[0].clothesDescription}}</p>
-                <p>{{menuData[0].clothesPrice}}</p>
+        <div class="col-lg-6" *ngIf="item$ | async as item">
+            <a routerLink="../../product" class="btn btn-sm btn-dark mt-3">Back</a>
+            <div class="image-video-wrp" >
+                <img src="{{item.image}}" alt="">
+                <h1 class="m-3">{{item.nom}}</h1>
+                <p>{{item.category}}</p>
+                <p>{{item.prix}}</p>
+                <p>{{item.rating}}</p>
             <!---form-->
             </div>
         </div>
-        <div class="col-lg-6 m-100">
-                <h1>Enter your Details</h1>
-                <form>
-                    <input type="text" class="form-control" placeholder="Enter Your full Name" />
-                    <input type="text" class="form-control" placeholder="Enter Your Mobile" />
-                    <textarea class="form-control" placeholder="Enter your Adress"></textarea>
-                    <button class="btn-md btn-dark mt-3">Place Order</button>
-                </form>
-            </div>
+        <div class="col-lg-6 m-100"*ngIf="item$ | async as item" >
+            <h1 class="text text-center text-bold, text-secondary m-3">{{item.nom}}</h1>
+            <p class="text text-center text-dark">{{item.description}}</p>
+        </div>
 
     </div>
 </div>
