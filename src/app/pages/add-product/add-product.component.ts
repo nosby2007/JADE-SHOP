@@ -29,18 +29,35 @@ export class AddProductComponent implements OnInit {
 
   category: '',
   nom: '',
-  prix: 0,
+  titre:'',
+  description2: '',
+  description1: '',
   description: '',
   image: '',
-  rating:0 
+  image1:'',
+  image2:'',
+  image3:'',
+  soustitre:'',
+  badge1:'',
+  badge2:'',
+  modeemploi:''
   }
+  
   editItem: Item = {
-  category: '',
-  nom: '',
-  prix: 0,
-  description: '',
-  image: '',
-  rating:0
+    category: '',
+    nom: '',
+    titre:'',
+    description2: '',
+    description1: '',
+    description: '',
+    image: '',
+    image1:'',
+    image2:'',
+    image3:'',
+    soustitre:'',
+    badge1:'',
+    badge2:'',
+    modeemploi:''
   }
   editingId: any
 
@@ -91,18 +108,26 @@ export class AddProductComponent implements OnInit {
 
 
   addItem(): void {
-    if (this.newItem.nom && this.newItem.description && this.newItem.category && this.newItem.prix && this.newItem.image && this.newItem.rating) {
+    if (this.newItem.nom && this.newItem.titre && this.newItem.soustitre && this.newItem.description && this.newItem.category && this.newItem.badge1 && this.newItem.badge2 && this.newItem.titre && this.newItem.image && this.newItem.image1 && this.newItem.image2 && this.newItem.image3 && this.newItem.description1 && this.newItem.description2 && this.newItem.modeemploi) {
       this.itemService.addItem(this.newItem)
         .then(() => {
           console.log('Item added successfully');
           alert('félicitation')
           this.newItem = {
-            nom: '',
-            description: '',
             category: '',
-            prix: 0,
+            nom: '',
+            titre:'',
+            description2: '',
+            description1: '',
+            description: '',
             image: '',
-            rating: 0
+            image1:'',
+            image2:'',
+            image3:'',
+            soustitre:'',
+            badge1:'',
+            badge2:'',
+            modeemploi:''
           };
         })
         .catch(error => console.error('Error adding item:', error));

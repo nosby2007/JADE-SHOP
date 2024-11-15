@@ -6,17 +6,24 @@
         <div class="col-lg-6" *ngIf="item$ | async as item">
             <a routerLink="../../product" class="btn btn-sm btn-dark mt-3">Back</a>
             <div class="image-video-wrp" >
-                <img src="{{item.image}}" alt="">
-                <h1 class="m-3">{{item.nom}}</h1>
-                <p>{{item.category}}</p>
-                <p>{{item.prix}}</p>
-                <p>{{item.rating}}</p>
+                <img src="{{item.image3}}" alt="">
+                
             <!---form-->
             </div>
         </div>
         <div class="col-lg-6 m-100"*ngIf="item$ | async as item" >
-            <h1 class="text text-center text-bold, text-secondary m-3">{{item.nom}}</h1>
+            <h1 class="text text-center text-bold, text-secondary m-3">{{item.titre}}</h1>
+                <p>{{item.soustitre}}</p>
+
+                <button type="button" class="btn btn-success">{{item.badge1}}</button>
             <p class="text text-center text-dark">{{item.description}}</p>
+            <p class="text text-center text-dark">{{item.description1}}</p>
+            <p class="text text-center text-dark">{{item.description2}}</p>
+
+            <p style="text-align: right; color: green; font-weight: bold;"> {{item.badge1}} </p>
+            <img class="image-video-wrp" src="{{item.image}} " alt="">
+            <h3 class="text text-center text-shadow text-warning">{{item.modeemploi}} </h3>
+            <img class="image-video-wrp" src="{{item.image2}} " alt="">
         </div>
 
     </div>

@@ -12,25 +12,39 @@
     <div class="form-group">
     <label for="nom">Nom:</label>
     <input [(ngModel)]="newItem.nom" id="nom" placeholder="Enter item name" class="form-control" />
+    <label for="nom">titre:</label>
+    <input [(ngModel)]="newItem.titre" id="titre" placeholder="Enter item titre" class="form-control" />
+    <label for="nom">Sous titre:</label>
+    <input [(ngModel)]="newItem.soustitre" id="soustitre" placeholder="Enter item soustitre" class="form-control" />
     
     <label for="description">Description:</label>
     <input [(ngModel)]="newItem.description" id="description" placeholder="Enter description" class="form-control" />
+    <label for="description">Description:</label>
+    <input [(ngModel)]="newItem.description1" id="description1" placeholder="Enter description1" class="form-control" />
+    <label for="description">Description2:</label>
+    <input [(ngModel)]="newItem.description2" id="description2" placeholder="Enter description2" class="form-control" />
+    <label for="description">Mode emploi:</label>
+    <input [(ngModel)]="newItem.modeemploi" id="modeemploi" placeholder="Enter mode emploi" class="form-control" />
     
     <label for="category">Category:</label>
     <input [(ngModel)]="newItem.category" id="category" placeholder="Enter category" class="form-control" />
     
-    <label for="prix">Prix:</label>
-    <input [(ngModel)]="newItem.prix" type="number" id="prix" placeholder="Enter price" class="form-control" />
-    
+    <label for="prix">Badge1:</label>
+    <input [(ngModel)]="newItem.badge1" type="text" id="badge1" placeholder="Enter badge" class="form-control" />
+    <label for="rating">Badge2:</label>
+    <input [(ngModel)]="newItem.badge2" type="text" id="badge2" placeholder="badge2" class="form-control" />
+  
     <label for="image">Image URL:</label>
     <input [(ngModel)]="newItem.image" id="image" placeholder="Enter image URL" class="form-control" />
+    <label for="image">Image1 URL:</label>
+    <input [(ngModel)]="newItem.image1" id="image1" placeholder="Enter image1 URL" class="form-control" />
+    <label for="image">Image2 URL:</label>
+    <input [(ngModel)]="newItem.image2" id="image2" placeholder="Enter image2 URL" class="form-control" />
+    <label for="image">Image3 URL:</label>
+    <input [(ngModel)]="newItem.image3" id="image3" placeholder="Enter image3 URL" class="form-control" />
     
-    <label for="rating">Rating:</label>
-    <input [(ngModel)]="newItem.rating" type="number" id="rating" placeholder="Enter rating" class="form-control" />
-  
+    
     <button (click)="addItem()" class="btn btn-primary mt-2">Add Item</button>
-    <button (click)="updateItem()" class="btn btn-primary mt-2">Save Changes</button>
-    <button (click)="cancelEdit()" class="btn btn-secondary mt-2">Cancel</button>
   </div>
 </div>
 
@@ -52,10 +66,15 @@
       <tr>
         <th scope="row">{{item.id}} </th>
         <td>{{ item.nom }}</td>
+        <td>{{ item.titre }}</td>
+        <td>{{ item.soustitre }}</td>
+        
         <td>{{item.category}}</td>
         <td>{{item.description}}</td>
-        <td>{{item.prix}}</td>
-        <td>{{item.rating}}</td>
+        <td>{{item.description1}}</td>
+        <td>{{item.description2}}</td>
+        <td>{{item.badge1}}</td>
+        <td>{{item.badge2}}</td>
       <button (click)="editItemForm(item)" class="btn btn-warning">Edit</button>
     <button (click)="deleteItem(item.id!)" class="btn btn-danger">Delete</button>
 </tr>

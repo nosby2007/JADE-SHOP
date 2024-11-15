@@ -29,10 +29,18 @@ items: Item[] = [];
 editItem: Item = {
   category: '',
   nom: '',
-  prix: 0,
+  titre:'',
+  description2: '',
+  description1: '',
   description: '',
   image: '',
-  rating:0
+  image1:'',
+  image2:'',
+  image3:'',
+  soustitre:'',
+  badge1:'',
+  badge2:'',
+  modeemploi:''
   }
   
 message: Message[] = [];

@@ -19,9 +19,9 @@
           ">
                     {{ item.description }}
                 </p>
-                <p>price :FCFA{{ item.prix }}</p>
+                <p>price :FCFA{{ item.description1 }}</p>
                 <p>{{ item.category }}</p>
-                <p>{{ item.rating }}</p>
+                <p>{{ item.description2 }}</p>
                 <button class="btn btn-warning" [routerLink]="['/menu', item.id]"> découvrir</button>
             </div>
             
@@ -33,7 +33,10 @@
     <div class="row">
         <ng-container>
             <div class="card col-md-3" *ngFor="let message of message">
-                <img src="{{ message.nom }}" alt="..." />
+                
+                <h1>
+                    {{ message.nom }}
+                </h1>
                 <h5 style="
             white-space: nowrap;
             overflow: hidden;

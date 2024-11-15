@@ -7,13 +7,20 @@ import { ProduitServiceService } from 'src/app/produit-service.service';
 import { OderDetailsService } from 'src/app/service/oder-details.service';
 
 interface Item {
-  id?: string;
-  category: string;
-  nom: string;
-  prix: number;
-  description: string;
-  image: string;
-  rating:number;
+  category: string,
+  nom: string,
+  titre:string,
+  description2: string,
+  description1: string,
+  description: string,
+  image: string,
+  image1:string,
+  image2:string,
+  image3:string,
+  soustitre:string,
+  badge1:string,
+  badge2:string,
+  modeemploi:string
   }
 
 
