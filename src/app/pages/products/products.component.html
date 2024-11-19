@@ -2,26 +2,22 @@
     <div class="row">
         <ng-container>
             <div class="card col-md-3" *ngFor="let item of items">
-                <img src="{{ item.image }}" alt="..." />
-                <h5 style="
+                <img src="{{ item.image1 }}" alt="..." />
+                <h1 style="
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100ch;
           ">
                     {{ item.nom }}
-                </h5>
+                </h1>
                 <p style="
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100ch;
           ">
-                    {{ item.description }}
-                </p>
-                <p>price :FCFA{{ item.description1 }}</p>
                 <p>{{ item.category }}</p>
-                <p>{{ item.description2 }}</p>
                 <button class="btn btn-warning" [routerLink]="['/menu', item.id]"> découvrir</button>
             </div>
             
