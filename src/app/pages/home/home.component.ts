@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
     this.clothesData = this.service.clothesDetails;
   };
 
-  
+  scrollToSection(){}
+  onSubmitContactForm(){}
   
 }

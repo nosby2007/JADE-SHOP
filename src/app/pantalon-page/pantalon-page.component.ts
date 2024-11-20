@@ -13,6 +13,7 @@ export class PantalonPageComponent implements OnInit {
  
  getpantalonId:any;
   pantalonData: any;
+  contact:any;
 
   ngOnInit(): void {
     /* this.getpantalonId = this.param.snapshot.paramMap.get('id');
@@ -26,5 +27,8 @@ export class PantalonPageComponent implements OnInit {
     }*/
 
   }
+
+  onSubmitContactForm(){}
+  scrollToSection(contact:any){}
 
 }

@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: "cart", component:CartComponent},
   {path:"menu/:id", component:MenupagesComponent},
   {path:"calecon/:id", component:CaleconPageComponent},
-  {path:"pantalon/:id", component:PantalonPageComponent},
+  {path:"lon", component:PantalonPageComponent},
 ];
 
 @NgModule({
