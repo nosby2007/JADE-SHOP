@@ -16,5 +16,6 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
     this.clothesData = this.service.clothesDetails;
   }
+  scrollToSection(){}
 
 }

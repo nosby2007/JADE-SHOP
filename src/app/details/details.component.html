@@ -1,0 +1,16 @@
+<div *ngIf="wound">
+    <h1>{{ wound.name }}</h1>
+    <img [src]="wound.image" alt="{{ wound.name }}" />
+    <section>
+      <h2>Description</h2>
+      <p>{{ wound.description }}</p>
+    </section>
+    <section>
+      <h2>Prise en charge</h2>
+      <p>{{ wound.care }}</p>
+    </section>
+    <section>
+      <h2>Traitement</h2>
+      <p>{{ wound.treatment }}</p>
+    </section>
+  </div>

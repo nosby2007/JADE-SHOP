@@ -108,10 +108,15 @@
 
   <div class="container">
     <!-- Header -->
-    <div class="header">
-      <h1>Nos Services de Soins - WCP</h1>
-      <p>Nous offrons des services de soins spécialisés, guidés par la compassion, le respect et un engagement à améliorer la qualité de vie de chaque patient.</p>
-    </div>
+    <header class="hero-section">
+      <h1>NOS SERVICES</h1>
+      <p>
+        Découvrez nos Services
+      </p>
+      <button class="cta-button" [routerLink]="['/reservation']">
+        Reservez Un services
+      </button>
+    </header>
 
     <!-- Services Section -->
     <div class="services">
@@ -119,45 +124,51 @@
       <!-- Soin de Plaie à Domicile -->
       <div class="service-card">
         <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1731782319/website%20assets/file-Dy15BeoA0dCwERFBiSV0hMaz_di0ozb.webp" alt="Soin de plaie à domicile">
-        <div class="service-content" style="background-color: rgb(203, 72, 255);">
+        <div class="service-content">
           <h3>Soin de Plaie à Domicile</h3>
           <p>Nous apportons les soins nécessaires directement chez vous, en assurant un traitement sécurisé et professionnel. Nos infirmières qualifiées se dédient à la guérison de vos plaies, offrant confort et soutien dans l'intimité de votre maison.</p>
+          <button class="cta-button" [routerLink]="['/reservation']" style="margin-left: 40%;"> Réserver</button>
         </div>
       </div>
 
       <!-- Soin de Plaie pour Votre Structure de Santé -->
       <div class="service-card">
         <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1731782320/website%20assets/file-8qwfJB64N88aYfdvtKtp4IOG_n450qg.webp" alt="Soin de plaie en structure de santé">
-        <div class="service-content" style="background-color: rgb(15, 16, 15);">
-          <h3>Soin de Plaie pour Votre Structure de Santé</h3>
+        <div class="service-content">
+          <h3>Soin de Plaie Structure de Santé</h3>
           <p>Nous collaborons avec les établissements de santé pour offrir des soins spécialisés. Nos équipes interviennent directement dans vos structures pour garantir des soins de haute qualité aux patients, avec professionnalisme et expertise.</p>
+          <button class="cta-button" [routerLink]="['/reservation']" style="margin-left: 40%;"> Réserver</button>
         </div>
+        
       </div>
 
       <!-- Soin Infirmier à Domicile et en Entreprise -->
       <div class="service-card">
         <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1731782320/website%20assets/file-vvJoQ6aN6VPxbsCjQE9oBgRx_eae0pl.webp" alt="Soin infirmier à domicile et en entreprise">
-        <div class="service-content" style="background-color: rgb(167, 156, 135);">
-          <h3>Soin Infirmier à Domicile et en Entreprise</h3>
+        <div class="service-content">
+          <h3>Soin Infirmier à Domicile</h3>
           <p>Nos services de soins infirmiers sont disponibles à domicile et en entreprise. Que ce soit pour des soins réguliers, des suivis de santé ou des interventions ponctuelles, nos infirmières veillent au bien-être des patients et des employés dans leur environnement quotidien.</p>
+          <button class="cta-button" [routerLink]="['/reservation']" style="margin-left: 40%;"> Réserver</button>
         </div>
       </div>
 
       <!-- Portails de Formation WCP -->
       <div class="service-card">
         <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1731782319/website%20assets/file-1ddi2JGCNQTQP0OUIfWpIhAQ_wru9ij.webp" alt="Portails de Formation WCP">
-        <div class="service-content" style="background-color: rgb(60, 122, 255);" >
+        <div class="service-content">
           <h3>Portails de Formation WCP</h3>
           <p>Nous offrons une plateforme de formation dédiée aux professionnels de la santé, permettant de développer des compétences en soins de plaie. Nos formations sont accessibles, interactives, et guidées par des experts du domaine.</p>
+          <a href="https://www.eclub-travel.com/challenges" target="_blank"><button class="cta-button" style="margin-left: 40%;"> Réserver</button></a>
         </div>
       </div>
 
       <!-- Partenariat WCP -->
       <div class="service-card">
         <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1687839930/website%20assets/join_idww3o.jpg" alt="Partenariat WCP">
-        <div class="service-content" style="background-color: orange;">
+        <div class="service-content">
           <h3>Partenariat WCP</h3>
           <p>WCP valorise les partenariats avec les structures et organisations de santé. En collaborant avec nous, vous bénéficiez d’une expertise en soins de plaie et d’un réseau de professionnels dévoués. Ensemble, nous renforçons les capacités de soins pour un meilleur service aux patients.</p>
+          <button class="cta-button" [routerLink]="['/reservation']" style="margin-left: 40%;"> Réserver</button>
         </div>
       </div>
 

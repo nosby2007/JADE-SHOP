@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,23 @@ import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AddProductComponent } from './pages/add-product/add-product.component';
 import { AboutUsComponent } from './pages/about-us/about-us.component';
+import { SearchComponent } from './search/search.component';
+import { DetailsComponent } from './details/details.component';
+import { ReservationComponent } from './component/reservation/reservation.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatCardModule} from '@angular/material/card';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatStepperModule} from '@angular/material/stepper';
+import { BlogComponent } from './component/blog/blog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { PostDetailsComponent } from './component/post-details/post-details.component';
+import { PostsComponent } from './component/posts/posts.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +67,13 @@ import { AboutUsComponent } from './pages/about-us/about-us.component';
     RegisterComponent,
     AddProductComponent,
     AddProductComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    SearchComponent,
+    DetailsComponent,
+    ReservationComponent,
+    BlogComponent,
+    PostDetailsComponent,
+    PostsComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,9 +83,22 @@ import { AboutUsComponent } from './pages/about-us/about-us.component';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatProgressBarModule,
+    MatStepperModule,
+    MatButtonModule
+    
+    
   ],
-  providers: [],
+  providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

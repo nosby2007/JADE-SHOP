@@ -1,11 +1,10 @@
 
 .footer {
-    overflow: hidden;
     background-color: rgb(105, 2, 67);
     padding:auto;
-    position: sticky;
-    top: 100%;
+    position:absolute;
     margin-top: 20px;
+    bottom: auto;
 }
 .row
 {

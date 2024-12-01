@@ -1,6 +1,4 @@
-body{
-   background: linear-gradient(to right, #0077b6, #0096c7);
-}
+
  h1, h2, h3 {
    color: #0077b6;
  }
@@ -85,7 +83,6 @@ body{
  /* About Us Section */
  .about-us {
    padding: 50px 20px;
-   background: #fff;
    text-align: center;
    background-image: url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1730537312/colegue_bvb8fe.jpg');
  }
@@ -96,10 +93,9 @@ body{
  }
  
  .about-us p {
-   margin-bottom: 20px;
    font-size: 1.1rem;
    color: #fff;
-   font-weight: bold;
+   font-family: Arial, Helvetica, sans-serif;
  }
  
  /* Services Section */

@@ -6,7 +6,7 @@
       Votre partenaire en soins humains et personnalisés, au service de
       Ouagadougou et de tout le Burkina Faso.
     </p>
-    <button class="cta-button" (click)="scrollToSection()">
+    <button class="cta-button"  [routerLink]="['/menu']">
       Découvrez nos services
     </button>
   </header>
@@ -20,13 +20,13 @@
     <div class="container">
      <div class="row"> 
     <div class="col-6">
-        <p style="text-align: justify; text-size-adjust: inherit;">
+        <p style="text-align: justify;">
             Depuis 2018 à Ouagadougou, Wound Care Provider (WCP) se distingue par son expertise dans la prise en charge des plaies à domicile. Alliant professionnalisme, compassion et respect, notre équipe offre des soins personnalisés, adaptés aux besoins uniques de chaque patient, dans le confort de leur foyer. Spécialisé dans les plaies chroniques, post-opératoires et traumatiques, WCP applique les normes médicales les plus strictes tout en plaçant l'humain au cœur de son approche. Chaque intervention vise à garantir dignité, guérison optimale et accompagnement moral. Avec un engagement constant envers l’excellence, WCP redéfinit les standards des soins à domicile, fidèle à sa mission : soigner avec amour et respect pour la vie.
 
             Reservez via Tel
             +227 (400) 123 4567
     </p>
-    <button class="cta-button" (click)="scrollToSection()">
+    <button class="cta-button" [routerLink]="['/contact']">
       Contactez-nous
     </button>
 
@@ -57,6 +57,7 @@
           Des soins adaptés pour toutes les plaies, avec des techniques modernes
           et un suivi personnalisé.
         </p>
+        <button class="btn btn-warning" [routerLink]="['/menu']"> découvrir</button>
       </div>
       <div class="service-card">
         <img
@@ -65,6 +66,7 @@
         />
         <h3>Soins Infirmiers à Domicile</h3>
         <p>Assistance et soins infirmiers dans le confort de votre domicile.</p>
+        <button class="btn btn-warning" [routerLink]="['/menu']"> découvrir</button>
       </div>
       <div class="service-card">
         <img
@@ -76,10 +78,11 @@
           Programmes pour particuliers et entreprises en soins spécialisés et
           premiers secours.
         </p>
+        <button class="btn btn-warning" [routerLink]="['/menu']"> découvrir</button>
       </div>
       <div class="service-card">
         <img
-          src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1687839937/website%20assets/pexels-sora-shimazaki-5673488_gfctj5.jpg"
+          src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1730531285/Designer_2_dneghg.jpg"
           alt="Partenariats"
         />
         <h3>Partenariats</h3>
@@ -87,6 +90,7 @@
           Des solutions collaboratives avec les entreprises, les structures de
           santé, et les assurances.
         </p>
+        <button class="btn btn-warning" [routerLink]="['/calecons']"> découvrir</button>
       </div>
     </div>
   </section>
@@ -187,7 +191,7 @@
         <p>
           Description : Apprenez les bases pour intervenir en cas d'urgence.
         </p>
-         <div class="btn btn-success">Réservez</div>
+         <div class="btn btn-success"  [routerLink]="['/reservation']">Réservez</div>
       </div>
       <div class="event-card">
         <img
@@ -201,7 +205,7 @@
           Description : Découvrez les nouvelles techniques de soin et prévention
           des plaies.
         </p>
-         <div class="btn btn-success">Réservez</div>
+         <div class="btn btn-success"  [routerLink]="['/reservation']">Réservez</div>
       </div>
       <div class="event-card">
         <img
@@ -215,7 +219,7 @@
           Description : Découvrez les nouvelles techniques de soin et prévention
           des Escares.
         </p>
-         <div class="btn btn-success">Réservez</div>
+         <div class="btn btn-success"  [routerLink]="['/reservation']">Réservez</div>
       </div>
       <div class="event-card">
         <img
@@ -229,7 +233,7 @@
           Description : Découvrez les nouvelles techniques de soin et prévention
           des Escares.
         </p>
-         <div class="btn btn-success">Réservez</div>
+         <div class="btn btn-success"  [routerLink]="['/reservation']">Réservez</div>
       </div>
       <div class="event-card">
         <img
@@ -243,7 +247,7 @@
           Description : Découvrez les nouvelles techniques de soin et prévention
           des Escares.
         </p>
-        <div class="btn btn-success">Réservez</div>
+        <div class="btn btn-success"  [routerLink]="['/reservation']">Réservez</div>
       </div>
       
     </div>

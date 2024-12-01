@@ -12,5 +12,6 @@ export class CaleconComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  scrollToSection(){}
 
 }

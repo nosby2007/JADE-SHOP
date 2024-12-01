@@ -1,0 +1,64 @@
+<div class="blog-container">
+    <!-- Formulaire pour ajouter un post -->
+    <div class="add-post">
+      <h2>Créer un nouveau post</h2>
+      <form (ngSubmit)="addPost()" #postForm="ngForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titre</mat-label>
+          <input matInput name="title" [(ngModel)]="newPost.title" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Sous-titre</mat-label>
+            <input matInput name="subtitle" [(ngModel)]="newPost.subtitle" required />
+          </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contenu</mat-label>
+          <textarea
+            matInput
+            name="content"
+            [(ngModel)]="newPost.content"
+            required
+          ></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL de l'image</mat-label>
+            <input matInput name="image" [(ngModel)]="newPost.image" required />
+          </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nom de l'utilisateur</mat-label>
+          <input matInput name="userName" [(ngModel)]="newPost.userName" required />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Photo de l'utilisateur (URL)</mat-label>
+          <input matInput name="userPhoto" [(ngModel)]="newPost.userPhoto" required />
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid">
+          Ajouter
+        </button>
+      </form>
+    </div>
+  
+    <!-- Liste des posts existants -->
+    <div *ngFor="let post of posts" class="post">
+      <!-- Contenu des posts (comme avant) -->
+      <div class="post-header">
+        <img [src]="post.userPhoto" alt="Photo utilisateur" class="user-photo" />
+        <div>
+          <h3>{{ post.userName }}</h3>
+          <p>{{ post.timestamp | date: 'medium' }}</p>
+        </div>
+      </div>
+      <div class="post-content">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+      </div>
+      <!-- Section des commentaires -->
+    </div>
+  </div>
+  
+

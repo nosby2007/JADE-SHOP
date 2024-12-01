@@ -14,6 +14,12 @@ import { MenupagesComponent } from './pages/menupages/menupages.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { PantalonPageComponent } from './pantalon-page/pantalon-page.component';
 import { AddProductComponent } from './pages/add-product/add-product.component';
+import { SearchComponent } from './search/search.component';
+import { DetailsComponent } from './details/details.component';
+import { ReservationComponent } from './component/reservation/reservation.component';
+import { BlogComponent } from './component/blog/blog.component';
+import { PostDetailsComponent } from './component/post-details/post-details.component';
+import { PostsComponent } from './component/posts/posts.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'home', pathMatch:'full'},
@@ -24,13 +30,19 @@ const routes: Routes = [
   {path: "about", component:AboutComponent},
   {path: "product", component:ProductsComponent},
   {path: "contact", component:ContactComponent},
-  {path: "calecon", component:CaleconComponent},
+  {path: "calecons", component:CaleconComponent},
+  {path: "blog", component:BlogComponent},
+  {path: "posts", component:PostsComponent},
   {path: "addProduct", component:AddProductComponent},
   {path: "pantalon", component:PantalonComponent},
   {path: "cart", component:CartComponent},
   {path:"menu/:id", component:MenupagesComponent},
-  {path:"calecon/:id", component:CaleconPageComponent},
+  {path:"calecon", component:CaleconPageComponent},
   {path:"lon", component:PantalonPageComponent},
+  { path: 'search', component: SearchComponent },
+  { path: 'details/:id', component: DetailsComponent },
+  { path: 'reservation', component: ReservationComponent },
+  { path: 'post/:id', component: PostDetailsComponent },
 ];
 
 @NgModule({

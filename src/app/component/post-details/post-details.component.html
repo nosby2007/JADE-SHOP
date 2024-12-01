@@ -1,0 +1,26 @@
+<div class="post-details-container" *ngIf="post">
+    <img [src]="post.image" alt="{{ post.title }}" class="post-image" />
+    <div class="post-header">
+      <h1>{{ post.title }}</h1>
+      <h3>{{ post.subtitle }}</h3>
+      <p class="post-timestamp">{{ post.timestamp | date: 'longDate' }}</p>
+    </div>
+    <div class="post-content">
+      <p>{{ post.content }}</p>
+    </div>
+    <div class="comments-section">
+      <h2>Commentaires</h2>
+      <div *ngFor="let comment of post.comments" class="comment">
+        <p><strong>{{ comment.userName }}</strong> : {{ comment.text }}</p>
+      </div>
+      <div class="add-comment">
+        <input
+          type="text"
+          placeholder="Ajouter un commentaire"
+          [(ngModel)]="newComment"
+        />
+        <button mat-raised-button color="primary" (click)="addComment()">Envoyer</button>
+      </div>
+    </div>
+  </div>
+  <p *ngIf="!post">Chargement en cours...</p>
