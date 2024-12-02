@@ -15,24 +15,24 @@
     <label for="nom">titre:</label>
     <input [(ngModel)]="newItem.titre" id="titre" placeholder="Enter item titre" class="form-control" />
     <label for="nom">Sous titre:</label>
-    <input [(ngModel)]="newItem.soustitre" id="soustitre" placeholder="Enter item soustitre" class="form-control" />
+    <textarea [(ngModel)]="newItem.soustitre" id="soustitre" placeholder="Enter item soustitre" class="form-control"></textarea> 
     
+    <label for="description">Mecanisme d\'action</label>
+    <textarea [(ngModel)]="newItem.description" id="description" placeholder="Enter description" class="form-control"></textarea> 
     <label for="description">Description:</label>
-    <input [(ngModel)]="newItem.description" id="description" placeholder="Enter description" class="form-control" />
-    <label for="description">Description:</label>
-    <input [(ngModel)]="newItem.description1" id="description1" placeholder="Enter description1" class="form-control" />
+    <textarea [(ngModel)]="newItem.description1" id="description1" placeholder="Enter description1" class="form-control"></textarea> 
     <label for="description">Description2:</label>
-    <input [(ngModel)]="newItem.description2" id="description2" placeholder="Enter description2" class="form-control" />
+    <textarea [(ngModel)]="newItem.description2" id="description2" placeholder="Enter description2" class="form-control"></textarea> 
     <label for="description">Mode emploi:</label>
-    <input [(ngModel)]="newItem.modeemploi" id="modeemploi" placeholder="Enter mode emploi" class="form-control" />
+    <textarea [(ngModel)]="newItem.modeemploi" id="modeemploi" placeholder="Enter mode emploi" class="form-control"></textarea> 
     
     <label for="category">Category:</label>
     <input [(ngModel)]="newItem.category" id="category" placeholder="Enter category" class="form-control" />
     
     <label for="prix">Badge1:</label>
-    <input [(ngModel)]="newItem.badge1" type="text" id="badge1" placeholder="Enter badge" class="form-control" />
+    <textarea [(ngModel)]="newItem.badge1" type="text" id="badge1" placeholder="Enter badge" class="form-control"></textarea> 
     <label for="rating">Badge2:</label>
-    <input [(ngModel)]="newItem.badge2" type="text" id="badge2" placeholder="badge2" class="form-control" />
+    <textarea [(ngModel)]="newItem.badge2" type="text" id="badge2" placeholder="badge2" class="form-control"></textarea> 
   
     <label for="image">Image URL:</label>
     <input [(ngModel)]="newItem.image" id="image" placeholder="Enter image URL" class="form-control" />

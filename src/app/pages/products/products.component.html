@@ -17,7 +17,7 @@
             text-overflow: ellipsis;
             max-width: 100ch;
           ">
-                <p>{{ item.category }}</p>
+                <p>{{ item.category}}</p>
                 <button class="btn btn-warning" [routerLink]="['/menu', item.id]"> découvrir</button>
             </div>
             
@@ -25,36 +25,5 @@
            
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <ng-container>
-            <div class="card col-md-3" *ngFor="let message of message">
-                
-                <h1>
-                    {{ message.nom }}
-                </h1>
-                <h5 style="
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100ch;
-          ">
-                    {{ message.email }}
-                </h5>
-                <p style="
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100ch;
-          ">
-                    {{ message.message }}
-                </p>
-                
-                <button class="btn btn-warning" [routerLink]="['/menu', message.id]"> découvrir</button>
-            </div>
-            
-        </ng-container>
-           
-    </div>
-</div>
+
 

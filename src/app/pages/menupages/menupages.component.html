@@ -110,7 +110,7 @@
   <div class="container">
     <!-- Header -->
     <div class="header" *ngIf="item$ | async as item" style="text-align: justify; background-color: #a1dbf9;" >
-      <h1 style="text-align: justify;">{{item.category}} </h1>
+      <h1 style="text-align: justify;">{{item.nom}} </h1>
     </div>
 
     <!-- Services Section -->
@@ -120,19 +120,21 @@
       <div class="service-card" *ngIf="item$ | async as item">
         <img src="{{item.image}}" alt="Soin de plaie à domicile">
         <div class="service-content" >
-          <h3>{{item.nom}}</h3>
-          <p>{{item.titre}} </p>
+          <h3>Catégorie Produit: {{item.category}}</h3>
+          <h3>{{item.titre}}</h3>
           <p style="text-align: justify;">{{item.soustitre}}<p>
+            <p style="text-align: justify;"><span style="font-weight: bold;">spécificités: </span>{{item.description2}}</p>
         </div>
       </div>
 
       <!-- Soin de Plaie pour Votre Structure de Santé -->
       <div class="service-card"*ngIf="item$ | async as item">
         <img src="{{item.image1}}" alt="Soin de plaie en structure de santé">
+        
         <div class="service-content">
           
-          <p style="text-align: justify;">{{item.description1}}</p>
-          <p style="text-align: justify;">{{item.badge1}} </p>
+          <p style="text-align: justify;"><span style="font-weight: bold;">Mecanisme d\'action: </span>{{item.description}} </p>
+          <p style="text-align: justify;"><strong style="font-weight: bold;">Informations importante: </strong>{{item.description1}}</p>
         </div>
       </div>
 
@@ -140,8 +142,8 @@
       <div class="service-card" *ngIf="item$ | async as item">
         <img src="{{item.image2}}" alt="Soin infirmier à domicile et en entreprise">
         <div class="service-content">
-          <h3 style="text-align: justify;">{{item.badge2}}</h3>
-          <p style="text-align: justify;">{{item.modeemploi}}</p>
+          <p style="text-align: justify;"><span style="font-weight: bold;">Mode d'emploi: </span>{{item.modeemploi}}</p>
+          
         </div>
       </div>
 
@@ -149,13 +151,13 @@
       <div class="service-card" *ngIf="item$ | async as item">
         <img src="{{item.image3}}" alt="Portails de Formation WCP">
         <div class="service-content" >
-          <h3 style="text-align: justify;">{{item.description2}}</h3>
+          <p style="text-align: justify;">{{item.badge1}}</p>
         </div>
       </div>
       <div class="service-card" *ngIf="item$ | async as item">
-        <img src="{{item.image}}" alt="Portails de Formation WCP">
+        <img src="{{item.image1}}" alt="Portails de Formation WCP">
         <div class="service-content"  >
-          <h3 style="text-align: justify;">{{item.description2}}</h3>
+          <p style="text-align: justify;">{{item.badge2}}</p>
         </div>
       </div>
       </div>
