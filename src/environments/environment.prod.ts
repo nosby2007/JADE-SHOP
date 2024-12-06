@@ -1,11 +1,12 @@
 export const environment = {
   firebase: {
-    projectId: 'jade-fashion',
-    appId: '1:120506765687:web:c471a917398e4f1ea59172',
-    storageBucket: 'jade-fashion.appspot.com',
-    apiKey: 'AIzaSyCQTKvDN8JXwTWo3HSvb_zIgyAQb9StFSw',
-    authDomain: 'jade-fashion.firebaseapp.com',
-    messagingSenderId: '120506765687',
+    apiKey: "AIzaSyBtvHyPefDjhWiWvcz2mJEL9EXZ7YqEb7A",
+  authDomain: "woundapp-261e6.firebaseapp.com",
+  projectId: "woundapp-261e6",
+  storageBucket: "woundapp-261e6.firebasestorage.app",
+  messagingSenderId: "43052843352",
+  appId: "1:43052843352:web:ee55589f67c31750eca52d",
+  measurementId: "G-HJZG1QZ6FW"
   },
   production: true
 };

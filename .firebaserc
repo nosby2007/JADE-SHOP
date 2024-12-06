@@ -1,14 +1,5 @@
 {
-  "targets": {
-    "jade-fashion": {
-      "hosting": {
-        "touch": [
-          "jade-fashion"
-        ]
-      }
-    }
-  },
   "projects": {
-    "default": "jade-fashion"
+    "default": "woundapp-261e6"
   }
 }

@@ -1,0 +1,110 @@
+<nav class="navbar" *ngIf="authService.isLoggedIn()">
+  <ul class="nav-list">
+    <li class="nav-item dropdown">
+      <a href="#">Home</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-section">
+          <span>Section Dashboard</span>
+          <a href="#">Home</a>
+          <a href="#">Tableau de bord Admin</a>
+          <a href="#">Tableau de bord Clinique</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Section Module</span>
+          <a href="#">POC</a>
+          <a href="#">eMar</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Section External Links</span>
+          <a href="#">Voir tous les liens externes</a>
+          <a href="#">Autres</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#">Administrator</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-section">
+          <span>Section People</span>
+          <a href="PatientList">Patients</a>
+          <a href="#">Professionnels Médicaux</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Section Actions</span>
+          <a href="#">Nouveau Professionnel</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Section Comptabilité</span>
+          <a href="#">Tableau de Bord</a>
+          <a href="#">UDA</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Section Other</span>
+          <a href="#">Rapport</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#">Clinical</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-section">
+          <span>People</span>
+          <a href="PatientList">Patients</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Actions</span>
+          <a href="#">Quick ADT</a>
+          <a href="#">New Resident</a>
+          <a href="#">New Medical Professional</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Care Management</span>
+          <a href="#">Dashboard</a>
+          <a href="#">Hospital Tracking</a>
+          <a href="#">MDS</a>
+          <a href="#">Communications</a>
+          <a href="#">Orders</a>
+          <a href="#">Lab/Rx Results</a>
+          <a href="#">Risk Management</a>
+          <a href="#">Weights and Vitals</a>
+          <a href="#">UDA</a>
+          <a href="#">Infection Control</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Quick Entry</span>
+          <a href="#">Therapy Minutes</a>
+          <a href="#">Physician Visits</a>
+          <a href="#">Immunization</a>
+          <a href="#">Weight</a>
+          <a href="#">Blood Pressure</a>
+          <a href="#">Temperature</a>
+          <a href="#">Pulse</a>
+          <a href="#">Respiration</a>
+          <a href="#">Blood Sugar</a>
+          <a href="#">O2 Saturation</a>
+          <a href="#">Pain Level</a>
+        </div>
+        <div class="dropdown-section">
+          <span>Modules</span>
+          <td><a href="#">POC</a></td>
+          <td><a href="#">eMAR</a></td>
+        </div>
+        <div class="dropdown-section">
+          <span>Other</span>
+          <a href="#">Reports</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#">Report</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-section">
+          <span>Rapports Disponibles</span>
+          <a href="#">Rapport Financier</a>
+          <a href="#">Rapport Clinique</a>
+          <a href="#">Rapport de Qualité</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>

@@ -1,14 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
 body{        
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: linear-gradient(to right, #0077b6, #0096c7);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-image: url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1731832366/website%20assets/footer-bg_x7wquc.jpg");
+    background-size: cover;
  }
  .fixed-header, .fixed-footer{
      width: 100%;
      position: fixed;        
-     background: darkblue;
+     background: orangered;
      padding: 10px 0;
      color: #fff;
  }
