@@ -1,0 +1,68 @@
+<div class="medical-professionals">
+    <h2>Medical Professional List</h2>
+  
+    <!-- New Button -->
+    <button class="btn-new">New</button>
+  
+    <!-- Filters -->
+    <div class="filters">
+      <label>Status:
+        <select [(ngModel)]="statusFilter" (change)="applyFilter()">
+          <option value="active">Active</option>
+          <option value="expired">Expired</option>
+          <option value="both">Both</option>
+        </select>
+      </label>
+    </div>
+  
+    <!-- Search and Print -->
+    <div class="actions">
+      <input type="text" placeholder="Search" [(ngModel)]="searchTerm" />
+      <button class="btn-print" (click)="print()">Print</button>
+    </div>
+  
+    <!-- Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Actions</th>
+          <th>Name</th>
+          <th>Medical Professional Type</th>
+          <th>End Date</th>
+          <th>Office Phone</th>
+          <th>Login</th>
+          <th>NPI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let professional of filteredProfessionals">
+          <td>
+            <button >edit</button>
+            <button >assign DEA registrant#</button>
+            <button >deactivate DEA registrant#</button>
+          </td>
+          <td>{{ professional }}</td>
+          <td>{{ professional }}</td>
+          <td>{{ professional | date }}</td>
+          <td>{{ professional }}</td>
+          <td>{{ professional }}</td>
+          <td>{{ professional }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Alphabet Navigation -->
+    <div class="alphabet-nav">
+      <button *ngFor="let letter of alphabet" >
+        {{ letter }}
+      </button>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination">
+      <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  </div>
+  

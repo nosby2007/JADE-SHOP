@@ -30,8 +30,64 @@
   }
 
   .admin-dashboard {
-    padding: 20px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h1 {
+      color: #004c8c;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .dashboard-section {
+    margin-bottom: 20px;
+
+    h2 {
+      color: #004c8c;
+      border-bottom: 2px solid #004c8c;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      mat-form-field {
+        margin-right: 10px;
+      }
+    }
+
+    mat-table {
+      width: 100%;
+      overflow-x: auto;
+    }
+  }
+}
+
+.admin-dashboard {
     font-family: Arial, sans-serif;
+    padding: 20px;
   
     .dashboard-header {
       display: flex;
@@ -43,23 +99,21 @@
         color: #004c8c;
       }
   
-      .actions {
-        display: flex;
-        align-items: center;
-  
-        span {
-          margin-right: 10px;
-          font-weight: bold;
-        }
-  
-        button {
-          margin-left: 10px;
-        }
+      .edit-layout-btn {
+        background-color: #006699;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
       }
     }
   
     .dashboard-section {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
   
       h2 {
         color: #004c8c;
@@ -68,19 +122,57 @@
         margin-bottom: 10px;
       }
   
-      .filter-bar {
+      .filters {
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        gap: 10px;
+        margin-bottom: 15px;
   
-        mat-form-field {
-          margin-right: 10px;
+        label {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+  
+          input,
+          select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+          }
+        }
+  
+        button {
+          background-color: #004c8c;
+          color: #fff;
+          padding: 5px 10px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
         }
       }
   
-      mat-table {
+      .dashboard-table {
         width: 100%;
-        overflow-x: auto;
+        border-collapse: collapse;
+  
+        th,
+        td {
+          border: 1px solid #ccc;
+          padding: 10px;
+          text-align: left;
+        }
+  
+        th {
+          background-color: #004c8c;
+          color: #fff;
+        }
+  
+        .footer {
+          margin-top: 10px;
+          text-align: right;
+          font-weight: bold;
+          color: #555;
+        }
       }
     }
   }

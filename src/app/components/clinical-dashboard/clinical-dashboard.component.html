@@ -1,1 +1,179 @@
-<p>clinical-dashboard works!</p>
+<div class="clinical-dashboard">
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <label for="unit">Unit:</label>
+      <select id="unit">
+        <option>200</option>
+        <option>201</option>
+      </select>
+  
+      <label for="floor">Floor:</label>
+      <select id="floor">
+        <option>2</option>
+        <option>3</option>
+      </select>
+  
+      <label for="physician">Primary Physician:</label>
+      <select id="physician">
+        <option>All</option>
+        <option>Dr. Smith</option>
+      </select>
+  
+      <button class="btn btn-primary">Reports</button>
+    </div>
+  
+    <!-- Data Table: Med Passes -->
+    <div class="section">
+      <h3>Med Passes in the Last 24 Hours</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Record</th>
+            <th>Shift</th>
+            <th>Assignment (Group)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medPass of medPasses">
+            <td>{{ medPass.record }}</td>
+            <td>{{ medPass.shift }}</td>
+            <td>{{ medPass.assignment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Data Table: Unreviewed Laboratory Results -->
+    <div class="section">
+      <h3>Unreviewed Laboratory Results</h3>
+      <button class="btn btn-secondary">Mark as Reviewed</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Reported Date</th>
+            <th>Collection Date</th>
+            <th>Resident Name</th>
+            <th>Location</th>
+            <th>Report Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let labResult of labResults">
+            <td>{{ labResult.reportedDate }}</td>
+            <td>{{ labResult.collectionDate }}</td>
+            <td>{{ labResult.residentName }}</td>
+            <td>{{ labResult.location }}</td>
+            <td>{{ labResult.reportName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Data Table: Clinical Alerts -->
+    <div class="section">
+      <h3>Clinical Alerts</h3>
+      <label for="show-alerts">Show Alerts in Last:</label>
+      <select id="show-alerts">
+        <option>48 Hours</option>
+        <option>24 Hours</option>
+        <option>7 Days</option>
+      </select>
+  
+      <label for="sort-by">Sort By:</label>
+      <select id="sort-by">
+        <option>Date</option>
+        <option>Name</option>
+      </select>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Alert</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alert of clinicalAlerts">
+            <td><input type="checkbox" /></td>
+            <td>{{ alert.name }}</td>
+            <td>{{ alert.alert }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+
+
+
+
+<div class="clinical-dashboard-container">
+    <!-- Section 1: Antibiotic Medication -->
+    <div class="section">
+      <div class="section-header">
+        <h3>Antibiotic Medication Ordered in last</h3>
+        <select>
+          <option>7 days</option>
+          <option>14 days</option>
+          <option>30 days</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Resident Name</th>
+            <th>Order</th>
+            <th>Schedule</th>
+            <th>Medication Class</th>
+            <th>Order Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Ordered By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medication of antibioticMedications">
+            <td>{{ medication.residentName }}</td>
+            <td>{{ medication.order }}</td>
+            <td>{{ medication.schedule }}</td>
+            <td>{{ medication.medicationClass }}</td>
+            <td>{{ medication.orderStatus }}</td>
+            <td>{{ medication.startDate }}</td>
+            <td>{{ medication.endDate }}</td>
+            <td>{{ medication.orderedBy }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Section 2: High Priority Progress Notes -->
+    <div class="section">
+      <div class="section-header">
+        <h3>High Priority Progress Notes in Last</h3>
+        <select>
+          <option>1 day</option>
+          <option>7 days</option>
+          <option>30 days</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let note of progressNotes">
+            <td>{{ note.date }}</td>
+            <td>{{ note.name }}</td>
+            <td>{{ note.type }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Additional Sections Follow Similar Structure -->
+  </div>
+  
