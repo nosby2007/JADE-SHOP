@@ -41,7 +41,7 @@ import { PoolsComponent } from './CLINICAL/pools/pools.component';
 import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-qualite.component';
 import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-clinique.component';
 import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
-
+import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.component';
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch:'full'},
   {path:'login', component:LoginComponent,},
@@ -86,8 +86,9 @@ const routes: Routes = [
   {path: "addAppointment", component:AddAppointmentComponent, canActivate:[AuthGuardGuard]},
   {path: "appointmentList", component:AppointmentListComponent, canActivate:[AuthGuardGuard]},
   {path: "PatientList/:id", component:PatienDetailsComponent, canActivate:[AuthGuardGuard]},
+  {path: "patientCli/:id", component:DetailNurseComponent, canActivate:[AuthGuardGuard]},
   
-];
+]; 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

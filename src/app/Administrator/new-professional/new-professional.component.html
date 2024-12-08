@@ -1,0 +1,37 @@
+<h2>Add New Professional</h2>
+<form [formGroup]="professionalForm" (ngSubmit)="save()">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Type</mat-label>
+    <input matInput formControlName="type" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Office Phone</mat-label>
+    <input matInput formControlName="officePhone" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Login</mat-label>
+    <input matInput formControlName="login" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>NPI</mat-label>
+    <input matInput formControlName="npi" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>End Date</mat-label>
+    <input matInput formControlName="endDate" type="date" required />
+  </mat-form-field>
+
+  <div class="modal-actions">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button style="color: #7952b3;" type="submit">Save</button>
+  </div>
+</form>

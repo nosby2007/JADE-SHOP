@@ -41,7 +41,6 @@ import { EMARComponent } from './components/e-mar/e-mar.component';
 import { AllLinksComponent } from './components/all-links/all-links.component';
 import { AutresComponent } from './components/autres/autres.component';
 import { PatientListAdComponent } from './Administrator/patient-list-ad/patient-list-ad.component';
-import { NouveauProComponent } from './Administrator/nouveau-pro/nouveau-pro.component';
 import { TableauBordComptComponent } from './Administrator/tableau-bord-compt/tableau-bord-compt.component';
 import { UDAComptComponent } from './Administrator/udacompt/udacompt.component';
 import { RapportComponent } from './Administrator/rapport/rapport.component';
@@ -68,6 +67,16 @@ import { PoolsComponent } from './CLINICAL/pools/pools.component';
 import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
 import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-clinique.component';
 import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-qualite.component';
+
+import {MatDialogModule} from '@angular/material/dialog';
+import { NouveauProComponent } from './Administrator/nouveau-pro/nouveau-pro.component';
+import { NewProfessionalComponent } from './Administrator/new-professional/new-professional.component';
+import { NewtempComponent } from './FORMULAIRE/newtemp/newtemp.component';
+import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+
+
 
 
 
@@ -101,7 +110,6 @@ import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-quali
     AllLinksComponent,
     AutresComponent,
     PatientListAdComponent,
-    NouveauProComponent,
     TableauBordComptComponent,
     UDAComptComponent,
     RapportComponent,
@@ -125,9 +133,15 @@ import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-quali
     DouleurComponent,
     TensionComponent,
     PoolsComponent,
+    NouveauProComponent,
     RapportFinancierComponent,
     RapportCliniqueComponent,
     RapportQualiteComponent,
+    NewProfessionalComponent,
+    NewtempComponent,
+    DetailNurseComponent,
+    
+    
     
    
   ],
@@ -156,6 +170,10 @@ import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-quali
     MatPaginatorModule,
     MatIconModule,
     MatCardModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatTabsModule,
     
     
     

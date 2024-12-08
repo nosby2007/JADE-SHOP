@@ -2,7 +2,7 @@
     <h2>Medical Professional List</h2>
   
     <!-- New Button -->
-    <button class="btn-new">New</button>
+    <button mat-raised-button color="primary" (click)="penNewProfessionalModal()">New</button>
   
     <!-- Filters -->
     <div class="filters">
@@ -65,4 +65,21 @@
       <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
     </div>
   </div>
-  
+
+
+  <!-- Filters -->
+  <div class="filters">
+    <label>Status:
+      <select [(ngModel)]="statusFilter" (change)="applyFilter()">
+        <option value="active">Active</option>
+        <option value="expired">Expired</option>
+        <option value="both">Both</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- Search and Print -->
+  <div class="actions">
+    <input type="text" placeholder="Search" [(ngModel)]="searchTerm" />
+    <button class="btn-print" (click)="print()">Print</button>
+  </div>

@@ -1,0 +1,233 @@
+<div class="patient-details-container " *ngIf="patient$ | async as patient; else loading">
+    <table class="patient-info-table table-responsive-xl table-bordered shadow table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Genre</th>
+          <th>Date de Naissance</th>
+          <th>Adresse</th>
+          <th>Quartier</th>
+          <th>Numéro de Téléphone</th>
+          <th>Email</th>
+          <th>Docteur</th>
+          <th>Département</th>
+          <th>Raison de la Consultation</th>
+          <th>Mode de Paiement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>{{ patient.dob | date }}</td>
+          <td>{{ patient.address }}</td>
+          <td>{{ patient.quartier }}</td>
+          <td>{{ patient.phone }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.docteur }}</td>
+          <td>{{ patient.departement }}</td>
+          <td>{{ patient.raison }}</td>
+          <td>{{ patient.paiement }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    
+  
+    <div class="emergency-contact-section">
+      <h3>Contact d'Urgence</h3>
+      <table class="emergency-contact-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Relation</th>
+            <th>Téléphone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ patient.Ename }}</td>
+            <td>{{ patient.relationship }}</td>
+            <td>{{ patient.Ephone }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="patient-actions">
+      <button (click)="editPatient()">Modifier</button>
+      <button (click)="printPatient()">Imprimer</button>
+      <button class="btn" style="color: #fff; background-color: #ff8c00;" [routerLink]="['/patientCli']">Retour</button>
+    </div>
+    </div>
+  </div>
+  
+  <ng-template #loading>
+    <p>Chargement des détails du patient...</p>
+  </ng-template>
+
+  <div class="patient-detail-container">
+    <mat-tab-group>
+      <!-- Tab: Dash -->
+      <mat-tab label="Dash">
+        <div class="tab-content">
+          <h3>Dash</h3>
+          <div class="section">
+            <h3>Med Passes in the Last 24 Hours</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Record</th>
+                  <th>Shift</th>
+                  <th>Assignment (Group)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let medPass of medPasses">
+                  <td>{{ medPass.record }}</td>
+                  <td>{{ medPass.shift }}</td>
+                  <td>{{ medPass.assignment }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section">
+            <h3>Med Passes in the Last 24 Hours</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Record</th>
+                  <th>Shift</th>
+                  <th>Assignment (Group)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let medPass of medPasses">
+                  <td>{{ medPass.record }}</td>
+                  <td>{{ medPass.shift }}</td>
+                  <td>{{ medPass.assignment }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+  
+      <!-- Tab: Profile -->
+      <mat-tab label="Profile">
+        <div class="tab-content">
+          <h3>Profile</h3>
+          <p>Patient profile information.</p>
+        </div>
+      </mat-tab>
+  
+      <!-- Tab: Skin and Wound -->
+      <mat-tab label="Skin and Wound">
+        <div class="tab-content">
+          <h3>Skin and Wound</h3>
+          <p>Details about skin and wound care.</p>
+        </div>
+      </mat-tab>
+  
+      <!-- Tab: Census -->
+      <mat-tab label="Census">
+        <div class="tab-content">
+          <h3>Census</h3>
+          <p>Patient census data.</p>
+        </div>
+      </mat-tab>
+  
+      <!-- Tab: Orders -->
+      <mat-tab label="Orders">
+        <div class="tab-content">
+          <h3>Orders</h3>
+          <p>Information about patient orders.</p>
+        </div>
+      </mat-tab>
+  
+      <!-- Tab: Vitals/Signs -->
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  
+  
+  
+
+  
+  

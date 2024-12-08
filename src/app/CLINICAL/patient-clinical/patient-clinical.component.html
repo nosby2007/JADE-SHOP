@@ -1,1 +1,81 @@
-<p>patient-clinical works!</p>
+<mat-card class="patient-list-card">
+    <mat-card-title>Liste des Patients</mat-card-title>
+    <div class="filter-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Recherche</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Recherche un patient" #input>
+      </mat-form-field>
+    </div>
+    <div class="table table-container table-responsive-sm table-bordered table-striped table-hover">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <!-- Columns Definition -->
+        <ng-container matColumnDef="name" col-2>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
+            <mat-cell *matCellDef="let patient" [routerLink]="['/patientCli', patient.id]"style="cursor: pointer; text-transformation:underline; color:blue"> {{patient.name}} </mat-cell>
+          </ng-container>    
+        <ng-container matColumnDef="dob">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Date de Naissance </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.dob *10 | date}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="timestamp">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Code Temporel </mat-header-cell>
+            <mat-cell *matCellDef="let patient"> {{patient.timestamp.seconds * 1000 | date: 'short'}} </mat-cell>
+          </ng-container>
+        <ng-container matColumnDef="phone">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Adresse </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.phone}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.email}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="gender">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Genre </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.gender}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Ephone">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Téléphone </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.Ephone}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="raison">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Raison </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.raison}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="paiement">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.paiement}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="quartier">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Quartier </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.quartier}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="departement">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Departement </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.departement}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="docteur">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Docteur </mat-header-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.docteur}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let patient">
+              <button mat-icon-button color="primary" (click)="editPatient(patient.id)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deletePatient(patient.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+    
+          <!-- Header and Row Declarations -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [length]="dataSource!.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+  </mat-card>
