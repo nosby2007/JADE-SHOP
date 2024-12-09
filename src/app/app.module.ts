@@ -75,6 +75,7 @@ import { NewtempComponent } from './FORMULAIRE/newtemp/newtemp.component';
 import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
+import { PatientUdaModalComponent } from './FORMULAIRE/patient-uda-modal/patient-uda-modal.component';
 
 
 
@@ -140,6 +141,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     NewProfessionalComponent,
     NewtempComponent,
     DetailNurseComponent,
+    PatientUdaModalComponent,
     
     
     

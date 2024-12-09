@@ -42,6 +42,7 @@ import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-quali
 import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-clinique.component';
 import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
 import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.component';
+import { UDAComponent } from './CLINICAL/uda/uda.component';
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch:'full'},
   {path:'login', component:LoginComponent,},
@@ -64,6 +65,7 @@ const routes: Routes = [
   {path:'risques', component:ManagRiskComponent, canActivate:[AuthGuardGuard]},
   {path:'signes', component:PoidsSignesVComponent, canActivate:[AuthGuardGuard]},
   {path:'uda', component:UDAComptComponent, canActivate:[AuthGuardGuard]},
+  {path:'udaCli', component:UDAComponent, canActivate:[AuthGuardGuard]},
   {path:'infection', component:ControlInfectionsComponent, canActivate:[AuthGuardGuard]},
   {path:'patientCli', component:PatientClinicalComponent, canActivate:[AuthGuardGuard]},
   {path:'tharapy', component:TherapyComponent, canActivate:[AuthGuardGuard]},
