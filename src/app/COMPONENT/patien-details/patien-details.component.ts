@@ -4,6 +4,10 @@ import { PatientService } from 'src/app/SERVICE/patient.service';
 import { catchError, Observable, of } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Patient } from 'src/app/patient.model';
+import { Timestamp } from 'firebase/firestore'
+import firebase from 'firebase/compat/app'
+
+
 
 @Component({
   selector: 'app-patien-details',
@@ -12,8 +16,12 @@ import { Patient } from 'src/app/patient.model';
 })
 export class PatienDetailsComponent implements OnInit {
   patient$: Observable<Patient| undefined> | null = null;
+  
+
+ 
 
   constructor(private param:ActivatedRoute, private afs:PatientService, private firestore: AngularFirestore) {}
+  
 
   ngOnInit(): void {
     const id = this.param.snapshot.paramMap.get('id');
@@ -31,6 +39,7 @@ export class PatienDetailsComponent implements OnInit {
     }
   }
 
+ 
 
   editPatient(): void {
     // Logic to edit patient details
@@ -38,5 +47,13 @@ export class PatienDetailsComponent implements OnInit {
 
   printPatient(): void {
     // Logic to print patient details
+  }
+
+
+  timestampToDate(timestamp: firebase.firestore.Timestamp | null): Date | null {
+    if (timestamp) {
+      return timestamp.toDate();
+    }
+    return null;
   }
 } 

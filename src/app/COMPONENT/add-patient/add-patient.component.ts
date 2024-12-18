@@ -84,7 +84,7 @@ export class AddPatientComponent implements OnInit {
   onSubmit() {
     if (this.patientForm.valid) {
       this.patientService.addPatient(this.patientForm.value).then(() => {
-      this.router.navigate(['PatientList'])
+      this.router.navigate(['patientList'])
         console.log('Patient added successfully!');
         this.patientForm.reset();
       }).catch((error) => {

@@ -27,7 +27,6 @@ import { LabResultComponent } from './CLINICAL/lab-result/lab-result.component';
 import { ManagRiskComponent } from './CLINICAL/manag-risk/manag-risk.component';
 import { PoidsSignesVComponent } from './CLINICAL/poids-signes-v/poids-signes-v.component';
 import { ControlInfectionsComponent } from './CLINICAL/control-infections/control-infections.component';
-import { PatientClinicalComponent } from './CLINICAL/patient-clinical/patient-clinical.component';
 import { TherapyComponent } from './CLINICAL/therapy/therapy.component';
 import { VisitMedicalComponent } from './CLINICAL/visit-medical/visit-medical.component';
 import { PoidsComponent } from './CLINICAL/poids/poids.component';
@@ -43,6 +42,8 @@ import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-cli
 import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
 import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.component';
 import { UDAComponent } from './CLINICAL/uda/uda.component';
+import { PatientClinicalComponent } from './CLINICAL/patient-clinical/patient-clinical.component';
+import { AddPrescriptionComponent } from './FORMULAIRE/add-prescription/add-prescription.component';
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch:'full'},
   {path:'login', component:LoginComponent,},
@@ -60,7 +61,7 @@ const routes: Routes = [
   {path:'suiviHos', component:SuivitHospiComponent, canActivate:[AuthGuardGuard]},
   {path:'mds', component:SystemDAtaMedComponent, canActivate:[AuthGuardGuard]},
   {path:'com', component:CommunicationComponent, canActivate:[AuthGuardGuard]},
-  {path:'prescription', component:OrdersComponent, canActivate:[AuthGuardGuard]},
+  {path:'order', component:OrdersComponent, canActivate:[AuthGuardGuard]},
   {path:'labo', component:LabResultComponent, canActivate:[AuthGuardGuard]},
   {path:'risques', component:ManagRiskComponent, canActivate:[AuthGuardGuard]},
   {path:'signes', component:PoidsSignesVComponent, canActivate:[AuthGuardGuard]},
@@ -81,14 +82,18 @@ const routes: Routes = [
   {path:'rfinance', component:RapportFinancierComponent, canActivate:[AuthGuardGuard]},
   {path:'rclinique', component:RapportCliniqueComponent, canActivate:[AuthGuardGuard]},
   {path:'rqualite', component:RapportQualiteComponent, canActivate:[AuthGuardGuard]},
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
-  { path: 'clinical-dashboard', component: ClinicalDashboardComponent },
+  {path: 'admin-dashboard', component: AdminDashboardComponent },
+  {path: 'clinical-dashboard', component: ClinicalDashboardComponent },
   {path: "patientList", component:PatientListComponent, canActivate:[AuthGuardGuard]},
   {path: "addPatient", component:AddPatientComponent, canActivate:[AuthGuardGuard]},
+  {path: "allPrescription/id", component:AddPrescriptionComponent, canActivate:[AuthGuardGuard]},
   {path: "addAppointment", component:AddAppointmentComponent, canActivate:[AuthGuardGuard]},
   {path: "appointmentList", component:AppointmentListComponent, canActivate:[AuthGuardGuard]},
   {path: "PatientList/:id", component:PatienDetailsComponent, canActivate:[AuthGuardGuard]},
   {path: "patientCli/:id", component:DetailNurseComponent, canActivate:[AuthGuardGuard]},
+  {path: 'editPatient/:id', component: AddPatientComponent, canActivate:[AuthGuardGuard] },
+  {path: 'editAppointment/:id', component: AddAppointmentComponent, canActivate:[AuthGuardGuard] }
+
   
 ]; 
 

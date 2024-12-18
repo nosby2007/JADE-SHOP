@@ -9,6 +9,12 @@
       padding: 10px;
     }
   }
+
+  .mat-menu {
+    width: 200px;
+  }
+  
+ 
   
   .patient-info-table,
   .emergency-contact-table {
@@ -236,6 +242,12 @@ mat-expansion-panel {
           }
         }
       }
+    }
+  }
+
+   @media (max-width: 768px) {
+    .mat-menu {
+      width: 100%;
     }
   }
   

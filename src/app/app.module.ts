@@ -76,13 +76,17 @@ import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.com
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import { PatientUdaModalComponent } from './FORMULAIRE/patient-uda-modal/patient-uda-modal.component';
-
-
-
-
-
-
-
+import { EditPatientComponent } from './COMPONENT/edit-patient/edit-patient.component';
+import { EditAppointmentComponent } from './COMPONENT/edit-appointment/edit-appointment.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { AddPrescriptionComponent } from './FORMULAIRE/add-prescription/add-prescription.component';
+import { PharmacyModalComponent } from './FORMULAIRE/pharmacy-modal/pharmacy-modal.component';
+import { TimestampToDatePipe } from './timestamp-to-date.pipe';
+import { DiagnosticModalComponent } from './FORMULAIRE/diagnostic-modal/diagnostic-modal.component';
+import { NutritionModalComponent } from './FORMULAIRE/nutrition-modal/nutrition-modal.component';
+import { LaboratoryModalComponent } from './FORMULAIRE/laboratory-modal/laboratory-modal.component';
+import { SupplementModalComponent } from './FORMULAIRE/supplement-modal/supplement-modal.component';
+import { OtherModalComponent } from './FORMULAIRE/other-modal/other-modal.component';
 
 
 
@@ -142,6 +146,16 @@ import { PatientUdaModalComponent } from './FORMULAIRE/patient-uda-modal/patient
     NewtempComponent,
     DetailNurseComponent,
     PatientUdaModalComponent,
+    EditPatientComponent,
+    EditAppointmentComponent,
+    AddPrescriptionComponent,
+    PharmacyModalComponent,
+    TimestampToDatePipe,
+    DiagnosticModalComponent,
+    NutritionModalComponent,
+    LaboratoryModalComponent,
+    SupplementModalComponent,
+    OtherModalComponent,
     
     
     
@@ -176,6 +190,8 @@ import { PatientUdaModalComponent } from './FORMULAIRE/patient-uda-modal/patient
     MatExpansionModule,
     MatButtonModule,
     MatTabsModule,
+    MatMenuModule,
+    MatDialogModule
     
     
     

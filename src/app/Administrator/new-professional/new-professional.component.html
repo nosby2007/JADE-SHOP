@@ -1,5 +1,5 @@
 <h2>Add New Professional</h2>
-<form [formGroup]="professionalForm" (ngSubmit)="save()">
+<form [formGroup]="professionalForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="outline">
     <mat-label>Name</mat-label>
     <input matInput formControlName="name" required />
@@ -26,8 +26,8 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>End Date</mat-label>
-    <input matInput formControlName="endDate" type="date" required />
+    <mat-label>start Date</mat-label>
+    <input matInput formControlName="startDate" type="date" required />
   </mat-form-field>
 
   <div class="modal-actions">

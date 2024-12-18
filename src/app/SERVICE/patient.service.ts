@@ -1,67 +1,133 @@
 import { Injectable } from '@angular/core';
-import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { Action } from 'rxjs/internal/scheduler/Action';
-import { SubscriptionLoggable } from 'rxjs/internal/testing/SubscriptionLoggable';
-import { map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Patient } from '../patient.model';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
-  getPatients() {
-    throw new Error('Method not implemented.');
-  }
-  
-  @Injectable({
-    providedIn: 'root'
-  })
-
   private patientCollection: AngularFirestoreCollection<Patient>;
   patient$: Observable<Patient[]>;
+  
 
   constructor(private firestore: AngularFirestore) {
-    this.patientCollection = firestore.collection<Patient>('patients');
-    //use  snapshotchanges() to get real-time data with metadata
+    this.patientCollection = this.firestore.collection<Patient>('patients');
     this.patient$ = this.patientCollection.snapshotChanges().pipe(
-      map(actions=> actions.map(a =>{
-        const data = a.payload.doc.data() as Patient;
-        const id = a.payload.doc.id;
-        return { id, ...data }; // Maintenant ça ne crée plus de conflit
-      }))
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Patient;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        })
+      )
     );
-   }
-   //create doc
+  }
 
-   addPatient(patient: Patient):Promise<void> {  
-      return this.patientCollection.add(patient).then(()=>{
-        
-      })
-   }
-// read single document
+  getPatients(): Observable<Patient[]> {
+    return this.patient$;
+  }
 
-   getPatientById(id: string): Observable<Patient| undefined> {
+  getPatientById(id: string): Observable<Patient | undefined> {
     return this.patientCollection.doc(id).snapshotChanges().pipe(
       map(action => {
         const data = action.payload.data() as Patient;
         const id = action.payload.id;
-        return {
-          id, ...data
-        };
-      }))
-   };
+        return { id, ...data };
+      })
+    );
+  }
 
-   //update
+  addPatient(patient: Patient): Promise<void> {
+    return this.patientCollection.add(patient).then(() => {}); // Explicitly returning void
+  }
 
-   updatePatient(id: string, item: Partial<Patient>):Promise<void> {
-    return this.patientCollection.doc(id).update(item).then(()=>{});
-   }
-   
-   //delete
+  updatePatient(id: string, patient: Partial<Patient>): Promise<void> {
+    return this.patientCollection.doc(id).update(patient);
+  }
 
-   deletePatient(id: string): Promise<void> {
-    return this.patientCollection.doc(id).delete().then(()=>{});
-   }
-}  
+  deletePatient(id: string): Promise<void> {
+    return this.patientCollection.doc(id).delete();
+  }
+
+  getAllPrescriptions(): Observable<any[]> {
+    return this.firestore
+      .collectionGroup('prescriptions')
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data(); // Données brutes depuis Firebase
+            const id = a.payload.doc.id;
+  
+            // Validation pour s'assurer que data est un objet
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID avec les données
+            } else {
+              console.error('Données non valides :', data);
+              return { id }; // Retourne uniquement l'ID si data est invalide
+            }
+          })
+        )
+      );
+  }
+
+  getAllPatients(): Observable<any[]> {
+    return this.firestore
+      .collection('patients')
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID et les données
+            } else {
+              console.error('Données non valides :', data);
+              return { id }; // Retourne uniquement l'ID si les données sont invalides
+            }
+          })
+        )
+      );
+  }
+  
+  
+  getPrescriptions(patientId: string): Observable<any[]> {
+    return this.firestore
+      .collection(`patients/${patientId}/prescriptions`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) => {
+          return actions.map((a) => {
+            const rawData = a.payload.doc.data();
+            const id = a.payload.doc.id;
+  
+            // Crée une copie sécurisée des données
+            return Object.assign({ id }, rawData || {}); // Utilisation de Object.assign
+          });
+        })
+      );
+  }
+  
+
+  addPrescription(patientId: string, prescription: any): Promise<void> {
+    console.log('Path:', `patients/${patientId}/prescriptions`);
+    console.log('Data to Add:', prescription);
+  
+    return this.firestore
+      .collection(`patients/${patientId}/prescriptions`)
+      .add(prescription)
+      .then(() => {
+        console.log('Prescription ajoutée avec succès.');
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'ajout de la prescription :', error);
+        throw error;
+      });
+  }
+  
+  
+}

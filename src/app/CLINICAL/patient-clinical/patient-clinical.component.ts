@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientService } from 'src/app/SERVICE/patient.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { EditPatientComponent } from 'src/app/COMPONENT/edit-patient/edit-patient.component';
+import { Patient } from 'src/app/patient.model';
 
 @Component({
   selector: 'app-patient-clinical',
@@ -12,34 +13,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./patient-clinical.component.scss']
 })
 export class PatientClinicalComponent implements OnInit {
-  dataSource = new MatTableDataSource<any>([]);
-  displayedColumns: string [] = ['name','email', 'phone', 'docteur', 'paiement', 'dob']
+  displayedColumns: string[] = ['name', 'gender', 'dob', 'phone', 'email', 'action'];
+  dataSource = new MatTableDataSource<Patient>([]);
 
-  @ViewChild(MatPaginator,  { static: true }) paginator!:MatPaginator;
-  @ViewChild(MatSort,  { static: true }) sort!:MatSort;
-  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  patients: any[] = [];
-  constructor(private patientService: PatientService, router:Router) { }
+  constructor(private patientService: PatientService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.patientService.patient$.subscribe((patients: any[]) => {
-      // Ajout d'un code temporel à chaque patient pour démonstration
-      patients.forEach(patient => {
-        patient.timestamp = new Date();
-      });
-      this.dataSource.data = patients;
-    });
+    this.fetchPatients();
   }
 
-  ngAfterViewInit(): void {
-    if (this.paginator && this.sort) {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }
+  fetchPatients(): void {
+    this.patientService.getPatients().subscribe(
+      (patients: Patient[]) => {
+        this.dataSource.data = patients;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      (error) => {
+        console.error('Error fetching patients:', error);
+      }
+    );
   }
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -48,17 +47,30 @@ export class PatientClinicalComponent implements OnInit {
     }
   }
 
+  editPatient(patient: Patient): void | undefined {
+    const dialogRef = this.dialog.open(EditPatientComponent, {
+      width: '600px',
+      data: patient // Pass the selected patient
+    });
   
-  editPatient(patient: any): void {
-    // Logic to edit the patient
-    console.log('Editing patient:', patient);
-  }
-
-  deletePatient(patientId: string) {
-    this.patientService.deletePatient(patientId).then(() => {
-      console.log('patient  deleted successfully');
-    }).catch((error) => {
-      console.error('Error deleting appointment: ', error);
+    dialogRef.afterClosed().subscribe((updatedPatient: Patient) => {
+      if (updatedPatient) {
+        this.patientService.updatePatient(updatedPatient.id!, updatedPatient).then(() => {
+          console.log('Patient updated successfully');
+          this.fetchPatients(); // Refresh the list
+        }).catch((error) => {
+          console.error('Error updating patient:', error);
+        });
+      }
     });
   }
-}                                    
+
+  deletePatient(patientId: string): void {
+    this.patientService.deletePatient(patientId).then(() => {
+      console.log('Patient deleted successfully');
+      this.fetchPatients();
+    }).catch((error: any) => {
+      console.error('Error deleting patient:', error);
+    });
+  }
+}

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProfessionelsService } from 'src/app/SERVICE/professionels.service';
+import { Router } from '@angular/router';
+import { Pro } from 'src/app/proffessionel.model';
 
 @Component({
   selector: 'app-new-professional',
@@ -12,26 +15,34 @@ export class NewProfessionalComponent {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<NewProfessionalComponent>
-  ) {
+    private dialogRef: MatDialogRef<NewProfessionalComponent>, private professionalService: ProfessionelsService, private router:Router) {
     this.professionalForm = this.fb.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
-      officePhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      officePhone: ['', [Validators.required,]],
       login: ['', Validators.required],
       npi: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      endDate: ['', Validators.required]
+      startDate: ['', Validators.required]
     });
   }
 
-  save(): void {
+
+  onSubmit() {
+    const newProfessional = this.professionalForm.value;
     if (this.professionalForm.valid) {
-      const newProfessional = this.professionalForm.value;
-      console.log('New Professional:', newProfessional);
-      // Pass data back to the parent or save via API
+      this.professionalService.addProfessionel(this.professionalForm.value).then(() => {
+      this.router.navigate(['/medicaux'])
+        alert('Pprofessional added successfully!');
+        this.professionalForm.reset();
+      }).catch((error) => {
+        console.error('Error adding patient: ', error);
+      });
       this.dialogRef.close(newProfessional);
     }
+    
+
   }
+  
 
   close(): void {
     this.dialogRef.close();

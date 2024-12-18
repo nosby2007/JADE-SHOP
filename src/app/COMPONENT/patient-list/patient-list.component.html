@@ -1,5 +1,8 @@
 <mat-card class="patient-list-card">
     <mat-card-title>Liste des Patients</mat-card-title>
+    <div>
+      <button mat-raised-button color="primary" [routerLink]="['/addPatient']"  style="cursor: pointer; text-decoration:underline; color:blue">Nouveau Patient</button>
+    </div>
     <div class="filter-container">
       <mat-form-field appearance="outline">
         <mat-label>Recherche</mat-label>
@@ -11,16 +14,12 @@
         <!-- Columns Definition -->
         <ng-container matColumnDef="name" col-2>
             <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
-            <mat-cell *matCellDef="let patient" [routerLink]="['/PatientList', patient.id]"style="cursor: pointer; text-transformation:underline; color:blue"> {{patient.name}} </mat-cell>
+            <mat-cell *matCellDef="let patient" [routerLink]="['/PatientList', patient.id]"  style="cursor: pointer; text-decoration:underline; color:blue"> {{patient.name}} </mat-cell>
           </ng-container>    
         <ng-container matColumnDef="dob">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Date de Naissance </mat-header-cell>
-          <mat-cell *matCellDef="let patient"> {{patient.dob *10 | date}} </mat-cell>
+          <mat-cell *matCellDef="let patient"> {{patient.dob.toDate() | date: 'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="timestamp">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Code Temporel </mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{patient.timestamp.seconds * 1000 | date: 'short'}} </mat-cell>
-          </ng-container>
         <ng-container matColumnDef="phone">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Adresse </mat-header-cell>
           <mat-cell *matCellDef="let patient"> {{patient.phone}} </mat-cell>

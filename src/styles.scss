@@ -8,6 +8,8 @@ body{
     background-image: url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1672200578/newsletter-bg_eexn3a.jpg");
     background-size: cover;
  }
+
+ 
  .fixed-header, .fixed-footer{
      width: 100%;
      position: fixed;        
@@ -32,3 +34,23 @@ body{
      display: inline-block;
  }
  
+ @media print {
+    body * {
+      visibility: hidden; /* Cache tous les éléments */
+    }
+  
+    #print-area, #print-area * {
+      visibility: visible; /* Affiche uniquement la zone d'impression */
+    }
+  
+    #print-area {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  
+  
+
+  

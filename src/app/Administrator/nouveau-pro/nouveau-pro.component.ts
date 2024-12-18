@@ -1,29 +1,94 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog'
+import { ProfessionelsService } from 'src/app/SERVICE/professionels.service';
+import { Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { NewProfessionalComponent } from '../new-professional/new-professional.component';
+import { Pro } from 'src/app/proffessionel.model';
+import { ReportService } from 'src/app/SERVICE/report.service';
+import { PrintService } from 'src/app/SERVICE/print.service';
 
 @Component({
   selector: 'app-nouveau-pro',
   templateUrl: './nouveau-pro.component.html',
+  template: `
+  <div id="patient-list-card">
+    <h1>Rapport</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jean Dupont</td>
+          <td>01/01/2024</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button (click)="print()">Imprimer</button>
+`,
   styleUrls: ['./nouveau-pro.component.scss']
 })
 export class NouveauProComponent implements OnInit {
-  professionalForm!: FormGroup;
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {
-    this.professionalForm = this.fb.group({
-      name: ['', Validators.required],
-      type: ['', Validators.required],
-      officePhone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      login: ['', Validators.required],
-      npi: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      endDate: ['', Validators.required]
+  dataSource = new MatTableDataSource<Pro>([]);
+  displayedColumns: string [] = ['name','type', 'officePhone', 'login', 'npi', 'startDate', 'action'] 
+
+  @ViewChild(MatPaginator,  { static: true }) paginator!:MatPaginator;
+  @ViewChild(MatSort,  { static: true }) sort!:MatSort;
+  
+
+  patients: any[] = [];
+  constructor(private proService: ProfessionelsService, private router:Router, private printService:PrintService, private dialog: MatDialog, private reportService: ReportService) { }
+
+  ngOnInit(): void {
+    this.proService.pro$.subscribe((patients: any[]) => {
+      // Ajout d'un code temporel à chaque patient pour démonstration
+      patients.forEach(patient => {
+        patient.timestamp = new Date();
+      });
+      this.dataSource.data = patients;
     });
   }
+  fetchPatients(): void {
+    this.proService.getProfessionel().subscribe(
+      (patients: Pro[]) => {
+        this.dataSource.data = patients;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      (error) => {
+        console.error('Error fetching patients:', error);
+      }
+    );
+  }
 
-  penNewProfessionalModal(): void {
+  ngAfterViewInit(): void {
+    if (this.paginator && this.sort) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  openNewProfessionalModal(): void {
     const dialogRef = this.dialog.open(NewProfessionalComponent, {
       width: '500px'
+      
     });
   
     dialogRef.afterClosed().subscribe(result => {
@@ -33,98 +98,29 @@ export class NouveauProComponent implements OnInit {
       }
     });
   }
-
-  addProfessional(): void {
-    if (this.professionalForm.valid) {
-      const newProfessional = this.professionalForm.value;
-      console.log('New Professional:', newProfessional);
-      // Add the logic to save the professional (e.g., API call)
-      this.dialog.closeAll();
-    }
+  editProfessionel(patient: any): void {
+    // Logic to edit the patient
+    console.log('Editing patient:', patient);
   }
 
-  // Reference for the modal
-  newProfessionalModal = this.dialog;
-
- professionals :any []=[]; // Replace with actual data from API or service
-  filteredProfessionals:any;
-  statusFilter = 'active';
-  searchTerm = '';
-  alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  currentPage = 1;
-  itemsPerPage = 10;
-  totalPages = 1;
-
-  ngOnInit() {
-    this.fetchProfessionals();
+  deleteProfessionel(patientId: string) {
+    this.proService.deleteProfessionel(patientId).then(() => {
+      console.log('patient  deleted successfully');
+    }).catch((error) => {
+      console.error('Error deleting appointment: ', error);
+    });
   }
-
-  fetchProfessionals() {
-    // Fetch data from API/service and set to this.professionals
-    // Example static data:
-    this.professionals = [
-      { name: 'Sandra Agoreyo', type: 'Rounding Nurse Practitioner', endDate: '2024-12-31', officePhone: '833-578-2763', login: 'sagoreyo', npi: '1568146173' },
-      { name: 'Quavardes Barkley', type: 'Wound Care Physician', endDate: '2025-01-15', officePhone: '404-445-5304', login: 'quavbarkley', npi: '1497118715' }
-      // Add more data here...
-    ];
-    this.applyFilter();
+  print(){
+    this.printService.printInNewWindow('print-section'); // Imprime dans une nouvelle fenêtre
   }
-
-  applyFilter() {
-    let result = [...this.professionals];
-    if (this.statusFilter !== 'both') {
-      const isExpired = this.statusFilter === 'expired';
-      result = result.filter(pro => new Date(pro.endDate) < new Date() === isExpired);
-    }
-    this.filteredProfessionals = result.slice(0, this.itemsPerPage);
-    this.totalPages = Math.ceil(result.length / this.itemsPerPage);
+  generatePdf() {
+    this.reportService.downloadPdf().subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'rapport.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
-
-  applySearch() {
-    this.filteredProfessionals = this.professionals.filter((pro: { name: string; }) =>
-      pro.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-
-  filterByLetter(letter: string) {
-    this.filteredProfessionals = this.professionals.filter((pro: { name: string; }) =>
-      pro.name.startsWith(letter)
-    );
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.paginate();
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.paginate();
-    }
-  }
-
-  paginate() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.filteredProfessionals = this.professionals.slice(startIndex, endIndex);
-  }
-
-  edit(professional: any) {
-    console.log('Edit:', professional);
-  }
-
-  assignDEA(professional: any) {
-    console.log('Assign DEA:', professional);
-  }
-
-  deactivateDEA(professional: any) {
-    console.log('Deactivate DEA:', professional);
-  }
-
-  print() {
-    window.print();
-  }
-}
+}                                   

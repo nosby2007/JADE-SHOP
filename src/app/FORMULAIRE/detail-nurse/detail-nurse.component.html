@@ -19,7 +19,7 @@
         <tr>
           <td>{{ patient.name }}</td>
           <td>{{ patient.gender }}</td>
-          <td>{{ patient.dob | date }}</td>
+          <td>{{ patient.dob }}</td>
           <td>{{ patient.address }}</td>
           <td>{{ patient.quartier }}</td>
           <td>{{ patient.phone }}</td>
@@ -71,1454 +71,193 @@
       <mat-tab label="Dash">
         <div class="tab-content">
           <h3>Dash</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <p>Details and dashboard for the patient.</p>
         </div>
       </mat-tab>
   
       <!-- Tab: Profile -->
       <mat-tab label="Profile">
-        <div class="tab-content-responsive-xl">
+        <div class="tab-content">
           <h3>Profile</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <p>Patient profile information.</p>
         </div>
       </mat-tab>
   
       <!-- Tab: Skin and Wound -->
-      <mat-tab label="Census">
-        <div class="tab-content-responsive-xl">
-          <h3>Census</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Skin and Wound">
+        <div class="tab-content">
+          <h3>Skin and Wound</h3>
+          <p>Details about skin and wound care.</p>
         </div>
       </mat-tab>
   
       <!-- Tab: Census -->
-      <mat-tab label="Med/Diag">
-        <div class="tab-content-responsive-xl">
-          <h3>MedDiag</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Census">
+        <div class="tab-content">
+          <h3>Census</h3>
+          <p>Patient census data.</p>
         </div>
       </mat-tab>
+  
       <!-- Tab: Orders -->
-      <mat-tab label="Prescriptions">
-        <div class="tab-content-responsive-xl">
-          <h3>Prescriptions</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
+      <mat-tab label="Orders">
+        <div class="tab-content">
+          <mat-tab label="Prescriptions">
+            <div>
+              <mat-menu #prescriptionMenu="matMenu">
+                <button mat-menu-item (click)="openPrescriptionModal('Pharmacy')">Pharmacy</button>
+                <button mat-menu-item (click)="openPrescriptionModal('Laboratory')">Laboratory</button>
+                <button mat-menu-item (click)="openPrescriptionModal('Diagnostic')">Diagnostic</button>
+                <button mat-menu-item (click)="openPrescriptionModal('Nutrition')">Nutrition</button>
+                <button mat-menu-item (click)="openPrescriptionModal('Supplement')">Supplement</button>
+                <button mat-menu-item (click)="openPrescriptionModal('Other')">Other</button>
+              </mat-menu>
+              
+              <button mat-raised-button color="primary" [matMenuTriggerFor]="prescriptionMenu">
+                New Prescription
+              </button>
+              <button mat-raised-button color="primary" [routerLink]="'/order'">
+                Voir Toutes les Prescriptions
+              </button>
+              
+              <div *ngIf="prescriptions.length > 0; else noData">
 
+                <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="date">
+                  <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{ prescription.date *10 | date: 'short' }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                  <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{ prescription.time }}
+                  </mat-cell>
+                </ng-container>
+              
+                <ng-container matColumnDef="type">
+                  <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{ prescription.type }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="prescriber">
+                  <mat-header-cell *matHeaderCellDef> Prescripteur </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{ prescription.prescriber }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="routine">
+                  <mat-header-cell *matHeaderCellDef> Routine </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{ prescription.routine }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="route">
+                  <mat-header-cell *matHeaderCellDef> route </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{  prescription.route }}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="method">
+                  <mat-header-cell *matHeaderCellDef> Methode </mat-header-cell>
+                  <mat-cell *matCellDef="let prescription">
+                    {{  prescription.method }}
+                  </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+              </div>
+              <ng-template #noData>
+                <p>Aucune prescription disponible pour le moment.</p>
+              </ng-template>            
+            </div>
+          </mat-tab>
+        </div>
+      </mat-tab>
   
       <!-- Tab: Vitals/Signs -->
-      <mat-tab label="Allergy">
-        <div class="tab-content-responsive-xl">
-          <h3>Allergy</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Vaccination">
-        <div class="tab-content-responsive-xl">
-          <h3>Vaccination</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Poids/Signes">
-        <div class="tab-content-responsive-xl">
-          <h3>Poids/Signs</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Resultats">
-        <div class="tab-content-responsive-xl">
-          <h3>Resultats</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            <div class="section">
-              <h3>Unreviewed Laboratory Results</h3>
-              <button class="btn btn-secondary">Mark as Reviewed</button>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Reported Date</th>
-                    <th>Collection Date</th>
-                    <th>Resident Name</th>
-                    <th>Location</th>
-                    <th>Report Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let labResult of labResults">
-                    <td>{{ labResult.reportedDate }}</td>
-                    <td>{{ labResult.collectionDate }}</td>
-                    <td>{{ labResult.residentName }}</td>
-                    <td>{{ labResult.location }}</td>
-                    <td>{{ labResult.reportName }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        
-        </div>
-      </mat-tab>
-      <mat-tab label="SDM">
-        <div class="tab-content-responsive-xl">
-          <h3>SystDonneeMedicales</h3>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
           <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Evaluation">
-        <div class="tab-content-responsive-xl">
-          <h3>Evaluation</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Peau et Plaies">
-        <div class="tab-content-responsive-xl">
-          <h3>Peau et Plaies</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Therapy">
-        <div class="tab-content-responsive-xl">
-          <h3>Therapy</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Note de Progression">
-        <div class="tab-content-responsive-xl">
-          <h3>Progess Notes</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Plan de soin">
-        <div class="tab-content-responsive-xl">
-          <h3>plan de soin</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="taches">
-        <div class="tab-content-responsive-xl">
-          <h3>Taches</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Fiche Transfert">
-        <div class="tab-content-responsive-xl">
-          <h3>Recap Hospitalisation</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
-      <mat-tab label="Intrants">
-        <div class="tab-content-responsive-xl">
-          <h3>Intrants</h3>
-          <div class="clinical-dashboard">
-            <!-- Filter Section -->
-            <div class="filter-section">
-              <label for="unit">Unit:</label>
-              <select id="unit">
-                <option>200</option>
-                <option>201</option>
-              </select>
-          
-              <label for="floor">Floor:</label>
-              <select id="floor">
-                <option>2</option>
-                <option>3</option>
-              </select>
-          
-              <label for="physician">Primary Physician:</label>
-              <select id="physician">
-                <option>All</option>
-                <option>Dr. Smith</option>
-              </select>
-          
-              <button class="btn btn-primary">Reports</button>
-            </div>
-          
-            <!-- Data Table: Med Passes -->
-            <div class="section">
-              <h3>Med Passes in the Last 24 Hours</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Shift</th>
-                    <th>Assignment (Group)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let medPass of medPasses">
-                    <td>{{ medPass.record }}</td>
-                    <td>{{ medPass.shift }}</td>
-                    <td>{{ medPass.assignment }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          
-            <!-- Data Table: Unreviewed Laboratory Results -->
-            
-            <!-- Data Table: Clinical Alerts -->
-            <div class="section">
-              <h3>Clinical Alerts</h3>
-              <label for="show-alerts">Show Alerts in Last:</label>
-              <select id="show-alerts">
-                <option>48 Hours</option>
-                <option>24 Hours</option>
-                <option>7 Days</option>
-              </select>
-          
-              <label for="sort-by">Sort By:</label>
-              <select id="sort-by">
-                <option>Date</option>
-                <option>Name</option>
-              </select>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Alert</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let alert of clinicalAlerts">
-                    <td><input type="checkbox" /></td>
-                    <td>{{ alert.name }}</td>
-                    <td>{{ alert.alert }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
         </div>
       </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vitals/Signs">
+        <div class="tab-content">
+          <h3>Vitals/Signs</h3>
+          <p>Details about patient vital signs.</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
   
   

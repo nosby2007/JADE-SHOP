@@ -1,9 +1,9 @@
 <nav class="navbar" *ngIf="authService.isLoggedIn()">
-  <a class="navbar-brand badge fs-1  text-wrap" href="">WoundCareApp</a>
+  <a class="navbar-brand badge fs-1  text-wrap" routerLink="/home" ><i style="color: aqua; font-size:70px;" class="material-icons">healing</i>OUAGACARE</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-  <ul class="nav-list">
+  <ul class="nav-list fs-">
     
     <span style="float:left">
       <a routerLink="reception">Contact Support</a>
@@ -16,7 +16,7 @@
           <span>Bienvenue, {{ userName }}</span>
         </li>
         <li class="nav-item nav-item-right">
-          <button class="logout-btn" (click)="authService.logout()">Déconnexion</button>
+          <button mat-icon-button  color="yellow" (click)="authService.logout()"><i style="color: rgb(2, 255, 56); font-weight: bolder; font-size: 30px;" class="material-icons">logout</i></button>
         </li>
   </ul>
 </nav>
@@ -25,7 +25,7 @@
   
    
   <div class="container-responsive-xl">
-    <router-outlet></router-outlet>
+    <router-outlet inert></router-outlet>
  </div>
 
 
