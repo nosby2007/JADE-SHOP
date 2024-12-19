@@ -12,6 +12,17 @@
       <mat-label>Time</mat-label>
       <input matInput type="time" formControlName="time" required />
     </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Categorie</mat-label>
+      <mat-select formControlName="category" required placeholder="Enter Prescription Method">
+        <mat-option value="Laboratory">Laboratoire</mat-option>
+        <mat-option value="Pharmacy">Pharmacie</mat-option>
+        <mat-option value="Diagnostic">Diagnostique</mat-option>
+        <mat-option value="Supplement">Supplement</mat-option>
+        <mat-option value="Nutrition">Nutrition</mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Prescriber</mat-label>

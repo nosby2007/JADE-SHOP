@@ -31,10 +31,10 @@ export class DetailNurseComponent implements OnInit {
   @Input() patientId!: string;
   prescriptionForm: FormGroup;
   prescriptions: any[] = [];
-displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine', 'route', 'type'];
+displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine', 'route', 'type', 'category'];
   patient$: Observable<Patient| undefined> | null = null;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
-
+  selectedPatientId: string | null = null;
 
   constructor(private fb: FormBuilder, private param:ActivatedRoute, private patientService: PatientService, private dialog:MatDialog) {
     this.prescriptionForm = this.fb.group({
@@ -43,7 +43,9 @@ displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine',
       method: ['', Validators.required],
       prescriber: ['', Validators.required],
       type: ['', Validators.required],
-      route: ['', Validators.required]
+      route: ['', Validators.required],
+      category: ['', Validators.required],
+      routine: ['', Validators.required]
     });
 
     this.nurseDetails = {
@@ -59,17 +61,19 @@ displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine',
   fetchPrescriptions() {
     this.patientService.getPrescriptions(this.patientId).subscribe((data) => {
       this.prescriptions = data;
+      this. loadPrescriptions
     });
   }
   loadPrescriptions(patientId: string): void {
+    this.selectedPatientId = patientId;
     this.patientService.getPrescriptions(patientId).subscribe(
       (prescriptions) => {
-        console.log('Prescriptions récupérées:', prescriptions);
         this.prescriptions = prescriptions;
-        this.dataSource.data = this.prescriptions; // Mise à jour du tableau
+        this.dataSource.data = prescriptions;
+        console.log('Prescriptions chargées :', prescriptions);
       },
       (error) => {
-        console.error('Erreur lors de la récupération des prescriptions:', error);
+        console.error('Erreur lors du chargement des prescriptions:', error);
       }
     );
   }
@@ -94,7 +98,7 @@ displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine',
           return of(undefined);
         }),
       );
-      this.loadPrescriptions(this.patientId);
+      this. loadPrescriptions
     } else {
       console.error('No valid ID provided in route');
       this.patient$ = of(undefined);
@@ -106,35 +110,55 @@ displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine',
   }
 
   openPrescriptionModal(category: string): void {
-    let component: any;
-  
+    let dialogRef;
     switch (category) {
       case 'Pharmacy':
-        component = PharmacyModalComponent;
+        dialogRef = this.dialog.open(PharmacyModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       case 'Laboratory':
-        component = LaboratoryModalComponent;
+        dialogRef = this.dialog.open(LaboratoryModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       case 'Diagnostic':
-        component = DiagnosticModalComponent;
+        dialogRef = this.dialog.open(DiagnosticModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       case 'Nutrition':
-        component = NutritionModalComponent;
+        dialogRef = this.dialog.open(NutritionModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       case 'Supplement':
-        component = SupplementModalComponent;
+        dialogRef = this.dialog.open(SupplementModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       case 'Other':
-        component = OtherModalComponent;
+        dialogRef = this.dialog.open(OtherModalComponent, {
+          width: '600px',
+          data: { category }
+        });
         break;
       default:
+        console.error('Catégorie inconnue:', category);
         return;
     }
-  
-    const dialogRef = this.dialog.open(PharmacyModalComponent, {
-      width: '600px',
-      data: { category }
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(`Prescription ajoutée pour ${category}:`, result);
+      }
     });
+
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

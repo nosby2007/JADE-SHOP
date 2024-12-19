@@ -1,1 +1,72 @@
-<p>laboratory-modal works!</p>
+<h2 mat-dialog-title> Prescription LABO</h2>
+<mat-dialog-content>
+  <form [formGroup]="laboratoryForm">
+    <mat-form-field appearance="fill" class="col-md-4">
+      <mat-label>Prescription Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-md-4" class="col-md-4">
+      <mat-label>Time</mat-label>
+      <input matInput type="time" formControlName="time" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-md-4">
+        <mat-label>Categorie</mat-label>
+        <mat-select formControlName="category" required placeholder="Enter Prescription Method">
+          <mat-option value="Laboratory">Laboratoire</mat-option>
+          <mat-option value="Pharmacy">Pharmacie</mat-option>
+          <mat-option value="Diagnostic">Diagnostique</mat-option>
+          <mat-option value="Supplement">Supplement</mat-option>
+          <mat-option value="Nutrition">Nutrition</mat-option>
+          <mat-option value="Other">Other</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-md-4">
+      <mat-label>Prescriber</mat-label>
+      <input matInput formControlName="prescriber" placeholder="Enter prescriber name" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-md-4">
+      <mat-label>Routine</mat-label>
+      <textarea matInput formControlName="routine" placeholder="Enter The medication Routine Administration" required ></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="col-md-4">
+      <mat-label>Methode</mat-label>
+      <mat-select formControlName="method" required placeholder="Enter Prescription Method">
+        <mat-option value="Téléphone">Téléphone</mat-option>
+        <mat-option value="Verbale">Verbale</mat-option>
+        <mat-option value="Ecrite">Ecrite</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="col-md-4">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option value="Analgesic">Analgesic</mat-option>
+        <mat-option value="Antibiotic">Antibiotic</mat-option>
+        <mat-option value="Antidepressant">Antidepressant</mat-option>
+        <mat-option value="antianxieté"> Anti-Anxieté</mat-option>
+        <mat-option value="Anticoagulant">Anticoagulant</mat-option>
+        <mat-option value="AntiCovulsivant">AntiCovulsivant</mat-option>
+        <mat-option value="Sedatif">Sedatif</mat-option>
+        <mat-option value="Antidiabetique">Antidiabetique</mat-option>
+        <mat-option value="AntiPsychotique">AntiPsychotique</mat-option>
+        <mat-option value="Cardiovasculaire">Cardiovasculaire</mat-option>
+        <mat-option value="Diurétique">Diurétique</mat-option>
+        <mat-option value="Nebulisateur">Nebulisateur</mat-option>
+        <mat-option value="Antipaludéen">Antipaludéen</mat-option>
+        <mat-option value="Antidiarhéique">Antidiarhéique</mat-option>
+        <mat-option value="Antitoussif">Antitoussif</mat-option>
+        <mat-option value="Lubrifiant">Lubrifiant</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="savePrescription()">Save</button>
+</mat-dialog-actions>
+
+

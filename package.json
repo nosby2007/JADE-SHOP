@@ -30,6 +30,7 @@
     "ng-confirm-box": "^0.1.1",
     "ng-pipes": "^0.1.5",
     "ng-toast": "^2.0.0",
+    "ngx-papaparse": "^8.0.0",
     "ngx-toastf": "^1.2.1",
     "ngx-toastr": "^19.0.0",
     "puppeteer": "^23.10.4",

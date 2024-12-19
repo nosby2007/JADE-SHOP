@@ -26,6 +26,7 @@ export class PharmacyModalComponent {
       type: ['', Validators.required],
       method: ['', Validators.required],
       routine: ['', Validators.required],
+      category: ['', Validators.required],
     });
   }
 
