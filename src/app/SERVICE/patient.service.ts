@@ -111,22 +111,51 @@ export class PatientService {
         })
       );
   }
+
+  getPrescriptionsByPatient(patientId: string): Observable<any[]> {
+  return this.firestore
+    .collection(`patients/${patientId}/prescriptions`)
+    .snapshotChanges()
+    .pipe(
+      map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data(); // Récupère les données
+          const id = a.payload.doc.id; // Récupère l'ID du document
+
+          // Validation des données avant l'utilisation de l'opérateur spread
+          if (data && typeof data === 'object') {
+            return { id, ...data }; // Combine l'ID avec les données
+          } else {
+            console.error('Données non valides pour le document avec ID :', id, data);
+            return { id }; // Retourne uniquement l'ID si les données sont invalides
+          }
+        })
+      )
+    );
+}
+
+  
   
 
-  addPrescription(patientId: string, prescription: any): Promise<void> {
-    console.log('Path:', `patients/${patientId}/prescriptions`);
-    console.log('Data to Add:', prescription);
-  
+addPrescription(patientId: string, prescription: any): Promise<void> {
+  return this.firestore
+    .collection(`patients/${patientId}/prescriptions`)
+    .add(prescription)
+    .then(() => console.log('Prescription added'))
+    .catch((error) => console.error('Error adding prescription:', error));
+}
+
+  // Marquer une tâche comme effectuée
+  markPrescriptionAsDone(patientId: string, prescriptionId: string): Promise<void> {
+    return this.firestore
+      .doc(`patients/${patientId}/prescriptions/${prescriptionId}`)
+      .update({ status: 'done' });
+  }  
+  updatePrescriptionStatus(patientId: string, prescriptionId: string, data: any): Promise<void> {
     return this.firestore
       .collection(`patients/${patientId}/prescriptions`)
-      .add(prescription)
-      .then(() => {
-        console.log('Prescription ajoutée avec succès.');
-      })
-      .catch((error) => {
-        console.error('Erreur lors de l\'ajout de la prescription :', error);
-        throw error;
-      });
+      .doc(prescriptionId)
+      .update(data);
   }
   
   

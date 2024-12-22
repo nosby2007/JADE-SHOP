@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Pharmacy Prescription</h2>
-<mat-dialog-content>
-  <form [formGroup]="otherForm">
-    <mat-form-field appearance="fill">
+<h2 mat-dialog-title>Ajouter une Prescription</h2>
+<mat-dialog-content [formGroup]="otherForm">
+  <!-- Détails de la prescription --> 
+   <mat-form-field appearance="fill">
       <mat-label>Prescription Date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" required />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -31,7 +31,7 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="routine" placeholder="Enter The medication Routine Administration" required ></textarea>
+      <textarea matInput formControlName="description" placeholder="Enter The medication Routine Administration" required ></textarea>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -55,12 +55,93 @@
         <mat-option value="Poids">Poids</mat-option>
       </mat-select>
     </mat-form-field>
-  </form>
+  <section>
+    <h3>Routine</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Fréquence</mat-label>
+      <mat-select formControlName="frequency">
+        <mat-option value="once-a-day">Une fois par jour</mat-option>
+        <mat-option value="twice-a-day">Deux fois par jour</mat-option>
+        <mat-option value="morning">Le matin</mat-option>
+        <mat-option value="evening">Le soir</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Planification</mat-label>
+      <mat-select formControlName="scheduleType" (selectionChange)="onScheduleTypeChange($event.value)">
+        <mat-option value="daily">Tous les jours</mat-option>
+        <mat-option value="every-x-days">Chaque X jours</mat-option>
+        <mat-option value="specific-days">Jours spécifiques de la semaine</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Input pour 'Chaque X jours' -->
+    <div *ngIf="selectedScheduleType === 'every-x-days'">
+      <mat-form-field appearance="fill">
+        <mat-label>Chaque combien de jours</mat-label>
+        <input matInput type="number" formControlName="everyXDays" placeholder="Nombre de jours" />
+      </mat-form-field>
+    </div>
+
+    <!-- Jours spécifiques -->
+    <div *ngIf="selectedScheduleType === 'specific-days'">
+      <h4>Sélectionnez les jours</h4>
+      <mat-checkbox formControlName="monday">Lundi</mat-checkbox>
+      <mat-checkbox formControlName="tuesday">Mardi</mat-checkbox>
+      <mat-checkbox formControlName="wednesday">Mercredi</mat-checkbox>
+      <mat-checkbox formControlName="thursday">Jeudi</mat-checkbox>
+      <mat-checkbox formControlName="friday">Vendredi</mat-checkbox>
+      <mat-checkbox formControlName="saturday">Samedi</mat-checkbox>
+      <mat-checkbox formControlName="sunday">Dimanche</mat-checkbox>
+    </div>
+
+    <!-- Autres détails -->
+    <mat-form-field appearance="fill">
+      <mat-label>Code Temps de la Structure</mat-label>
+      <mat-select formControlName="timeCode">
+        <mat-option value="zeekly">Weekly</mat-option>
+        <mat-option value="zeekly-on-shift">Weekly on Shift</mat-option>
+        <mat-option value="day-shift">Day Shift</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Diagnostic Associé</mat-label>
+      <textarea matInput formControlName="diagnosis" placeholder="Diagnostic"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Autres Directives</mat-label>
+      <textarea matInput formControlName="instructions" placeholder="Directives"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Indications</mat-label>
+      <textarea matInput formControlName="indications" placeholder="Indications"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date de Début</mat-label>
+      <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date de Fin</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+  </section>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button (click)="dialogRef.close()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="savePrescription()">Save</button>
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-button color="primary" [disabled]="otherForm.invalid" (click)="onSave()">Enregistrer</button>
 </mat-dialog-actions>
+
 
 
 

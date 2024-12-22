@@ -97,7 +97,7 @@ updateSummary(): void {
     const rows = objArray.map((obj) =>
       Object.values(obj).map((val) => `"${val}"`).join(',')
     );
-    return `${headers}\n${rows.join('\n')}`;
+    return `${headers}\n${rows.push('\n')}`;
   }
   
 }

@@ -1,0 +1,38 @@
+<div >
+    <button align="start" mat-raised-button color="secondary" style="margin-left: 20px; background-color: #40ff00;" [routerLink]="'/emar'"><i class="material-icons">arrow_back</i>
+        Retour
+      </button>
+      <button align="end" mat-raised-button color="primary" style="margin-left: 20px; background-color: #ff8c00;" [routerLink]="'/order'"><i class="material-icons">visibility</i>
+        Voir Toutes les Prescriptions
+      </button>
+</div>
+<div class="task-container">
+    <div class="task-header">
+      <h2>Tâches du patient</h2>
+      <div class="filters">
+        <button mat-raised-button color="primary" (click)="filterTasks('overdue')">Overdue</button>
+        <button mat-raised-button color="accent" (click)="filterTasks('now')">Now</button>
+        <button mat-raised-button color="warn" (click)="filterTasks('shift')">Shift</button>
+        <button mat-raised-button (click)="resetFilter()">All</button>
+      </div>
+    </div>
+  
+    <form [formGroup]="taskForm" (ngSubmit)="submitTaskUpdates()">
+      <div class="task-list">
+        <div *ngFor="let task of filteredTasks" class="task-card" [ngClass]="getTaskClass(task)">
+          <h3>{{ task.medication }}</h3>
+          <p><strong>Order:</strong> {{ task.routine }}</p>
+          <p><strong>Route:</strong> {{ task.route }}</p>
+          <p><strong>Time:</strong> {{ task.time }}</p>
+  
+          <mat-radio-group [formControlName]="task.id" class="status-options">
+            <mat-radio-button value="done">Done</mat-radio-button>
+            <mat-radio-button value="not-done">Not Done</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+  
+      <button mat-raised-button color="primary" type="submit">Sauvegarder</button>
+    </form>
+  </div>
+  

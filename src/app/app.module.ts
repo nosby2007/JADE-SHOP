@@ -87,6 +87,8 @@ import { NutritionModalComponent } from './FORMULAIRE/nutrition-modal/nutrition-
 import { LaboratoryModalComponent } from './FORMULAIRE/laboratory-modal/laboratory-modal.component';
 import { SupplementModalComponent } from './FORMULAIRE/supplement-modal/supplement-modal.component';
 import { OtherModalComponent } from './FORMULAIRE/other-modal/other-modal.component';
+import { EmarDetailsComponent } from './FORMULAIRE/emar-details/emar-details.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 
@@ -156,6 +158,7 @@ import { OtherModalComponent } from './FORMULAIRE/other-modal/other-modal.compon
     LaboratoryModalComponent,
     SupplementModalComponent,
     OtherModalComponent,
+    EmarDetailsComponent,
     
     
     
@@ -191,7 +194,9 @@ import { OtherModalComponent } from './FORMULAIRE/other-modal/other-modal.compon
     MatButtonModule,
     MatTabsModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    MatRadioModule,
     
     
     

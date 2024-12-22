@@ -31,7 +31,7 @@ export class DetailNurseComponent implements OnInit {
   @Input() patientId!: string;
   prescriptionForm: FormGroup;
   prescriptions: any[] = [];
-displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine', 'route', 'type', 'category'];
+displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'description', 'route', 'type', 'category'];
   patient$: Observable<Patient| undefined> | null = null;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   selectedPatientId: string | null = null;
@@ -45,7 +45,7 @@ displayedColumns: string[] = ['date', 'prescriber', 'time', 'method', 'routine',
       type: ['', Validators.required],
       route: ['', Validators.required],
       category: ['', Validators.required],
-      routine: ['', Validators.required]
+      description: ['', Validators.required]
     });
 
     this.nurseDetails = {

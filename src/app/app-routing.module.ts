@@ -44,6 +44,7 @@ import { DetailNurseComponent } from './FORMULAIRE/detail-nurse/detail-nurse.com
 import { UDAComponent } from './CLINICAL/uda/uda.component';
 import { PatientClinicalComponent } from './CLINICAL/patient-clinical/patient-clinical.component';
 import { AddPrescriptionComponent } from './FORMULAIRE/add-prescription/add-prescription.component';
+import { EmarDetailsComponent } from './FORMULAIRE/emar-details/emar-details.component';
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch:'full'},
   {path:'login', component:LoginComponent,},
@@ -91,6 +92,7 @@ const routes: Routes = [
   {path: "appointmentList", component:AppointmentListComponent, canActivate:[AuthGuardGuard]},
   {path: "PatientList/:id", component:PatienDetailsComponent, canActivate:[AuthGuardGuard]},
   {path: "patientCli/:id", component:DetailNurseComponent, canActivate:[AuthGuardGuard]},
+  {path: "emar/:id", component:EmarDetailsComponent, canActivate:[AuthGuardGuard]},
   {path: 'editPatient/:id', component: AddPatientComponent, canActivate:[AuthGuardGuard] },
   {path: 'editAppointment/:id', component: AddAppointmentComponent, canActivate:[AuthGuardGuard] }
 
