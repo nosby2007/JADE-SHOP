@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Ajouter un contact</h2>
+<mat-dialog-content>
+  <form [formGroup]="contactForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Téléphone/Email</mat-label>
+      <input matInput formControlName="phoneEmail" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Relation</mat-label>
+      <input matInput formControlName="relation" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Enregistrer</button>
+</mat-dialog-actions>

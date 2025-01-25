@@ -45,8 +45,21 @@ import { UDAComponent } from './CLINICAL/uda/uda.component';
 import { PatientClinicalComponent } from './CLINICAL/patient-clinical/patient-clinical.component';
 import { AddPrescriptionComponent } from './FORMULAIRE/add-prescription/add-prescription.component';
 import { EmarDetailsComponent } from './FORMULAIRE/emar-details/emar-details.component';
+import { AllPresComponent } from './COMPONENT/all-pres/all-pres.component';
+import { AllDiagComponent } from './COMPONENT/all-diag/all-diag.component';
+import { BradenScaleModalComponent } from './FORMULAIRE/braden-scale-modal/braden-scale-modal.component';
+import { FallRiskComponent } from './FORMULAIRE/fall-risk/fall-risk.component';
+import { NutritionComponent } from './FORMULAIRE/nutrition/nutrition.component';
+
+
+
+
+
+
+
+
 const routes: Routes = [
-  {path: '', redirectTo:'login', pathMatch:'full'},
+  {path: '*', redirectTo:'/login'},
   {path:'login', component:LoginComponent,},
   {path:'home', component:HomeComponent, canActivate:[AuthGuardGuard]},
   {path:'poc', component:POCComponent, canActivate:[AuthGuardGuard]},
@@ -63,6 +76,8 @@ const routes: Routes = [
   {path:'mds', component:SystemDAtaMedComponent, canActivate:[AuthGuardGuard]},
   {path:'com', component:CommunicationComponent, canActivate:[AuthGuardGuard]},
   {path:'order', component:OrdersComponent, canActivate:[AuthGuardGuard]},
+  {path:'alldiag', component:AllDiagComponent, canActivate:[AuthGuardGuard]},
+  {path:'allprog', component:AllPresComponent, canActivate:[AuthGuardGuard]},
   {path:'labo', component:LabResultComponent, canActivate:[AuthGuardGuard]},
   {path:'risques', component:ManagRiskComponent, canActivate:[AuthGuardGuard]},
   {path:'signes', component:PoidsSignesVComponent, canActivate:[AuthGuardGuard]},
@@ -94,7 +109,11 @@ const routes: Routes = [
   {path: "patientCli/:id", component:DetailNurseComponent, canActivate:[AuthGuardGuard]},
   {path: "emar/:id", component:EmarDetailsComponent, canActivate:[AuthGuardGuard]},
   {path: 'editPatient/:id', component: AddPatientComponent, canActivate:[AuthGuardGuard] },
-  {path: 'editAppointment/:id', component: AddAppointmentComponent, canActivate:[AuthGuardGuard] }
+  {path: 'editAppointment/:id', component: AddAppointmentComponent, canActivate:[AuthGuardGuard] },
+
+  { path: 'braden', component: BradenScaleModalComponent },
+  { path: 'fall-risk', component: FallRiskComponent },
+  { path: 'nutrition', component: NutritionComponent }
 
   
 ]; 

@@ -1,0 +1,73 @@
+<div>
+    <div>
+        <p>Total de Notes: {{ totalProgressNote }}</p>
+      </div>
+      
+    <h2>Liste des Patients</h2>
+    <table class="patient-table table-striped shadow table-success table-striped">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>{{ patient.name }}</td>
+          <td>
+            <button mat-raised-button color="primary" (click)="loadProgressNote(patient.id, patient.name)">
+              Voir toutes les Notes
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="selectedPatientName">
+      <h3>PNote de {{ selectedPatientName }}</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Rechercher</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Rechercher par type, prescripteur, ou categorie" />
+      </mat-form-field>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-success table-striped shadow">
+        <!-- Colonne Date -->
+        <ng-container matColumnDef="effectiveDate">
+          <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.effectiveDate.toDate() | date: 'dd/MM/yyyy' }} </mat-cell>
+        </ng-container>
+  
+        <!-- Colonne Type -->
+        <ng-container matColumnDef="carePlanItem">
+          <mat-header-cell *matHeaderCellDef> Plan Soin </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.carePlanItem }} </mat-cell>
+        </ng-container>
+  
+        <!-- Colonne Détails -->
+        <ng-container matColumnDef="noteText">
+          <mat-header-cell *matHeaderCellDef>Description </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.noteText }} </mat-cell>
+        </ng-container>
+  
+        <!-- Colonne Prescriber -->
+        <ng-container matColumnDef="time">
+          <mat-header-cell *matHeaderCellDef> Temps </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.time }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.type }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="username">
+          <mat-header-cell *matHeaderCellDef> Crée par </mat-header-cell>
+          <mat-cell *matCellDef="let progressNote"> {{ progressNote.username }} </mat-cell>
+        </ng-container>
+  
+        <!-- En-tête et Lignes -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <button mat-raised-button color="primary" (click)="exportToCSV()">Exporter en CSV</button>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+  

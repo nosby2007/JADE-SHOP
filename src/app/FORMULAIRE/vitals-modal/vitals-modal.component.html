@@ -1,0 +1,543 @@
+<div class="table-scrollable">
+      
+  <form [formGroup]="nurseForm" class="form form-responsive mb-10">
+  <div class="container">
+    <div class="row bg-primary mb-15">
+      <h1 style="color: white;"><mat-icon>assignment</mat-icon>Liste des Patients</h1>
+    </div> <br> <br>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Taille</span>
+          <input type="number" formControlName="taille" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Conjonctives</span>
+          <input type="text" formControlName="couleur" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Status Matrimonial</span>
+          <input type="text" formControlName="status" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Poids</span>
+          <input type="number" formControlName="poids" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Hauteur du Cou:</span>
+          <input type="number" formControlName="cou" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Poids nais:</span>
+          <input type="number" formControlName="poidN" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">IMC</span>
+          <input type="number" formControlName="imc" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Rythme</span>
+          <input type="text" formControlName="rythme" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Circ. Crane:</span>
+          <input type="number" formControlName="cranien" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Temp:</span>
+          <input type="number" formControlName="température" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">SPO2:</span>
+          <input type="number"  formControlName="saturation" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">circ.Scapulaire:</span>
+          <input type="number"  formControlName="scapula" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Systole:</span>
+          <input type="number" formControlName="systole" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">F. resp:</span>
+          <input type="text" class="form-control" formControlName="respiration" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Cir. Poitrine</span>
+          <input type="number" class="form-control" formControlName="poitrine" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Diastole:</span>
+          <input type="number" class="form-control" formControlName="dyastole" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Glycemie:</span>
+          <input type="text" class="form-control" formControlName="glycemie" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Circ. Hanche</span>
+          <input type="number" class="form-control" formControlName="hanche" placeholder="en Cm" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Poul</span>
+          <input type="number" class="form-control" formControlName="poul" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">G. Sang</span>
+          <input type="text" class="form-control" formControlName="sanguin" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Circ. Brachiale</span>
+          <input type="number" class="form-control" formControlName="brachiale" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Allergies</span>
+          <input type="text" class="form-control" formControlName="allergie" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Habitudes</span>
+          <input type="text" class="form-control" formControlName="habitudes" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <br>
+
+
+    <div class="row">
+      <div class="col-md-2">
+        <h4>type d'allergies</h4>
+      </div>
+      <div class="col-md-2">
+        Description
+      </div>
+      <div class="col-md-2">
+        Allergie Severité
+      </div>
+      <div class="col-md-2">
+        Réaction allergique
+      </div>
+      <div class="col-md-2">
+        Date
+      </div>
+      <div class="col-md-2">
+        Action
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" formControlName="allergieq" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" formControlName="description" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" formControlName="severité" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" formControlName="reaction" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="input-group mb-3">
+          <input type="date" class="form-control" formControlName="date" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-small">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <li class="nav-item dropdown open">
+          <button class="nav-link dropdown-toggle" style="font-size: xx-large; margin: auto;" aria-hidden="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" mat-icon-button color="accent"><i class="fa fa-1x fa-cog"></i></button>
+          <ul class="dropdown-menu">
+            <li><button (click)="submit()" mat-icon-button color="secondary" ><i class="fa fa-floppy-o" aria-hidden="true"></i></button></li>
+            <li><button (click)="edit()" mat-icon-button color="accent"><i class="fa fa-pencil" aria-hidden="true" ></i></button></li>
+            <li><button (click)="delete()" mat-icon-button color="primary"><i class="fa fa-trash" aria-hidden="true" ></i></button></li>
+            <li><button [routerLink]="['/detail']" mat-icon-button color="warn"><i class="fa fa-eye" aria-hidden="true"></i></button></li>
+          </ul>
+        </li>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text"  id="inputGroup-sizing-small">ALcool</span>
+          <select  class="form-select" type="text" formControlName="alcool" aria-label="Default select example">
+            <option value="1">OUI</option>
+            <option value="2">NON</option>
+            <option value="3">PARFOIS</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Quantité/jour</span>
+          <select class="form-select" type="text" formControlName="bouteilles" aria-label="Default select example">
+            <option value="1">1 VERRE</option>
+            <option value="2">Une BOUTEILLE</option>
+            <option value="3">PLUS</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Tabacc</span>
+          <select class="form-select" type="text" formControlName="tabac" aria-label="Default select example">
+            <option value="1">OUI</option>
+            <option value="2">NON</option>
+            <option value="3">PARFOIS</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Nombre De cigarette</span>
+          <select class="form-select" formControlName="cigarettes" aria-label="Default select example">
+            <option value="1">1 à 5</option>
+            <option value="2">1 PAQUET</option>
+            <option value="3">PLUS</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">HML</span>
+          <textarea class="formControl" formControlName="histoire" id="" cols="63" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">H.Ch</span>
+          <textarea class="formControl" formaControlName="chirurgie" id="" cols="63" rows="2"></textarea>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">MEC</span>
+          <textarea class="formControl" formControlName="medicament" id="" cols="63" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">ObsI</span>
+          <textarea class="formControl" formControlName="observations" id="" cols="63" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">NOTES</span>
+          <textarea class="formControl" formControlName="note" id="" cols="140" rows="3" placeholder="plaintes patient"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row1">
+      <div class="col-12">
+        <mat-radio-group aria-label="Select an option" formControlName="douleur">
+          <mat-radio-button value="Pas de Douleur" style="margin-left: 0%;"></mat-radio-button>
+          <mat-radio-button value="Legère" style="margin-left: 0%;"></mat-radio-button>
+          <mat-radio-button value="Legère" style="margin-left: 0%;"></mat-radio-button>
+          <mat-radio-button value="legère"></mat-radio-button>
+          <mat-radio-button value="Moderée"></mat-radio-button>
+          <mat-radio-button value="Modérée"></mat-radio-button>
+          <mat-radio-button value="sévère"></mat-radio-button>
+          <mat-radio-button value="très Sévère"></mat-radio-button>
+          <mat-radio-button value="très Sévère"></mat-radio-button>
+          <mat-radio-button value="très Sévère"></mat-radio-button>
+          <mat-radio-button value="aigue"></mat-radio-button>
+        </mat-radio-group>
+
+        <figure>
+          <img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1687839930/website%20assets/download_fz14ar.png" alt="pain scale" style="width: 345px;">
+        </figure>
+        <br>
+        <section>
+          <div class="example-label">ACTION</div>
+          <div class="example-button-row">
+            <button mat-raised-button style="background-color:green">ROS</button>
+            <button mat-raised-button style="background-color: rgb(3, 210, 168)">MFS</button>
+            <button mat-raised-button style="background-color:rgb(0, 199, 0)">SIgnes Vitaux Precédent</button>
+            <button (click)="onSave()" mat-raised-button style="background-color:rgb(155, 253, 155)">Save</button>
+            <a mat-raised-button style="background-color:rgba(232, 247, 247, 0.907)">Cancel</a>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</form>
+<br>
+
+<div class="container mt-10">
+  <div class="row bg-primary d-flex justify-content-between">
+    <h1 style="color: white;">Observation Patient</h1>
+  </div>
+  <div class="row">
+    <div class="col">
+      Date
+    </div>
+    <div class="col">
+      Time
+    </div>
+    <div class="col">
+      Temp
+    </div>
+    <div class="col">
+      pool
+    </div>
+    <div class="col">
+      Systole
+    </div>
+    <div class="col">
+      Diastole
+    </div>
+    <div class="col">
+      Respiration
+    </div>
+    <div class="col">
+      SPO2
+    </div>
+    <div class="col">
+      N.Conscience
+    </div>
+    <div class="col">
+      Douleur
+    </div>
+    <div class="col">
+      Obs Infirmier
+    </div>
+    <div class="col">
+      Action
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-1">
+      <input style= "max-width: 130%;" type="date" id="" class="formControl">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 135%;" type="time" class="formControl" name="" id="time">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div  class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div  class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" style="max-width: 50%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <input style="max-width: 75%;" type="number" name="" id="">
+    </div>
+    <div class="col-sm-1">
+      <button class="btn btn-primary">ADD</button>
+    </div>
+  </div>
+
+</div>
+<br>
+<div class="container mt-10">
+  <div class="row bg-primary">
+    <H1 style="color: white;">List des Observations</H1>
+  </div>
+  <div class="row">
+    <div class="col">
+      Date
+    </div>
+    <div class="col">
+      Time
+    </div>
+    <div class="col">
+      Temp
+    </div>
+    <div class="col">
+      pool
+    </div>
+    <div class="col">
+      Systole
+    </div>
+    <div class="col">
+      Diastole
+    </div>
+    <div class="col">
+      Respiration
+    </div>
+    <div class="col">
+      SPO2
+    </div>
+    <div class="col">
+      N.Conscience
+    </div>
+    <div class="col">
+      Douleur
+    </div>
+    <div class="col">
+      Obs Infirmier
+    </div>
+    <div class="col">
+      Option
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div  class="col-sm-1">
+    </div>
+    <div  class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-1">
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+

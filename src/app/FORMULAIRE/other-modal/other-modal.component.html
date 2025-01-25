@@ -2,38 +2,23 @@
 <mat-dialog-content [formGroup]="otherForm">
   <!-- Détails de la prescription --> 
    <mat-form-field appearance="fill">
-      <mat-label>Prescription Date</mat-label>
+      <mat-label>Date Prescription </mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" required />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker  ></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Time</mat-label>
+      <mat-label>Temps</mat-label>
       <input matInput type="time" formControlName="time" required />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
         <mat-label>Categorie</mat-label>
         <mat-select formControlName="category" required placeholder="Enter Prescription Method">
-          <mat-option value="Laboratory">Laboratoire</mat-option>
-          <mat-option value="Pharmacy">Pharmacie</mat-option>
-          <mat-option value="Diagnostic">Diagnostique</mat-option>
-          <mat-option value="Supplement">Supplement</mat-option>
-          <mat-option value="Nutrition">Nutrition</mat-option>
           <mat-option value="Other">Other</mat-option>
         </mat-select>
       </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Prescriber</mat-label>
-      <input matInput formControlName="prescriber" placeholder="Enter prescriber name" required />
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" placeholder="Enter The medication Routine Administration" required ></textarea>
-    </mat-form-field>
-
     <mat-form-field appearance="fill">
       <mat-label>Methode</mat-label>
       <mat-select formControlName="method" required placeholder="Enter Prescription Method">
@@ -43,16 +28,40 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill">
+      <mat-label>Prescripteur</mat-label>
+      <input matInput formControlName="prescriber" placeholder="Enter prescriber name" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" placeholder="Enter The description" required ></textarea>
+    </mat-form-field>
+
+    
+    <mat-form-field appearance="fill">
       <mat-label>Type</mat-label>
       <mat-select formControlName="type" required>
-        <mat-option value="DIrectives Avancée">DIrectives Avancée</mat-option>
-        <mat-option value="Comportement">Comportement</mat-option>
-        <mat-option value="Surveillance Comportement">Surveillance Comportement</mat-option>
-        <mat-option value="Glycemie"> Glycemie</mat-option>
+       <mat-option value="Directive Avancée">Directive Avancée</mat-option>
+        <mat-option value="Comportement[traitement]">Comportement[traitement]</mat-option>
+        <mat-option value="glycémie">glycémie</mat-option>
+        <mat-option value="Diabète"> Diabète</mat-option>
+        <mat-option value="Dialyse">Dialyse</mat-option>
+        <mat-option value="Prescription Medical">Prescription Medical</mat-option>
         <mat-option value="Evaluation de la peau">Evaluation de la peau</mat-option>
-        <mat-option value="Pansement">Pansement</mat-option>
-        <mat-option value="Signes vitaux">Signes vitaux</mat-option>
+        <mat-option value="Traitement">Traitement</mat-option>
+        <mat-option value="Signes Vitaux">Signes Vitaux</mat-option>
         <mat-option value="Poids">Poids</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Anesthesie [pansement]</mat-label>
+      <mat-select formControlName="route" required>
+        <mat-option value="local">local</mat-option>
+        <mat-option value="locaux-regionale">locaux-regionale</mat-option>
+        <mat-option value="general">General</mat-option>
+        <mat-option value="Subcutaneous">Subcutaneous</mat-option>
+        <mat-option value="IntraMusculaire">Intra-Musculaire</mat-option>
+        <mat-option value="Autre">Autres</mat-option>
       </mat-select>
     </mat-form-field>
   <section>
@@ -78,7 +87,7 @@
 
     <!-- Input pour 'Chaque X jours' -->
     <div *ngIf="selectedScheduleType === 'every-x-days'">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="standard">
         <mat-label>Chaque combien de jours</mat-label>
         <input matInput type="number" formControlName="everyXDays" placeholder="Nombre de jours" />
       </mat-form-field>
@@ -100,9 +109,9 @@
     <mat-form-field appearance="fill">
       <mat-label>Code Temps de la Structure</mat-label>
       <mat-select formControlName="timeCode">
-        <mat-option value="zeekly">Weekly</mat-option>
-        <mat-option value="zeekly-on-shift">Weekly on Shift</mat-option>
-        <mat-option value="day-shift">Day Shift</mat-option>
+        <mat-option value="weekly">Par semaine</mat-option>
+        <mat-option value="weekly-on-shift">Semaine Journée</mat-option>
+        <mat-option value="day-shift">Journée</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -141,7 +150,3 @@
   <button mat-button (click)="onCancel()">Annuler</button>
   <button mat-button color="primary" [disabled]="otherForm.invalid" (click)="onSave()">Enregistrer</button>
 </mat-dialog-actions>
-
-
-
-

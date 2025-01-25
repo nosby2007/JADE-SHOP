@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>Nouvelle Note de Progression</h2>
+<mat-dialog-content>
+  <form [formGroup]="progressNoteForm">
+    <!-- Type de Note -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option *ngFor="let noteType of noteTypes" [value]="noteType">{{ noteType }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Care Plan Item -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Care Plan Item or Task</mat-label>
+      <input matInput formControlName="carePlanItem" />
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Entrer la note ici</mat-label>
+        <textarea matInput name="note_text" id="spellcheck0" cols="50" rows="10" 
+                  autocomplete="off" formControlName="noteText"></textarea>
+      </mat-form-field>
+      
+
+    <!-- Effective Date and Time -->
+    <div class="date-time-group">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Effective Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="effectiveDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Time</mat-label>
+        <input matInput formControlName="time" type="time" />
+      </mat-form-field>
+    </div>
+
+    <!-- Checkboxes -->
+    <div class="checkbox-group">
+      <mat-checkbox formControlName="showOnShiftReport">Show on Shift Report</mat-checkbox>
+      <mat-checkbox formControlName="showOn24HourReport">Show on 24 Hour Report</mat-checkbox>
+      <mat-checkbox formControlName="showOnMDReport">Show on MD/Nursing Communications Report</mat-checkbox>
+      <mat-checkbox formControlName="editCarePlan">Edit Care Plan Immediately</mat-checkbox>
+    </div>
+
+    <!-- Section de signature -->
+<div class="signature-section">
+    <h3>Signature</h3>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Identifiant</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password" />
+    </mat-form-field>
+  </div>
+  
+
+    <!-- Created By -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Created By</mat-label>
+      <input matInput [value]="createdBy" readonly />
+    </mat-form-field>
+
+    <!-- Created Date -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Created Date</mat-label>
+      <input matInput [value]="createdDate | date: 'short'" readonly />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="primary" [disabled]="progressNoteForm.invalid" (click)="onSave()">Enregistrer</button>
+</mat-dialog-actions>
+

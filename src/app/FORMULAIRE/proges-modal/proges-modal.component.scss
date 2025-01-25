@@ -1,0 +1,25 @@
+.full-width {
+    width: 100%;
+  }
+  
+  
+  .half-width {
+    width: 48%;
+    margin-right: 2%;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+  }
+  
+  mat-dialog-actions {
+    margin-top: 20px;
+  }
+  .error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  

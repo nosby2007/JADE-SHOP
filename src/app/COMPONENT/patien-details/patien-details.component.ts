@@ -4,8 +4,8 @@ import { PatientService } from 'src/app/SERVICE/patient.service';
 import { catchError, Observable, of } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Patient } from 'src/app/patient.model';
-import { Timestamp } from 'firebase/firestore'
 import firebase from 'firebase/compat/app'
+import { Timestamp } from '@angular/fire/firestore';
 
 
 
@@ -16,14 +16,43 @@ import firebase from 'firebase/compat/app'
 })
 export class PatienDetailsComponent implements OnInit {
   patient$: Observable<Patient| undefined> | null = null;
+  patientDetails:any;
+  displayedColumnsa: string[] = [
+    'name',
+    'gender',
+    'dob',
+    'address',
+    'quartier',
+    'phone',
+    'email',
+    'docteur',
+    'departement',
+    'raison',
+    'paiement',
+  ];
+
+  emergencyColumns: string[] = ['Ename', 'relationship', 'Ephone', 'allergies', 'code', 'reference', 'admission'];
   
 
  
 
-  constructor(private param:ActivatedRoute, private afs:PatientService, private firestore: AngularFirestore) {}
+  constructor(private param:ActivatedRoute, private afs:PatientService, private firestore: AngularFirestore) {
+    
+    this.patientDetails = {
+      createdAt: Timestamp.fromMillis(1734670800 * 1000), // Mock Firestore Timestamp
+    };
+  
+    // Convert Firestore Timestamp to JavaScript Date
+    if (this.patientDetails.createdAt instanceof Timestamp) {
+      this.patientDetails.createdAt = this.patientDetails.createdAt.toDate('today');
+    }
+  }
+  
   
 
   ngOnInit(): void {
+
+    
     const id = this.param.snapshot.paramMap.get('id');
     if (id) {
       console.log(`Fetching patient with ID: ${id}`);
@@ -38,6 +67,8 @@ export class PatienDetailsComponent implements OnInit {
       this.patient$ = of(undefined);
     }
   }
+
+  
 
  
 

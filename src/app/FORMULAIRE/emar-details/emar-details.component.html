@@ -1,38 +1,55 @@
 <div >
-    <button align="start" mat-raised-button color="secondary" style="margin-left: 20px; background-color: #40ff00;" [routerLink]="'/emar'"><i class="material-icons">arrow_back</i>
-        Retour
-      </button>
-      <button align="end" mat-raised-button color="primary" style="margin-left: 20px; background-color: #ff8c00;" [routerLink]="'/order'"><i class="material-icons">visibility</i>
-        Voir Toutes les Prescriptions
-      </button>
+  <button align="start" mat-raised-button color="secondary" style="margin-left: 20px; background-color: #40ff00;" [routerLink]="'/emar'"><i class="material-icons">arrow_back</i>
+      Retour
+    </button>
+    <button align="end" mat-raised-button color="primary" style="margin-left: 20px; background-color: #ff8c00;" [routerLink]="'/order'"><i class="material-icons">visibility</i>
+      Voir Toutes les Prescriptions
+    </button>
 </div>
-<div class="task-container">
-    <div class="task-header">
-      <h2>Tâches du patient</h2>
-      <div class="filters">
-        <button mat-raised-button color="primary" (click)="filterTasks('overdue')">Overdue</button>
-        <button mat-raised-button color="accent" (click)="filterTasks('now')">Now</button>
-        <button mat-raised-button color="warn" (click)="filterTasks('shift')">Shift</button>
-        <button mat-raised-button (click)="resetFilter()">All</button>
-      </div>
-    </div>
-  
-    <form [formGroup]="taskForm" (ngSubmit)="submitTaskUpdates()">
-      <div class="task-list">
-        <div *ngFor="let task of filteredTasks" class="task-card" [ngClass]="getTaskClass(task)">
-          <h3>{{ task.medication }}</h3>
-          <p><strong>Order:</strong> {{ task.routine }}</p>
-          <p><strong>Route:</strong> {{ task.route }}</p>
-          <p><strong>Time:</strong> {{ task.time }}</p>
-  
-          <mat-radio-group [formControlName]="task.id" class="status-options">
-            <mat-radio-button value="done">Done</mat-radio-button>
-            <mat-radio-button value="not-done">Not Done</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
-  
-      <button mat-raised-button color="primary" type="submit">Sauvegarder</button>
-    </form>
+<div class="task-header">
+  <h2>Tâches pour le patient</h2>
+
+  <!-- Navigation et filtre -->
+  <div class="navigation">
+    <mat-form-field appearance="outline" class="date-filter" class="col-mt-6">
+      <mat-label>Sélectionnez une date</mat-label>
+      <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
   </div>
-  
+
+  <!-- Filtres -->
+  <div class="filters">
+    <button mat-raised-button color="warn" (click)="filterTasks('overdue')">Tâches en Retard</button>
+    <button mat-raised-button color="primary" (click)="resetFilter()">Toutes les Tâches</button>
+  </div>
+</div>
+
+<!-- Liste des tâches -->
+<form [formGroup]="taskForm" (ngSubmit)="submitTaskUpdates()">
+  <div class="task-list">
+    <div *ngFor="let task of filteredTasks" class="task-card" [ngClass]="getTaskClass(task)" style="height: 100px;">
+      <table class=" table-xl table-border">
+        <tbody class="table-mt-2">
+          <tr>
+              <td>{{ task.medication }} </td> <br>
+              <td class="text-success fw-bold lh-1">{{ task.description}}</td>
+              <td></td>
+              <td class="text-secondary lh-1">{{ task.instructions }}</td>
+              <td></td>
+              <td class="text-primary fw-bold">{{ task.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <mat-radio-group [formControlName]="task.id">
+        <mat-radio-button value="done">Terminé</mat-radio-button>
+        <mat-radio-button value="not-done">Non Terminé</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <br> <br>
+
+  <button mat-raised-button color="primary" type="submit">Enregistrer les Modifications</button>
+</form>
+

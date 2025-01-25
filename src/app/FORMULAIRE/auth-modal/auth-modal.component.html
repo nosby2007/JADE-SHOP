@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Authentification Requise</h2>
+<mat-dialog-content>
+  <p>Veuillez entrer vos informations pour valider la prescription.</p>
+  
+  <!-- Champ Email -->
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="email" type="email" placeholder="Entrez votre email" required />
+  </mat-form-field>
+  
+  <!-- Champ Mot de Passe -->
+  <mat-form-field appearance="fill">
+    <mat-label>Mot de passe</mat-label>
+    <input matInput [(ngModel)]="password" type="password" placeholder="Entrez votre mot de passe" required />
+  </mat-form-field>
+  
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="error-message">
+    <mat-icon color="warn">error</mat-icon>
+    {{ error }}
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()" (click)="authenticate()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="authenticate()">Valider</button>
+</mat-dialog-actions>

@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>Nouvelle Allergie</h2>
+<mat-dialog-content>
+  <form [formGroup]="allergyForm">
+    <mat-form-field class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="Active">Active</mat-option>
+        <mat-option value="Inactive">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Catégorie</mat-label>
+      <mat-select formControlName="category">
+        <mat-option value="Food">Food</mat-option>
+        <mat-option value="Drug">Drug</mat-option>
+        <mat-option value="enviromental">environnemental</mat-option>
+        <mat-option value="biologic">Biologique</mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Allergène</mat-label>
+      <input matInput formControlName="allergen" placeholder="Ex: Pollen">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Type d'allergie</mat-label>
+        <mat-select formControlName="allergyType">
+            <mat-option value="Allergy">Allergie</mat-option>
+            <mat-option value="Intolerance">Intolerance</mat-option>
+            <mat-option value="Sensitivity">Sensibilite</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Sévérité</mat-label>
+      <mat-select formControlName="severity">
+        <mat-option value="Mild">Mineur</mat-option>
+        <mat-option value="Moderate">Moderee</mat-option>
+        <mat-option value="Severe">Severe</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Manifestation</mat-label>
+      <input matInput formControlName="manifestation">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Note</mat-label>
+      <textarea matInput formControlName="note"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSave()" *ngIf="!viewOnly">Enregistrer</button>
+</mat-dialog-actions>

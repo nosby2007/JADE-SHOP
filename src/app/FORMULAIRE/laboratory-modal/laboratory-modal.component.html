@@ -1,18 +1,19 @@
-<h2 mat-dialog-title> Prescription LABO</h2>
-<mat-dialog-content>
-  <form [formGroup]="laboratoryForm">
-    <mat-form-field appearance="fill" class="col-md-4">
+<h2 mat-dialog-title>Ajouter une Prescription</h2>
+<mat-dialog-content [formGroup]="laboratoryForm">
+  <!-- Détails de la prescription --> 
+   <mat-form-field appearance="fill">
       <mat-label>Prescription Date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" required />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-datepicker #picker  ></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="col-md-4" class="col-md-4">
+    <mat-form-field appearance="fill">
       <mat-label>Time</mat-label>
       <input matInput type="time" formControlName="time" required />
     </mat-form-field>
-    <mat-form-field appearance="fill" class="col-md-4">
+
+    <mat-form-field appearance="fill">
         <mat-label>Categorie</mat-label>
         <mat-select formControlName="category" required placeholder="Enter Prescription Method">
           <mat-option value="Laboratory">Laboratoire</mat-option>
@@ -24,16 +25,16 @@
         </mat-select>
       </mat-form-field>
 
-    <mat-form-field appearance="fill" class="col-md-4">
+    <mat-form-field appearance="fill">
       <mat-label>Prescriber</mat-label>
       <input matInput formControlName="prescriber" placeholder="Enter prescriber name" required />
     </mat-form-field>
-    <mat-form-field appearance="fill" class="col-md-4">
-      <mat-label>Routine</mat-label>
-      <textarea matInput formControlName="routine" placeholder="Enter The medication Routine Administration" required ></textarea>
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" placeholder="Enter The medication Routine Administration" required ></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="col-md-4">
+    <mat-form-field appearance="fill">
       <mat-label>Methode</mat-label>
       <mat-select formControlName="method" required placeholder="Enter Prescription Method">
         <mat-option value="Téléphone">Téléphone</mat-option>
@@ -41,32 +42,108 @@
         <mat-option value="Ecrite">Ecrite</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="col-md-4">
+    <mat-form-field appearance="fill">
       <mat-label>Type</mat-label>
       <mat-select formControlName="type" required>
-        <mat-option value="Analgesic">Analgesic</mat-option>
-        <mat-option value="Antibiotic">Antibiotic</mat-option>
-        <mat-option value="Antidepressant">Antidepressant</mat-option>
-        <mat-option value="antianxieté"> Anti-Anxieté</mat-option>
-        <mat-option value="Anticoagulant">Anticoagulant</mat-option>
-        <mat-option value="AntiCovulsivant">AntiCovulsivant</mat-option>
-        <mat-option value="Sedatif">Sedatif</mat-option>
-        <mat-option value="Antidiabetique">Antidiabetique</mat-option>
-        <mat-option value="AntiPsychotique">AntiPsychotique</mat-option>
-        <mat-option value="Cardiovasculaire">Cardiovasculaire</mat-option>
-        <mat-option value="Diurétique">Diurétique</mat-option>
-        <mat-option value="Nebulisateur">Nebulisateur</mat-option>
-        <mat-option value="Antipaludéen">Antipaludéen</mat-option>
-        <mat-option value="Antidiarhéique">Antidiarhéique</mat-option>
-        <mat-option value="Antitoussif">Antitoussif</mat-option>
-        <mat-option value="Lubrifiant">Lubrifiant</mat-option>
+        <mat-option value="NFS">Numeration formule sanguine</mat-option>
+        <mat-option value="lipidPanel">Lipides</mat-option>
+        <mat-option value="urine">analyse d'urine</mat-option>
+        <mat-option value="serologique"> Serologique</mat-option>
+        <mat-option value="Culture de plaie">Culture de plaie</mat-option>
+        <mat-option value="PSA">PSA</mat-option>
+        <mat-option value="VIH">VIH</mat-option>
+        <mat-option value="Phosphore">Phosphore</mat-option>
+        <mat-option value="PCV">PCV</mat-option>
+        <mat-option value="autres">PAutres</mat-option>
       </mat-select>
     </mat-form-field>
-  </form>
+  <section>
+    <h3>Routine</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Specimen</mat-label>
+      <mat-select formControlName="frequency">
+        <mat-option value="urine">Urine</mat-option>
+        <mat-option value="sang">Sang</mat-option>
+        <mat-option value="selles">Selle</mat-option>
+        <mat-option value="fluide">fluide</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Planification</mat-label>
+      <mat-select formControlName="scheduleType" (selectionChange)="onScheduleTypeChange($event.value)">
+        <mat-option value="daily">Ce jour</mat-option>
+        <mat-option value="every-x-days">Chaque X jours</mat-option>
+        <mat-option value="specific-days">Jours spécifiques de la semaine</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Input pour 'Chaque X jours' -->
+    <div *ngIf="selectedScheduleType === 'every-x-days'">
+      <mat-form-field appearance="fill">
+        <mat-label>Chaque combien de jours</mat-label>
+        <input matInput type="number" formControlName="everyXDays" placeholder="Nombre de jours" />
+      </mat-form-field>
+    </div>
+
+    <!-- Jours spécifiques -->
+    <div *ngIf="selectedScheduleType === 'specific-days'">
+      <h4>Sélectionnez les jours</h4>
+      <mat-checkbox formControlName="monday">Lundi</mat-checkbox>
+      <mat-checkbox formControlName="tuesday">Mardi</mat-checkbox>
+      <mat-checkbox formControlName="wednesday">Mercredi</mat-checkbox>
+      <mat-checkbox formControlName="thursday">Jeudi</mat-checkbox>
+      <mat-checkbox formControlName="friday">Vendredi</mat-checkbox>
+      <mat-checkbox formControlName="saturday">Samedi</mat-checkbox>
+      <mat-checkbox formControlName="sunday">Dimanche</mat-checkbox>
+    </div>
+
+    <!-- Autres détails -->
+    <mat-form-field appearance="fill">
+      <mat-label>Code Temps de la Structure</mat-label>
+      <mat-select formControlName="timeCode">
+        <mat-option value="matin">Matin</mat-option>
+        <mat-option value="apres-midi">Après midi</mat-option>
+        <mat-option value="soir">le soir</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Diagnostique Associé</mat-label>
+      <textarea matInput formControlName="diagnostique" placeholder="Diagnostique"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Autres Directives</mat-label>
+      <textarea matInput formControlName="instructions" placeholder="Directives"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Indications</mat-label>
+      <textarea matInput formControlName="indications" placeholder="Indications"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date de Début</mat-label>
+      <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Date de Fin</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+  </section>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button (click)="dialogRef.close()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="savePrescription()">Save</button>
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-button color="primary" [disabled]="laboratoryForm.invalid" (click)="onSave()">Enregistrer</button>
 </mat-dialog-actions>
+
+
 
 

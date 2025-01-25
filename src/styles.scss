@@ -1,56 +1,86 @@
 /* You can add global styles to this file, and also import other style files */
 
 body{        
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-image: url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1672200578/newsletter-bg_eexn3a.jpg");
-    background-size: cover;
- }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-image: url("https://res.cloudinary.com/dtdpx59sc/image/upload/v1672200578/hero-bg_sbm05d.jpg");
+  background-size: cover;
+}
 
- 
- .fixed-header, .fixed-footer{
-     width: 100%;
-     position: fixed;        
-     background: orangered;
-     padding: 10px 0;
-     color: #fff;
- }
- .fixed-header{
-     top: 0;
- }
- .fixed-footer{
-     bottom: 0;
- }
- .container{
-     width: 100%;
-     margin: 0 auto; /* Center the DIV horizontally */
- }
- nav a{
-     color: #fff;
-     text-decoration: none;
-     padding: 7px 12px;
-     display: inline-block;
- }
- 
- @media print {
-    body * {
-      visibility: hidden; /* Cache tous les éléments */
-    }
-  
-    #print-area, #print-area * {
-      visibility: visible; /* Affiche uniquement la zone d'impression */
-    }
-  
-    #print-area {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
+
+.fixed-header, .fixed-footer{
+   width: 100%;
+   position: fixed;        
+   background: orangered;
+   padding: 10px 0;
+   color: #fff;
+}
+.fixed-header{
+   top: 0;
+}
+.fixed-footer{
+   bottom: 0;
+}
+.container{
+   width: 100%;
+   margin: 0 auto; /* Center the DIV horizontally */
+}
+nav a{
+   color: #fff;
+   text-decoration: none;
+   padding: 7px 12px;
+   display: inline-block;
+}
+
+@media print {
+  body * {
+    visibility: hidden; /* Cache tous les éléments */
   }
 
-  
-  
+  #print-area, #print-area * {
+    visibility: visible; /* Affiche uniquement la zone d'impression */
+  }
 
-  
+  #print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.mat-table {
+  border-collapse: collapse;
+}
+
+.mat-header-row{
+  background-color: #6e74f5;
+  height: 2px;
+}
+.mat-header-cell {
+  color: white;
+  font-weight: bolder;
+  font-size:1rem;
+  padding: 1px;
+  border-right: 1px solid #ddd;
+}
+.mat-header-row, 
+.mat-row {
+  border-bottom: 1px solid #020ffe;
+}
+
+.mat-cell, 
+.mat-header-cell {
+  border-right: 1px solid #ddd;
+}
+.mat-column{
+  padding: 1px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+
+
+
+

@@ -1,0 +1,68 @@
+<div class="home-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Bienvenue dans la Gestion des Patients</h1>
+    <p>Organisez, suivez et optimisez vos données médicales en toute simplicité.</p>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <h2>Gérez vos Patients Efficacement</h2>
+      <p>Accédez à toutes les fonctionnalités en quelques clics.</p>
+      <button>Commencer</button>
+    </div>
+  </div>
+
+  <!-- Dashboard Summary -->
+  <div class="dashboard-summary">
+    <h3>Vue d'ensemble</h3>
+    <div class="stats-grid">
+      <!-- Total Patients -->
+      <div class="stat-card total-patients">
+        <mat-icon color="warn">group</mat-icon>
+        <h4>Total Patients</h4>
+        <p *ngIf="totalPatients !== null">{{ totalPatients }}</p>
+        <p *ngIf="totalPatients === null">Chargement...</p>
+      </div>
+  
+      <!-- Active Prescriptions -->
+      <div class="stat-card active-prescriptions">
+        <mat-icon>assignment</mat-icon>
+        <h4>Prescriptions Actives</h4>
+        <p *ngIf="totalActivePrescriptions !== null">{{ totalActivePrescriptions }}</p>
+        <p *ngIf="totalActivePrescriptions === null">Chargement...</p>
+      </div>
+  
+      <!-- Completed Prescriptions -->
+      <div class="stat-card completed-prescriptions">
+        <mat-icon>done</mat-icon>
+        <h4>Prescriptions Terminées</h4>
+        <p *ngIf="totalCompletedPrescriptions !== null">{{ totalCompletedPrescriptions }}</p>
+        <p *ngIf="totalCompletedPrescriptions === null">Chargement...</p>
+      </div>
+  
+      <!-- Patients Under Antibiotics -->
+      <div class="stat-card antibiotic-patients">
+        <mat-icon>local_hospital</mat-icon>
+        <h4>Patients sous Antibiotiques</h4>
+        <p *ngIf="patientsUnderAntibiotic !== null">{{ patientsUnderAntibiotic }}</p>
+        <p *ngIf="patientsUnderAntibiotic === null">Chargement...</p>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Contact Section -->
+  <div class="contact-section">
+    <h3>Besoin d'Aide ?</h3>
+    <p>Contactez notre support technique pour toute assistance.</p>
+    <button>Nous Contacter</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Gestion des Patients. Tous droits réservés.</p>
+    <a href="#">Conditions Générales</a> | <a href="#">Confidentialité</a>
+  </div>
+</div>

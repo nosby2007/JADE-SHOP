@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { EditPatientComponent } from 'src/app/COMPONENT/edit-patient/edit-patient.component';
 import { Patient } from 'src/app/patient.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-clinical',
@@ -14,12 +15,13 @@ import { Patient } from 'src/app/patient.model';
 })
 export class PatientClinicalComponent implements OnInit {
   displayedColumns: string[] = ['name', 'gender', 'dob', 'phone', 'email', 'action'];
+  displayedColumns2: string [] = [/*'firstName',*/'name','email','phone', /*'department',*/ /*'ordre',*//*'date',*/'gender',/*'profession',*/ /*'PaidType',*//*'cni',*/'action']
   dataSource = new MatTableDataSource<Patient>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private patientService: PatientService, private dialog: MatDialog) {}
+  constructor(private patientService: PatientService, private dialog: MatDialog, private router:Router) {}
 
   ngOnInit(): void {
     this.fetchPatients();
@@ -48,21 +50,7 @@ export class PatientClinicalComponent implements OnInit {
   }
 
   editPatient(patient: Patient): void | undefined {
-    const dialogRef = this.dialog.open(EditPatientComponent, {
-      width: '600px',
-      data: patient // Pass the selected patient
-    });
-  
-    dialogRef.afterClosed().subscribe((updatedPatient: Patient) => {
-      if (updatedPatient) {
-        this.patientService.updatePatient(updatedPatient.id!, updatedPatient).then(() => {
-          console.log('Patient updated successfully');
-          this.fetchPatients(); // Refresh the list
-        }).catch((error) => {
-          console.error('Error updating patient:', error);
-        });
-      }
-    });
+    this.router.navigate(['update', patient]);
   }
 
   deletePatient(patientId: string): void {

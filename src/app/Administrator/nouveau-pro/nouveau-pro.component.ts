@@ -14,26 +14,6 @@ import { PrintService } from 'src/app/SERVICE/print.service';
 @Component({
   selector: 'app-nouveau-pro',
   templateUrl: './nouveau-pro.component.html',
-  template: `
-  <div id="patient-list-card">
-    <h1>Rapport</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Jean Dupont</td>
-          <td>01/01/2024</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <button (click)="print()">Imprimer</button>
-`,
   styleUrls: ['./nouveau-pro.component.scss']
 })
 export class NouveauProComponent implements OnInit {

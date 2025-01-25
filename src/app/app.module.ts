@@ -64,9 +64,6 @@ import { SpO2Component } from './CLINICAL/sp-o2/sp-o2.component';
 import { DouleurComponent } from './CLINICAL/douleur/douleur.component';
 import { TensionComponent } from './CLINICAL/tension/tension.component';
 import { PoolsComponent } from './CLINICAL/pools/pools.component';
-import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
-import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-clinique.component';
-import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-qualite.component';
 
 import {MatDialogModule} from '@angular/material/dialog';
 import { NouveauProComponent } from './Administrator/nouveau-pro/nouveau-pro.component';
@@ -87,15 +84,38 @@ import { NutritionModalComponent } from './FORMULAIRE/nutrition-modal/nutrition-
 import { LaboratoryModalComponent } from './FORMULAIRE/laboratory-modal/laboratory-modal.component';
 import { SupplementModalComponent } from './FORMULAIRE/supplement-modal/supplement-modal.component';
 import { OtherModalComponent } from './FORMULAIRE/other-modal/other-modal.component';
-import { EmarDetailsComponent } from './FORMULAIRE/emar-details/emar-details.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProgesModalComponent } from './FORMULAIRE/proges-modal/proges-modal.component';
+import { EmarDetailsComponent } from './FORMULAIRE/emar-details/emar-details.component';
+import { AllDiagComponent } from './COMPONENT/all-diag/all-diag.component';
+import { AllPresComponent } from './COMPONENT/all-pres/all-pres.component';
+import { MedDiagnosticComponent } from './FORMULAIRE/med-diagnotic/med-diagnostic.component';
+
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { RouterModule,Routes } from '@angular/router';
+import { CountDownModalComponent } from './FORMULAIRE/count-down-modal/count-down-modal.component';
+import { AuthModalComponent } from './FORMULAIRE/auth-modal/auth-modal.component';
+import { AllergyModalComponent } from './FORMULAIRE/allergy-modal/allergy-modal.component';
+import { VaccinationModalComponent } from './FORMULAIRE/vaccination-modal/vaccination-modal.component';
+import { DoctorModalComponent } from './FORMULAIRE/doctor-modal/doctor-modal.component';
+import { ContactModalComponent } from './FORMULAIRE/contact-modal/contact-modal.component';
+import { CensusLogModalComponent } from './FORMULAIRE/census-log-modal/census-log-modal.component';
+import { VitalsModalComponent } from './FORMULAIRE/vitals-modal/vitals-modal.component';
+import { RapportCliniqueComponent } from './RAPPORT/rapport-clinique/rapport-clinique.component';
+import { RapportFinancierComponent } from './RAPPORT/rapport-financier/rapport-financier.component';
+import { RapportQualiteComponent } from './RAPPORT/rapport-qualite/rapport-qualite.component';
+import { BradenScaleModalComponent } from './FORMULAIRE/braden-scale-modal/braden-scale-modal.component';
+import { AssessmentModalComponent } from './FORMULAIRE/assessment-modal/assessment-modal.component';
+import { FallRiskComponent } from './FORMULAIRE/fall-risk/fall-risk.component';
+import { NutritionComponent } from './FORMULAIRE/nutrition/nutrition.component';
 
 
-
-
-
-
-
+const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'details/:id', component: DetailNurseComponent },
+];
 
 
 
@@ -116,7 +136,7 @@ import {MatRadioModule} from '@angular/material/radio';
     EMARComponent,
     AllLinksComponent,
     AutresComponent,
-    PatientListAdComponent,
+    PatientListAdComponent,AllergyModalComponent,
     TableauBordComptComponent,
     UDAComptComponent,
     RapportComponent,
@@ -141,9 +161,6 @@ import {MatRadioModule} from '@angular/material/radio';
     TensionComponent,
     PoolsComponent,
     NouveauProComponent,
-    RapportFinancierComponent,
-    RapportCliniqueComponent,
-    RapportQualiteComponent,
     NewProfessionalComponent,
     NewtempComponent,
     DetailNurseComponent,
@@ -158,7 +175,25 @@ import {MatRadioModule} from '@angular/material/radio';
     LaboratoryModalComponent,
     SupplementModalComponent,
     OtherModalComponent,
+    ProgesModalComponent,
     EmarDetailsComponent,
+    MedDiagnosticComponent,
+    AllDiagComponent,
+    AllPresComponent,
+    CountDownModalComponent,
+    AuthModalComponent,
+    VaccinationModalComponent,
+    DoctorModalComponent,
+    ContactModalComponent,
+    CensusLogModalComponent,
+    VitalsModalComponent,
+    RapportCliniqueComponent,
+    RapportFinancierComponent,
+    RapportQualiteComponent,
+    BradenScaleModalComponent,
+    AssessmentModalComponent,
+    FallRiskComponent,
+    NutritionComponent
     
     
     
@@ -197,13 +232,16 @@ import {MatRadioModule} from '@angular/material/radio';
     MatDialogModule,
     MatButtonModule,
     MatRadioModule,
+    MatCheckboxModule,
+    RouterModule.forRoot(routes),
+    MatTooltipModule
     
     
     
     
     
   ],
-  providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}],
+  providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

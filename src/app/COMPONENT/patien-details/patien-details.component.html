@@ -1,65 +1,118 @@
+<button mat-raised-button color="warn" [routerLink]="['/patientList']"><i class="material-icons">arrow_back</i></button>
 <div class="patient-details-container " *ngIf="patient$ | async as patient; else loading">
-    <table class="patient-info-table table-responsive-xl table-bordered shadow table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Genre</th>
-          <th>Date de Naissance</th>
-          <th>Adresse</th>
-          <th>Quartier</th>
-          <th>Numéro de Téléphone</th>
-          <th>Email</th>
-          <th>Docteur</th>
-          <th>Département</th>
-          <th>Raison de la Consultation</th>
-          <th>Mode de Paiement</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ patient.name }}</td>
-          <td>{{ patient.gender }}</td>
-          <td>{{ patient.dob | date }}</td>
-          <td>{{ patient.address }}</td>
-          <td>{{ patient.quartier }}</td>
-          <td>{{ patient.phone }}</td>
-          <td>{{ patient.email }}</td>
-          <td>{{ patient.docteur }}</td>
-          <td>{{ patient.departement }}</td>
-          <td>{{ patient.raison }}</td>
-          <td>{{ patient.paiement }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
+  <mat-table [dataSource]="[patient]" class="responsive-table">
+    <!-- Nom -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.name }} </mat-cell>
+    </ng-container>
     
-  
-    <div class="emergency-contact-section">
-      <h3>Contact d'Urgence</h3>
-      <table class="emergency-contact-table">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Relation</th>
-            <th>Téléphone</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ patient.Ename }}</td>
-            <td>{{ patient.relationship }}</td>
-            <td>{{ patient.Ephone }}</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div class="patient-actions">
-      <button (click)="editPatient()">Modifier</button>
-      <button (click)="printPatient()">Imprimer</button>
-      <button class="btn btn-dark" [routerLink]="['/PatientList']">Retour</button>
-    </div>
-    </div>
-  </div>
+    <!-- Genre -->
+    <ng-container matColumnDef="gender">
+      <mat-header-cell *matHeaderCellDef> Genre </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.gender }} </mat-cell>
+    </ng-container>
+    
+    <!-- Date de Naissance -->
+    <ng-container matColumnDef="dob">
+      <mat-header-cell *matHeaderCellDef> Date de Naissance </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.dob.toDate() | date: 'dd/MM/yyyy' }} </mat-cell>
+    </ng-container>
+    
+    <!-- Adresse -->
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef> Adresse </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.address }} </mat-cell>
+    </ng-container>
+    
+    <!-- Quartier -->
+    <ng-container matColumnDef="quartier">
+      <mat-header-cell *matHeaderCellDef> Quartier </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.quartier }} </mat-cell>
+    </ng-container>
+    
+    <!-- Numéro de Téléphone -->
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Téléphone </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.phone }} </mat-cell>
+    </ng-container>
+    
+    <!-- Email -->
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.email }} </mat-cell>
+    </ng-container>
+    
+    <!-- Docteur -->
+    <ng-container matColumnDef="docteur">
+      <mat-header-cell *matHeaderCellDef> Docteur </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.docteur }} </mat-cell>
+    </ng-container>
+    
+    <!-- Département -->
+    <ng-container matColumnDef="departement">
+      <mat-header-cell *matHeaderCellDef> Département </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.departement }} </mat-cell>
+    </ng-container>
+    
+    <!-- Raison -->
+    <ng-container matColumnDef="raison">
+      <mat-header-cell *matHeaderCellDef> Raison </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.raison }} </mat-cell>
+    </ng-container>
+    
+    <!-- Mode de Paiement -->
+    <ng-container matColumnDef="paiement">
+      <mat-header-cell *matHeaderCellDef> Paiement </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.paiement }} </mat-cell>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumnsa"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumnsa;"></mat-row>
+  </mat-table>
+</div>
+
+<!-- Emergency Contact -->
+<div class="mat-elevation-z8 emergency-contact" *ngIf="patient$ | async as patient; else loading">
+  <h3>Contact d'Urgence</h3>
+  <mat-table [dataSource]="[patient]" class="responsive-table">
+    <!-- Nom -->
+    <ng-container matColumnDef="Ename">
+      <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.Ename }} </mat-cell>
+    </ng-container>
+    
+    <!-- Relation -->
+    <ng-container matColumnDef="relationship">
+      <mat-header-cell *matHeaderCellDef> Relation </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.relationship }} </mat-cell>
+    </ng-container>
+    
+    <!-- Téléphone -->
+    <ng-container matColumnDef="Ephone">
+      <mat-header-cell *matHeaderCellDef> Téléphone </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.Ephone }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="allergies">
+      <mat-header-cell *matHeaderCellDef> Allergies </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.allergies }} </mat-cell>
+    </ng-container>    
+    <ng-container matColumnDef="reference">
+      <mat-header-cell *matHeaderCellDef> Hopital de reférence </mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.reference }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef> Code statut</mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.code}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="admission">
+      <mat-header-cell *matHeaderCellDef> Admission</mat-header-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.admission.toDate() | date: 'dd/MM/yyyy'}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="emergencyColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: emergencyColumns;"></mat-row>
+  </mat-table>
+</div>
   
   <ng-template #loading>
     <p>Chargement des détails du patient...</p>

@@ -1,0 +1,169 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  /* Page Container */
+  .home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Header Section */
+  .header {
+    background: #3f51b5;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 32px;
+  }
+  
+  .header p {
+    margin: 5px 0;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+  
+  /* Stat Card Styles */
+.stat-card {
+    border-radius: 8px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Custom Colors */
+  .stat-card.total-patients {
+    background-color: #3f51b5; /* Indigo */
+  }
+  
+  .stat-card.active-prescriptions {
+    background-color: #4caf50; /* Green */
+  }
+  
+  .stat-card.completed-prescriptions {
+    background-color: #ff5722; /* Orange */
+  }
+  
+  .stat-card.antibiotic-patients {
+    background-color: #9c27b0; /* Purple */
+  }
+  
+  /* Banner Section */
+  .banner {
+    background: url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1705003189/cedric-letsch-ASSdOtMPExo-unsplash_zp2okt.jpg') no-repeat center center/cover;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .banner h2 {
+    font-size: 36px;
+    margin: 0;
+  }
+  
+  .banner p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #f4f4f9;
+    font-weight: bold;
+    font-family: fantasy;
+  }
+  
+  .banner button {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .banner button:hover {
+    background-color: #e64a19;
+  }
+  
+  /* Dashboard Summary */
+  .dashboard-summary {
+    margin: 40px 0;
+    text-align: center;
+  }
+  
+  .dashboard-summary h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .stat-card mat-icon {
+    font-size: 40px;
+    color: #ffc401;
+    margin-bottom: 10px;
+  }
+  
+  .stat-card h4 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .stat-card p {
+    font-size: 24px;
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  /* Contact Section */
+  .contact-section {
+    background: #3f51b5;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }  
+ .footer{
+    background: #3f51b5;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }

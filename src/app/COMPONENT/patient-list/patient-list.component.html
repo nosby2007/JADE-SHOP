@@ -1,36 +1,23 @@
-<div align="end">
-<button mat-raised-button color="primary" style="margin-left: 20px; background-color: #26ff00;" [routerLink]="'/emar'">
-  <i class="material-icons">security</i>EMR
-</button>  
-</div>
-<div align="start">
-<button mat-raised-button color="primary" style="margin-left: 20px; background-color: #ff8c00;" [routerLink]="'/addPatient'">
-  <i class="material-icons">post_add</i> ajout Patient
-</button>  
-</div>
-<div align="center">
-<button mat-raised-button color="primary" style="margin-left: 20px; background-color: #7003f6;" [routerLink]="'/admin-dashboard'">
-  <i class="material-icons">dashboard_customize</i> Tableau de bord
-</button>  
-</div>
-
 <mat-card class="patient-list-card">
     <mat-card-title>Liste des Patients</mat-card-title>
+    <div>
+    <i class="material-icons" [routerLink]="['/addPatient']"  style="cursor: pointer; font-size: 2.5rem; text-decoration:none; color:rgb(248, 85, 3)">person_add</i>
+    </div>
     <div class="filter-container">
       <mat-form-field appearance="outline">
         <mat-label>Recherche</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Recherche un patient" #input>
       </mat-form-field>
     </div>
-    <div class="table table-container table-responsive-sm table-bordered table-striped table-hover">
+    <div class="table table-container table-responsive-sm table-bordered table-striped hover">
       <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <!-- Columns Definition -->
         <ng-container matColumnDef="name" col-2>
             <mat-header-cell *matHeaderCellDef mat-sort-header> Nom </mat-header-cell>
-            <mat-cell *matCellDef="let patient" [routerLink]="['/PatientList', patient.id]"  style="cursor: pointer; text-decoration:underline; color:blue"> {{patient.name}} </mat-cell>
+            <mat-cell *matCellDef="let patient" [routerLink]="['/PatientList', patient.id]"  style="cursor: pointer; font-size: 1.1rem; text-decoration:underline; color:rgb(240, 0, 232)"> {{patient.name}} </mat-cell>
           </ng-container>    
         <ng-container matColumnDef="dob">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Date de Naissance </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Date de Naissance </mat-header-cell>     
           <mat-cell *matCellDef="let patient"> {{patient.dob.toDate() | date: 'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="phone">

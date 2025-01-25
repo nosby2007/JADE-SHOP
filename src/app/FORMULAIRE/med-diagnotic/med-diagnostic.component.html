@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>Nouveau Diagnostique</h2>
+<mat-dialog-content>
+  <form [formGroup]="diagnosticForm">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Code</mat-label>
+        <input matInput formControlName="code" />
+      </mat-form-field>
+
+       <!-- Care Plan Item -->
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" />
+      </mat-form-field>
+
+      <div class="date-time-group">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    <!-- Type de Note -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Rang</mat-label>
+      <mat-select formControlName="rang" required>
+        <mat-option *ngFor="let rang of rangs" [value]="rang">{{ rang }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>CFlassifications</mat-label>
+      <mat-select formControlName="classification" required>
+        <mat-option *ngFor="let classification of classifications" [value]="classification">{{ classification}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Commentaire</mat-label>
+        <textarea matInput name="note_text" id="spellcheck0" cols="50" rows="10" 
+                  autocomplete="off" formControlName="commentaire"></textarea>
+      </mat-form-field>
+
+    <!-- Checkboxes -->
+    <div class="checkbox-group">
+      <mat-checkbox formControlName="confidential">Confidentiel</mat-checkbox>
+      <mat-checkbox formControlName="therapy">Therapiste</mat-checkbox>
+    </div>
+
+    <!-- Section de signature -->
+<div class="signature-section">
+    <h3>Signature</h3>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Identifiant</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password" class="mat-input-element mat-form-field-autofill-control ng-tns-c48-31 ng-untouched ng-pristine ng-invalid cdk-text-field-autofill-monitored" />
+    </mat-form-field>
+  </div>
+  
+
+    <!-- Created By -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Created By</mat-label>
+      <input matInput [value]="createdBy" readonly />
+    </mat-form-field>
+
+    <!-- Created Date -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Created Date</mat-label>
+      <input matInput [value]="createdDate | date: 'short'" readonly />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="saveDiagnostic()">Save</button>
+</mat-dialog-actions>

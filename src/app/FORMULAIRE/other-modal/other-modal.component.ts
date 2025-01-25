@@ -11,43 +11,44 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./other-modal.component.scss']
 })
 export class OtherModalComponent {
-  otherForm: FormGroup;
+  otherForm!: FormGroup;
   selectedScheduleType: string | null = null;
 
   constructor(
     private fb: FormBuilder, private route:ActivatedRoute,
     public dialogRef: MatDialogRef<PharmacyModalComponent>,
     private patientService: PatientService,  @Inject(MAT_DIALOG_DATA) public data: { patientId: string }
-  ){
+  ){}
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
     this.otherForm = this.fb.group({
       date: [new Date(), Validators.required],
       time: ['', Validators.required],
       prescriber: ['', Validators.required],
-      type: ['', Validators.required],
-      method: ['', Validators.required],
       description: ['', Validators.required],
       category: ['', Validators.required],
+      method: ['', Validators.required],
+      type: ['', Validators.required],
       frequency: ['', Validators.required],
       scheduleType: ['', Validators.required],
-      routine: this.fb.group({
-        frequency: [1, [Validators.required, Validators.min(1)]],
-        duration: [1, [Validators.required, Validators.min(1)]],
-        instructions: ['', Validators.required],
-        everyXDays: [null], // Optionnel
-        monday: [false],
-        tuesday: [false],
-        wednesday: [false],
-        thursday: [false],
-        friday: [false],
-        saturday: [false],
-        sunday: [false],
-        timeCode: ['', Validators.required],
-        diagnosis: ['', Validators.required],
-        indications: ['', Validators.required],
-        startDate: ['', Validators.required],
-        endDate: ['', Validators.required]
-      }),
-      
+      everyXDays: [null],
+      monday: [false], // Checkbox pour lundi
+      tuesday: [false], // Checkbox pour mardi
+      wednesday: [false], // Checkbox pour mercredi
+      thursday: [false], // Checkbox pour jeudi
+      friday: [false], // Checkbox pour vendredi
+      saturday: [false], // Checkbox pour samedi
+      sunday: [false], // Checkbox pour dimanche
+      timeCode: ['', Validators.required],
+      diagnosis: ['', Validators.required],
+      instructions: ['', Validators.required],
+      indications: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      route: ['', Validators.required],
     });
   }
 
@@ -56,41 +57,13 @@ export class OtherModalComponent {
   }
 
   onSave(): void {
-    const prescription = this.otherForm.value;
-    const routine = prescription.routine;
-  
-    // Générer les tâches journalières
-    const dailyTasks = [];
-    const startDate = new Date();
-    for (let i = 0; i < routine.duration; i++) {
-      const taskDate = new Date(startDate);
-      taskDate.setDate(startDate.getDate() + i);
-  
-      dailyTasks.push({
-        date: taskDate.toISOString().split('T')[0],
-        status: 'not-done', // Initial status
-        medication: prescription.medication,
-        method: prescription.method,
-        prescriber: prescription.prescriber,
-        route: prescription.route,
-        time: prescription.time,
-        type: prescription.type,
-        instructions: routine.instructions,
-      });
+    if (this.otherForm.valid) {
+      console.log('Données à sauvegarder :', this.otherForm.value); // Debug
+      this.dialogRef.close(this.otherForm.value);
+    } else {
+      console.error('Formulaire invalide :', this.otherForm.errors);
     }
-  
-    const patientId = this.route.snapshot.paramMap.get('id');
-    if (!patientId) {
-      console.error('Patient ID is null');
-      return; // Arrête l'exécution si patientId est null
-    }
-  
-    dailyTasks.forEach((task) => {
-      this.patientService.addPrescription(patientId, task).then(() => {
-        console.log('Routine task added:', task);
-      });
-    });
-   }
+  }
 
   onCancel(): void {
     this.dialogRef.close();

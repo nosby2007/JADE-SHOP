@@ -1,0 +1,48 @@
+.patient-table {
+    width: 100%;
+    margin-bottom: 20px;
+  
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+  
+    th {
+      text-align: left;
+      background-color: orange,
+      
+    }
+  }
+  
+  .mat-table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: rgb(240, 203, 134),
+  }
+
+  .mat-table:hover{
+    background-color: rgb(252, 253, 254),
+
+  }
+  
+  mat-form-field {
+    width: auto;
+    margin-bottom: 20px;
+  }
+  mat-form-field:focus{
+    background: rgb(9, 124, 254),
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  

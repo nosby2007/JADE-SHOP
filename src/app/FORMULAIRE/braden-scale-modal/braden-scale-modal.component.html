@@ -1,0 +1,94 @@
+<div class="braden-form-container">
+  <h2>Échelle de Braden : Formulaire d'évaluation</h2>
+
+  <form [formGroup]="bradenForm" (ngSubmit)="onSubmit()">
+    <!-- Perception sensorielle -->
+    <div class="form-section">
+      <h3>1. Perception sensorielle</h3>
+      <label *ngFor="let option of sensoryOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="sensory"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Humidité -->
+    <div class="form-section">
+      <h3>2. Humidité</h3>
+      <label *ngFor="let option of moistureOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="moisture"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Activité -->
+    <div class="form-section">
+      <h3>3. Activité</h3>
+      <label *ngFor="let option of activityOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="activity"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Mobilité -->
+    <div class="form-section">
+      <h3>4. Mobilité</h3>
+      <label *ngFor="let option of mobilityOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="mobility"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Nutrition -->
+    <div class="form-section">
+      <h3>5. Nutrition</h3>
+      <label *ngFor="let option of nutritionOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="nutrition"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Frottement et cisaillement -->
+    <div class="form-section">
+      <h3>6. Frottement et cisaillement</h3>
+      <label *ngFor="let option of frictionOptions">
+        <input
+          type="radio"
+          [value]="option.value"
+          formControlName="friction"
+        />
+        {{ option.label }}
+      </label>
+    </div>
+
+    <!-- Score total -->
+    <div class="score-section">
+      <h3>Score total : {{ totalScore }}</h3>
+    </div>
+
+    <!-- Boutons -->
+    <div class="button-group">
+      <button type="submit" [disabled]="!bradenForm.valid">Enregistrer</button>
+      <button type="button" (click)="onReset()">Réinitialiser</button>
+    </div>
+  </form>
+</div>

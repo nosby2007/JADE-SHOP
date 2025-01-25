@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Ajouter un Médecin</h2>
+<mat-dialog-content>
+  <form [formGroup]="doctorForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Profession</mat-label>
+      <input matInput formControlName="profession" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Enregistrer</button>
+</mat-dialog-actions>

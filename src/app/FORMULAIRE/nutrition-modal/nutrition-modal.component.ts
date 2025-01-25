@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PatientService } from 'src/app/SERVICE/patient.service';
 import { PharmacyModalComponent } from '../pharmacy-modal/pharmacy-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-nutrition-modal',
@@ -11,28 +12,51 @@ import { PharmacyModalComponent } from '../pharmacy-modal/pharmacy-modal.compone
 })
 export class NutritionModalComponent  {
 
-  nutritionForm: FormGroup;
-
+  nutritionForm!: FormGroup;
+  selectedScheduleType: string | null = null;
   constructor(
-    private fb: FormBuilder,
+    private fb: FormBuilder, private route:ActivatedRoute,
     public dialogRef: MatDialogRef<PharmacyModalComponent>,
     private patientService: PatientService,  @Inject(MAT_DIALOG_DATA) public data: { patientId: string }
-  ) {
-    this.nutritionForm= this.fb.group({
+  ){}
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
+    this.nutritionForm = this.fb.group({
       date: [new Date(), Validators.required],
       time: ['', Validators.required],
-      route: ['', Validators.required],
       prescriber: ['', Validators.required],
-      type: ['', Validators.required],
-      method: ['', Validators.required],
-      routine: ['', Validators.required],
+      description: ['', Validators.required],
       category: ['', Validators.required],
+      method: ['', Validators.required],
+      type: ['', Validators.required],
+      frequency: ['', Validators.required],
+      scheduleType: ['', Validators.required],
+      everyXDays: [null],
+      monday: [false], // Checkbox pour lundi
+      tuesday: [false], // Checkbox pour mardi
+      wednesday: [false], // Checkbox pour mercredi
+      thursday: [false], // Checkbox pour jeudi
+      friday: [false], // Checkbox pour vendredi
+      saturday: [false], // Checkbox pour samedi
+      sunday: [false], // Checkbox pour dimanche
+      timeCode: ['', Validators.required],
+      diagnosis: ['', Validators.required],
+      instructions: ['', Validators.required],
+      indications: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      route: ['', Validators.required],
     });
   }
 
- 
+  onScheduleTypeChange(scheduleType: string): void {
+    this.selectedScheduleType = scheduleType;
+  }
 
-  savePrescription(): void {
+  onSave(): void {
     if (this.nutritionForm.valid) {
       console.log('Données à sauvegarder :', this.nutritionForm.value); // Debug
       this.dialogRef.close(this.nutritionForm.value);
@@ -40,9 +64,8 @@ export class NutritionModalComponent  {
       console.error('Formulaire invalide :', this.nutritionForm.errors);
     }
   }
-  
 
-  close(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 }
