@@ -1,6 +1,9 @@
 <h2 mat-dialog-title>Créer une évaluation</h2>
 <div class="table-scrollable">
-  <mat-dialog-content>
+  
+</div>
+<mat-dialog-content>
+  form [formGroup]="nurseForm" class="form form-responsive mb-10">
   <!-- Date et Heure -->
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Date de l'évaluation</mat-label>
@@ -34,8 +37,6 @@
     </mat-select>
   </mat-form-field>
 </mat-dialog-content>
-</div>
-
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Annuler</button>

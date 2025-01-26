@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-braden-scale-modal',
@@ -52,8 +54,6 @@ export class BradenScaleModalComponent implements OnInit {
     { value: 3, label: '3 : Aucun problème apparent' }
   ];
 
-  constructor(private fb: FormBuilder) {}
-
   ngOnInit(): void {
     this.bradenForm = this.fb.group({
       sensory: [null, Validators.required],
@@ -61,7 +61,9 @@ export class BradenScaleModalComponent implements OnInit {
       activity: [null, Validators.required],
       mobility: [null, Validators.required],
       nutrition: [null, Validators.required],
-      friction: [null, Validators.required]
+      friction: [null, Validators.required],
+      date: [null, Validators.required],
+      totalScore: [{ value: 0, disabled: true }]
     });
 
     // Écoute les changements pour calculer le score total
@@ -81,15 +83,28 @@ export class BradenScaleModalComponent implements OnInit {
       (values.friction || 0);
   }
 
+  constructor(private fb: FormBuilder, private dialogRef: MatDialogRef<BradenScaleModalComponent>, private firestore: AngularFirestore) {}
+
   onSubmit(): void {
     if (this.bradenForm.valid) {
-      
-      // Logique pour sauvegarder les données
+      const formData = { ...this.bradenForm.value, totalScore: this.totalScore };
+      console.log('Données à sauvegarder :', formData); // Debug
+      this.firestore.collection('bradenScores').add(formData)
+        .then(() => {
+          console.log('Données sauvegardées avec succès');
+          this.dialogRef.close(formData);
+        })
+        .catch(error => {
+          console.error('Erreur lors de la sauvegarde des données :', error);
+        });
+    } else {
+      console.error('Formulaire invalide :', this.bradenForm.errors);
     }
   }
 
   onReset(): void {
     this.bradenForm.reset();
     this.totalScore = 0;
+    this.dialogRef.close();
   }
-}
+} 

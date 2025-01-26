@@ -54,6 +54,8 @@ export class PatientService {
     return this.patientCollection.doc(id).delete();
   }
 
+
+
   getAllPrescriptions(): Observable<any[]> {
     return this.firestore
       .collectionGroup('prescriptions')
@@ -198,6 +200,44 @@ export class PatientService {
         )
       );
   }
+  getAllAssessment(): Observable<any[]> {
+    return this.firestore
+      .collection('assessment')
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID et les données
+            } else {
+              console.error('Données non valides :', data);
+              return { id }; // Retourne uniquement l'ID si les données sont invalides
+            }
+          })
+        )
+      );
+  }
+  getAllAntibiotic(): Observable<any[]> {
+    return this.firestore
+      .collection('antibiotic')
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID et les données
+            } else {
+              console.error('Données non valides :', data);
+              return { id }; // Retourne uniquement l'ID si les données sont invalides
+            }
+          })
+        )
+      );
+  }
   
   
   getPrescriptions(patientId: string): Observable<any[]> {
@@ -264,6 +304,13 @@ export class PatientService {
     console.log(`Récupération des vaccin : patients/${patientId}/vitals`);
     return this.firestore
       .collection(`patients/${patientId}/vitals`) // Utilisation correcte de "signe vitaux"
+      .valueChanges({ idField: 'id' });
+  }
+
+  getAntibiotic(patientId: string): Observable<any[]> {
+    console.log(`Récupération des vaccin : patients/${patientId}/antibiotic`);
+    return this.firestore
+      .collection(`patients/${patientId}/antibiotic`) // Utilisation correcte de "signe vitaux"
       .valueChanges({ idField: 'id' });
   }
   
@@ -357,6 +404,48 @@ export class PatientService {
   getAllergyByPatient(patientId: string): Observable<any[]> {
     return this.firestore
       .collection(`patients/${patientId}/allergy`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data(); // Récupère les données
+            const id = a.payload.doc.id; // Récupère l'ID du document
+  
+            // Validation des données avant l'utilisation de l'opérateur spread
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID avec les données
+            } else {
+              console.error('Données non valides pour le document avec ID :', id, data);
+              return { id }; // Retourne uniquement l'ID si les données sont invalides
+            }
+          })
+        )
+      );
+  }
+  getAntibioticByPatient(patientId: string): Observable<any[]> {
+    return this.firestore
+      .collection(`patients/${patientId}/antibiotic`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions.map((a) => {
+            const data = a.payload.doc.data(); // Récupère les données
+            const id = a.payload.doc.id; // Récupère l'ID du document
+  
+            // Validation des données avant l'utilisation de l'opérateur spread
+            if (data && typeof data === 'object') {
+              return { id, ...data }; // Combine l'ID avec les données
+            } else {
+              console.error('Données non valides pour le document avec ID :', id, data);
+              return { id }; // Retourne uniquement l'ID si les données sont invalides
+            }
+          })
+        )
+      );
+  }
+  getAssessmentByPatient(patientId: string): Observable<any[]> {
+    return this.firestore
+      .collection(`patients/${patientId}/assessment`)
       .snapshotChanges()
       .pipe(
         map((actions) =>
@@ -539,6 +628,30 @@ export class PatientService {
           throw error; // Renvoyer l'erreur pour gérer dans le composant
         });
     }
+    deleteAntibiotic(patientId: string, antibioticId: string): Promise<void> {
+      console.log(`Suppression de l'allergie : patients/${patientId}/antibiotic/${antibioticId}`);
+      return this.firestore
+        .collection(`patients/${patientId}/antibiotic`) // Utilisation correcte de "vaccination"
+        .doc(antibioticId)
+        .delete()
+        .then(() => console.log('Suppression réussie dans Firebase'))
+        .catch((error) => {
+          console.error('Erreur Firebase lors de la suppression :', error);
+          throw error; // Renvoyer l'erreur pour gérer dans le composant
+        });
+    }
+    deleteAssessment(patientId: string, assessmentId: string): Promise<void> {
+      console.log(`Suppression de l'allergie : patients/${patientId}/assessment/${assessmentId}`);
+      return this.firestore
+        .collection(`patients/${patientId}/assessment`) // Utilisation correcte de "assessment"
+        .doc(assessmentId)
+        .delete()
+        .then(() => console.log('Suppression réussie dans Firebase'))
+        .catch((error) => {
+          console.error('Erreur Firebase lors de la suppression :', error);
+          throw error; // Renvoyer l'erreur pour gérer dans le composant
+        });
+    }
     deleteVaccination(patientId: string, vaccinationId: string): Promise<void> {
       console.log(`Suppression de l'allergie : patients/${patientId}/vaccinations/${vaccinationId}`);
       return this.firestore
@@ -597,6 +710,21 @@ export class PatientService {
   
     return this.firestore
       .collection(`patients/${patientId}/assessment`)
+      .add(assessment)
+      .then(() => {
+        console.log('Prescription ajoutée avec succès.');
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'ajout de l\'assessement', error);
+        throw error;
+      });
+  }
+  async addAntibiotic(patientId: string, assessment: any): Promise<void> {
+    console.log('Path:', `patients/${patientId}/antibiotic`);
+    console.log('Data to Add:', assessment);
+  
+    return this.firestore
+      .collection(`patients/${patientId}/antibiotic`)
       .add(assessment)
       .then(() => {
         console.log('Prescription ajoutée avec succès.');

@@ -1,10 +1,10 @@
 <div class="braden-form-container">
-  <h2>Échelle de Braden : Formulaire d'évaluation</h2>
+  <h2>Échelle de Braden : Formulaire d'évaluation Du risque de <br> developpement des plaies de pression</h2>
 
   <form [formGroup]="bradenForm" (ngSubmit)="onSubmit()">
     <!-- Perception sensorielle -->
     <div class="form-section">
-      <h3>1. Perception sensorielle</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">1. Perception sensorielle</h3>
       <label *ngFor="let option of sensoryOptions">
         <input
           type="radio"
@@ -17,7 +17,7 @@
 
     <!-- Humidité -->
     <div class="form-section">
-      <h3>2. Humidité</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">2. Humidité</h3>
       <label *ngFor="let option of moistureOptions">
         <input
           type="radio"
@@ -30,7 +30,7 @@
 
     <!-- Activité -->
     <div class="form-section">
-      <h3>3. Activité</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">3. Activité</h3>
       <label *ngFor="let option of activityOptions">
         <input
           type="radio"
@@ -43,7 +43,7 @@
 
     <!-- Mobilité -->
     <div class="form-section">
-      <h3>4. Mobilité</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">4. Mobilité</h3>
       <label *ngFor="let option of mobilityOptions">
         <input
           type="radio"
@@ -56,7 +56,7 @@
 
     <!-- Nutrition -->
     <div class="form-section">
-      <h3>5. Nutrition</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">5. Nutrition</h3>
       <label *ngFor="let option of nutritionOptions">
         <input
           type="radio"
@@ -69,7 +69,7 @@
 
     <!-- Frottement et cisaillement -->
     <div class="form-section">
-      <h3>6. Frottement et cisaillement</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">6. Frottement et cisaillement</h3>
       <label *ngFor="let option of frictionOptions">
         <input
           type="radio"
@@ -79,10 +79,30 @@
         {{ option.label }}
       </label>
     </div>
+    <div class="form-section">
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">Date</h3>
+      <label>
+        <input
+          type="date"
+          formControlName="date"
+        />
+        Date
+      </label>
+    </div>
 
     <!-- Score total -->
     <div class="score-section">
-      <h3>Score total : {{ totalScore }}</h3>
+      <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">Score total : {{ totalScore }}</h3>
+    </div>
+
+    <!-- Commentaire -->
+    <div class="form-section">
+      <h3 style="color: rgb(14, 14, 14); font-weight:bold ; text-transform: capitalize;">
+        <td>A RISQUE 15-18</td><br>
+        <td>RISQUE MODEREE  13-14</td><br>
+        <td>HAUT RISQUE 10-12</td><br>
+        <td>TRES HAUT RISQUE 9 OU EN DESSOUS</td>
+      </h3>
     </div>
 
     <!-- Boutons -->

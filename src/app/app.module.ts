@@ -110,6 +110,8 @@ import { BradenScaleModalComponent } from './FORMULAIRE/braden-scale-modal/brade
 import { AssessmentModalComponent } from './FORMULAIRE/assessment-modal/assessment-modal.component';
 import { FallRiskComponent } from './FORMULAIRE/fall-risk/fall-risk.component';
 import { NutritionComponent } from './FORMULAIRE/nutrition/nutrition.component';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { AnbiotiqueModalComponent } from './FORMULAIRE/anbiotique-modal/anbiotique-modal.component';
 
 
 const routes: Routes = [
@@ -193,7 +195,8 @@ const routes: Routes = [
     BradenScaleModalComponent,
     AssessmentModalComponent,
     FallRiskComponent,
-    NutritionComponent
+    NutritionComponent,
+    AnbiotiqueModalComponent
     
     
     
@@ -206,6 +209,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
+    provideFirestore(() => getFirestore()),
     AngularFirestoreModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,

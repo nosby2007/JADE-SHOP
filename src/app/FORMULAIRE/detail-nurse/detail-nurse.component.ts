@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Overlay } from '@angular/cdk/overlay';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from 'src/app/SERVICE/patient.service';
 import { catchError, Observable, of } from 'rxjs';
@@ -29,6 +28,8 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 import { VitalsModalComponent } from '../vitals-modal/vitals-modal.component';
 import { BradenScaleModalComponent } from '../braden-scale-modal/braden-scale-modal.component';
 import { AssessmentModalComponent } from '../assessment-modal/assessment-modal.component';
+import { FallRiskComponent } from '../fall-risk/fall-risk.component';
+import { AnbiotiqueModalComponent } from '../anbiotique-modal/anbiotique-modal.component';
 
 
 @Component({
@@ -37,14 +38,12 @@ import { AssessmentModalComponent } from '../assessment-modal/assessment-modal.c
   styleUrls: ['./detail-nurse.component.scss']
 })
 export class DetailNurseComponent implements OnInit {
-  [x: string]: any;
   @ViewChild('addEditModal') addEditModal: any;
   censusForm!: FormGroup;
   isEditing = false;
   editingId: string | null = null;
 
-  assessments: any[] = [];
-  loading: boolean = true;
+
 
   censusData = [
     { effectiveDate: '1/16/2025', primaryPayer: 'Medicaid GA', status: 'Active' },
@@ -84,7 +83,6 @@ export class DetailNurseComponent implements OnInit {
   private subscriptions = new Subscription();
   @Input() patientId!: string;
 
-    // Tableau des évaluations
 
   prescriptions: any[] = [];
   vital: any[] = [];
@@ -92,6 +90,8 @@ export class DetailNurseComponent implements OnInit {
   progressNotes: any[] = [];
   diagnostic: any[] = [];
   vaccination: any[] = [];
+  assessments: any[] = [];
+  antibiotics: any[] = [];
   selectedPatientName: string | null = null;
 
   displayedColumnsa: string[] = [
@@ -108,7 +108,7 @@ export class DetailNurseComponent implements OnInit {
     'paiement',
   ];
   displayedColumnsallergy: string[] = [
-    
+
     'date',
     'category',
     'status',
@@ -116,7 +116,8 @@ export class DetailNurseComponent implements OnInit {
     'allergyType',
     'severity',
     'manifestation',
-    'note'
+    'note',
+    'actions'
   ];
   displayedColumnsVaccinations: string[] = [
     'actions',
@@ -134,92 +135,102 @@ export class DetailNurseComponent implements OnInit {
   displayedColumnsPrescriptions: string[] = ['description', 'category', 'instructions'];
   displayedColumnsAllergies: string[] = ['category', 'allergen', 'manifestation'];
   displayedColumnsProgressNotes: string[] = ['noteText', 'username', 'type'];
-  displayedColumnsdiagnostic: string[] = ['code','commentaire', 'classification', 'description'];
+  displayedColumnsdiagnostic: string[] = ['code', 'commentaire', 'classification', 'description'];
+  displayedColumnsantibio: string[] = [
+    'medicament',
+'prescripteur',
+'indication',
+'notes',
+ 'date',
+'actions'];
   displayedColumnsVitals: string[] = [
-    
-        'taille',
-'poids',
-'temperature',
-'saturation',
-'respiration',
-        
-       'imc',
-        'allergie',
-        
-        'systole',
-        'dyastole',
-        'poul',
-        'couleur',
-        'scapula',
-        'cou',
-        'rythme',
-        
-        
-        'glycemie',
-        'sanguin',
-        'habitudes',
-        'status',
-        'poidN',
-        'cranien',
-        'poignet',
-        'poitrine',
-        'brachiale',
-        'hanche',
-        'allergieq',
-        'description',
-        'severité',
-        'reaction',
-        'tabac',
-        'alcool',
-        'histoire',
-        'bouteilles',
-        'cigarettes',
-        'chirurgie',
-        'medicament',
-        'observations',
-        'note',
-        'douleur',
-        'radio',
-        'date',  ];
+
+    'taille',
+    'poids',
+    'temperature',
+    'saturation',
+    'respiration',
+
+    'imc',
+    'allergie',
+
+    'systole',
+    'dyastole',
+    'poul',
+    'couleur',
+    'scapula',
+    'cou',
+    'rythme',
+
+
+    'glycemie',
+    'sanguin',
+    'habitudes',
+    'status',
+    'poidN',
+    'cranien',
+    'poignet',
+    'poitrine',
+    'brachiale',
+    'hanche',
+    'allergieq',
+    'description',
+    'severité',
+    'reaction',
+    'tabac',
+    'alcool',
+    'histoire',
+    'bouteilles',
+    'cigarettes',
+    'chirurgie',
+    'medicament',
+    'observations',
+    'note',
+    'douleur',
+    'radio',
+    'date',];
 
   emergencyColumns: string[] = ['Ename', 'relationship', 'Ephone', 'allergie', 'code', 'hospital'];
 
   displayedColumns: string[] = ['date', 'type', 'prescriber', 'description', 'category'];
+  displayedColumnsAssessment: string[] = ['sensory',
+  'moisture',
+  'activity',
+  'mobility',
+  'nutrition',
+  'friction',
+'date',
+'totalScore',
+'actions'];
+
   displayedColumns1: string[] = ['date', 'code', 'description', 'commentaire', 'rang', 'classification', 'username'];
   displayedColumns2: string[] = ['time', 'noteText', 'username', 'effectiveDate', 'type'];
-  displayedColumns3: string[] = ['dueDate', 'name'];
   patient$: Observable<Patient | undefined> | null = null;
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   selectedPatientId: string | null = null;
   items: any[] = []; // Define the items property
 
   createdDate = new Date();
-   // Évaluation sélectionnée
-  selectedAssessment: string | null = null;
-  constructor(private fb: FormBuilder, private param: ActivatedRoute, private patientService: PatientService, private dialog: MatDialog, private route: ActivatedRoute, private overlay: Overlay) {
-  }
-  
 
-  // Méthode appelée lors du changement de sélection
-  onAssessmentChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    console.log('Selected Assessment ID:', target.value);
-    this.selectedAssessment = target.value;
-  }
 
-  // Ouvrir la modal pour l'évaluation sélectionnée
-  openAssessmentModal(): void {
-    const dialogRef = this.dialog.open(AssessmentModalComponent, {
-      width: '500px',
-      data: { patientId: 'patient-id-exemple' } // Remplacez par l'ID réel
-    });
+  constructor(private fb: FormBuilder, private param: ActivatedRoute, private patientService: PatientService, private dialog: MatDialog, private route: ActivatedRoute,) {
 
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('Modal fermée. Recharge des données si nécessaire.');
-    });
   }
 
 
+  loadAssessment(patientId: string): void {
+    this.selectedPatientId = patientId;
+    this.patientService.getAssessments(patientId).subscribe(
+      (assessments) => {
+        this.assessments = assessments;
+        this.dataSource.data = assessments;
+        console.log('assessments chargées :', assessments);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des assessments:', error);
+      }
+    );
+  }
   loadPrescriptions(patientId: string): void {
     this.selectedPatientId = patientId;
     this.patientService.getPrescriptions(patientId).subscribe(
@@ -303,22 +314,26 @@ export class DetailNurseComponent implements OnInit {
       }
     );
   }
-  loadAssessments(): void {
-    this.patientService.getAssessments(this.patientId).subscribe(data => {
-      this.assessments = data;
-      this.loading = false;
-    });
+  loadAntibiotic(patientId: string): void {
+    this.selectedPatientId = patientId;
+
+    this.patientService.getAntibiotic(patientId).subscribe(
+      (antibiotics) => {
+        this.antibiotics = antibiotics;
+        this.dataSource.data = antibiotics;
+        console.log('Diagnostique chargées :', antibiotics);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des Diagnostiques:', error);
+      }
+    );
   }
-
-
-
-  
 
 
 
   ngOnInit(): void {
 
-    
+
 
     const patientId = this.param.snapshot.paramMap.get('id');
     if (patientId) {
@@ -331,7 +346,8 @@ export class DetailNurseComponent implements OnInit {
       this.loadAllergies(patientId);
       this.loadVaccinations(patientId);
       this.loadVitals(patientId);
-      this.loadAssessments();
+      this.loadAssessment(patientId);
+      this.loadAntibiotic(patientId);
     } else {
       console.error('Patient ID not found in route.');
     }
@@ -375,6 +391,7 @@ export class DetailNurseComponent implements OnInit {
       }
     });
   }
+
   openVaccinationModal(category: string): void {
     let dialogRef;
     switch (category) {
@@ -411,6 +428,7 @@ export class DetailNurseComponent implements OnInit {
       }
     });
   }
+
   openAllergyNoteModal(category: string): void {
     let dialogRef;
     switch (category) {
@@ -447,6 +465,7 @@ export class DetailNurseComponent implements OnInit {
       }
     });
   }
+
   openProgressNoteModal(category: string): void {
     let dialogRef;
     switch (category) {
@@ -483,6 +502,7 @@ export class DetailNurseComponent implements OnInit {
       }
     });
   }
+
   openVitalsModal(category: string): void {
     let dialogRef;
     switch (category) {
@@ -518,6 +538,94 @@ export class DetailNurseComponent implements OnInit {
         }
       }
     });
+  }
+
+
+  openAssessmentModal(category: string): void {
+    let dialogRef;
+    switch (category) {
+      case 'Braden':
+        dialogRef = this.dialog.open(BradenScaleModalComponent, {
+          width: '700px',
+          data: { category }
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Assessment ajoutée :', result); // Debug
+            const patientId = this.param.snapshot.paramMap.get('id');
+    
+            if (patientId) {
+              this.patientService.addAssessment(patientId, result)
+                .then(() => {
+                  console.log('Assessment ajoutée avec succès dans Firebase.');
+                  this.loadAssessment(patientId); // Rafraîchir les Assessments
+                })
+                .catch((error) => console.error('Erreur d\'ajout dans Firebase :', error));
+            } else {
+              console.error('Patient ID manquant.');
+            }
+          }
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Assessment ajoutée :', result); // Debug
+            const patientId = this.param.snapshot.paramMap.get('id');
+    
+            if (patientId) {
+              this.patientService.addAssessment(patientId, result)
+                .then(() => {
+                  console.log('Assessment ajoutée avec succès dans Firebase.');
+                  this.loadAssessment(patientId); // Rafraîchir les Assessments
+                })
+                .catch((error) => console.error('Erreur d\'ajout dans Firebase :', error));
+            } else {
+              console.error('Patient ID manquant.');
+            }
+          }
+        });
+        break;
+      case 'Peau':
+        dialogRef = this.dialog.open(AssessmentModalComponent, {
+          width: '700px',
+          data: { category }
+        });
+        break;
+      case 'Chutte':
+        dialogRef = this.dialog.open(FallRiskComponent, {
+          width: '700px',
+          data: { category }
+        });
+        break;
+      case 'Antibiotique':
+        dialogRef = this.dialog.open(AnbiotiqueModalComponent, {
+          width: '700px',
+          data: { category }
+          
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            console.log('Assessment ajoutée :', result); // Debug
+            const patientId = this.param.snapshot.paramMap.get('id');
+    
+            if (patientId) {
+              this.patientService.addAntibiotic(patientId, result)
+                .then(() => {
+                  console.log('Assessment ajoutée avec succès dans Firebase.');
+                  this.loadAntibiotic(patientId); // Rafraîchir les Assessments
+                })
+                .catch((error) => console.error('Erreur d\'ajout dans Firebase :', error));
+            } else {
+              console.error('Patient ID manquant.');
+            }
+          }
+        });
+        break;
+        
+      default:
+        console.error('Catégorie inconnue:', category);
+        return;
+    }
   }
 
 
@@ -608,41 +716,105 @@ export class DetailNurseComponent implements OnInit {
       }
     });
   }
-  // Méthode pour afficher une allergie
+
+  // Méthode pour afficher une assessement
+  viewAssessment(assessement: any): void {
+    const dialogRef = this.dialog.open(BradenScaleModalComponent, {
+      width: '700px',
+      data: { assessement },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('assessement viewed:', result);
+        // Handle the result if needed
+      }
+    });
+  }
+  viewAntibiotic(antibiotic: any): void {
+    const dialogRef = this.dialog.open(AnbiotiqueModalComponent, {
+      width: '700px',
+      data: { antibiotic },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Antibiotic viewed:', result);
+        // Handle the result if needed
+      }
+    });
+  }
+
   viewAllergy(allergy: any): void {
     const dialogRef = this.dialog.open(AllergyModalComponent, {
       width: '500px',
-      data:  allergy,
+      data: allergy,
     });
-    
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(result);
       }
     });
 
-    
+
   }
+
+  strikeoutAntibiotic(antibiotic: any): void {
+    const confirmation = confirm(`Voulez-vous vraiment supprimer cet antibiotique ?`);
+    if (confirmation) {
+      const patientId = this.param.snapshot.paramMap.get('id');
+      if (patientId) {
+        this.patientService.deleteAntibiotic(patientId, antibiotic.id)
+          .then(() => {
+            console.log(`Antibiotique ${antibiotic.medicament} supprimé avec succès.`);
+            this.loadAntibiotic(patientId); // Rafraîchir les antibiotiques après suppression
+          })
+          .catch((err) => {
+            console.error('Erreur lors de la suppression de l\'antibiotique :', err);
+          });
+      } else {
+        console.error('Patient ID manquant.');
+      }
+    }
+  }
+
   updateVaccination(vaccinations: any): void {
     const dialogRef = this.dialog.open(VaccinationModalComponent, {
       width: '500px',
-      data:  vaccinations,
+      data: vaccinations,
     });
-    
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(result);
       }
     });
 
-    
+
   }
-  
+
 
   // Modifier une allergie
   updateAllergy(allergy: any): void {
     const updatedData = { ...allergy, status: 'Inactive' }; // Exemple de mise à jour
-  
+
+    this.patientService
+      .updateAllergy(this.patientId, allergy.id, updatedData)
+      .then(() => console.log('Allergie mise à jour avec succès'))
+      .catch((error) => console.error('Erreur lors de la mise à jour :', error));
+  }
+  updateAssessment(assessment: any): void {
+    const updatedData = { ...assessment, status: 'Inactive' }; // Exemple de mise à jour
+
+    this.patientService
+      .updateAllergy(this.patientId, assessment.id, updatedData)
+      .then(() => console.log('Assessment mise à jour avec succès'))
+      .catch((error) => console.error('Erreur lors de la mise à jour :', error));
+  }
+  updateAntibiotic(allergy: any): void {
+    const updatedData = { ...allergy, status: 'Inactive' }; // Exemple de mise à jour
+
     this.patientService
       .updateAllergy(this.patientId, allergy.id, updatedData)
       .then(() => console.log('Allergie mise à jour avec succès'))
@@ -650,42 +822,60 @@ export class DetailNurseComponent implements OnInit {
   }
 
   // Barrer une allergie
-  strikeoutAllergy(allergy: any): void {
-    this.patientId = this.param.snapshot.paramMap.get('patientId') || 'defaultPatientId';
-    if (!this.patientId) {
-      console.error('Erreur : patientId est manquant.');
-      return;
-    }
-  
-    const confirmation = confirm(`Voulez-vous vraiment supprimer l'allergie ${allergy.allergen} ?`);
+  strikeoutAllergy(allergy: any): void {const confirmation = confirm(`Voulez-vous vraiment supprimer cet allergie ?`);
     if (confirmation) {
-      this.patientService.deleteAllergy(this.patientId, allergy.id)
-        .then(() => {
-          console.log(`Allergie ${allergy.allergen} supprimée avec succès.`);
-          this.loadAllergies(this.patientId); // Recharge les allergies après suppression
-        })
-        .catch((err) => {
-          console.error('Erreur lors de la suppression de l\'allergie :', err);
-        });
+      const patientId = this.param.snapshot.paramMap.get('id');
+      if (patientId) {
+        this.patientService.deleteAllergy(patientId, allergy.id)
+          .then(() => {
+            console.log(`Allergies ${allergy.category} supprimé avec succès.`);
+            this.loadAllergies(patientId); // Rafraîchir les antibiotiques après suppression
+          })
+          .catch((err) => {
+            console.error('Erreur lors de la suppression de l\'allergy? :', err);
+          });
+      } else {
+        console.error('Patient ID manquant.');
+      }
     }
   }
-  strikeoutVaccination(allergy: any): void {
-    this.patientId = this.param.snapshot.paramMap.get('patientId') || 'defaultPatientId';
-    if (!this.patientId) {
-      console.error('Erreur : patientId est manquant.');
-      return;
-    }
-  
-    const confirmation = confirm(`Voulez-vous vraiment supprimer la vacination`);
+
+
+
+  strikeoutVaccination(vaccination: any): void {
+    const confirmation = confirm(`Voulez-vous vraiment supprimer cet allergie ?`);
     if (confirmation) {
-      this.patientService.deleteVaccination(this.patientId, allergy.id)
-        .then(() => {
-          console.log(`Allergie ${allergy.allergen} supprimée avec succès.`);
-          this.loadAllergies(this.patientId); // Recharge les allergies après suppression
-        })
-        .catch((err) => {
-          console.error('Erreur lors de la suppression de l\'allergie :', err);
-        });
+      const patientId = this.param.snapshot.paramMap.get('id');
+      if (patientId) {
+        this.patientService.deleteVaccination(patientId, vaccination.id)
+          .then(() => {
+            console.log(`Vaccination ${vaccination.category} supprimé avec succès.`);
+            this.loadVaccinations(patientId); // Rafraîchir les antibiotiques après suppression
+          })
+          .catch((err) => {
+            console.error('Erreur lors de la suppression de l\'vaccination? :', err);
+          });
+      } else {
+        console.error('Patient ID manquant.');
+      }
+    }
+  }
+  strikeoutAssessment(assessment: any): void {
+    const confirmation = confirm(`Voulez-vous vraiment supprimer cet allergie ?`);
+    if (confirmation) {
+      const patientId = this.param.snapshot.paramMap.get('id');
+      if (patientId) {
+        this.patientService.deleteAssessment(patientId, assessment.id)
+          .then(() => {
+            console.log(`assessment ${assessment.category} supprimé avec succès.`);
+            this.loadAssessment(patientId); // Rafraîchir les antibiotiques après suppression
+          })
+          .catch((err) => {
+            console.error('Erreur lors de la suppression de l\'assessment? :', err);
+          });
+      } else {
+        console.error('Patient ID manquant.');
+      }
     }
   }
 
@@ -708,17 +898,17 @@ export class DetailNurseComponent implements OnInit {
 
   generatePDFAndSaveToFirebase() {
     const doc = new jsPDF();
-  
+
     // Titre
     doc.setFontSize(14);
     doc.text('INOVACARE Pro', 105, 10, { align: 'center' });
-    doc.addImage('https://res.cloudinary.com/dtdpx59sc/image/upload/v1731817061/android-chrome-192x192_egyemw.png', 'PNG', 10, 5,  20, 20);
-        doc.text('Census List', 105, 20, { align: 'center' });
+    doc.addImage('https://res.cloudinary.com/dtdpx59sc/image/upload/v1731817061/android-chrome-192x192_egyemw.png', 'PNG', 10, 5, 20, 20);
+    doc.text('Census List', 105, 20, { align: 'center' });
     doc.setFontSize(10);
     doc.text(`Date: ${new Date().toLocaleDateString()}`, 15, 30);
     doc.text(`Time: ${new Date().toLocaleTimeString()}`, 15, 35);
     doc.text(`User: Jephthe Nkwanmen`, 15, 40);
-  
+
     // Colonnes du tableau
     const columns = [
       'Effective Date',
@@ -730,7 +920,7 @@ export class DetailNurseComponent implements OnInit {
       'Revision Date',
       'Revised From'
     ];
-  
+
     // Données du tableau
     const rows = this.censusData.map((item: any) => [
       item.effectiveDate,
@@ -742,7 +932,7 @@ export class DetailNurseComponent implements OnInit {
       item.revisionDate,
       item.revisedFrom
     ]);
-  
+
     // Ajout du tableau au PDF
     autoTable(doc, {
       startY: 50,
@@ -751,14 +941,14 @@ export class DetailNurseComponent implements OnInit {
       styles: { fontSize: 8 },
       headStyles: { fillColor: [0, 102, 204] },
     });
-  
+
     // Enregistrer ou ouvrir le PDF localement
     const pdfOutput = doc.output('blob');
-  
+
     // Enregistrer dans Firebase
     const storageRef = ref(getStorage(), `census_reports/${new Date().toISOString()}.pdf`);
     const uploadTask = uploadBytesResumable(storageRef, pdfOutput);
-  
+
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -773,40 +963,8 @@ export class DetailNurseComponent implements OnInit {
         });
       }
     );
-  
+
     // Optionnel : Télécharger le fichier localement
     doc.save('Census_Report.pdf');
   }
-
-
-   // Ajouter une nouvelle évaluation
-   async addAssessment(): Promise<void> {
-    const assessment = {
-      name: 'BRADEN SCALE FOR PREDICTING PRESSURE SORE RISK',
-      routine: 'weekly',
-      nextDueDate: this.patientService.calculateNextDueDate('weekly'),
-      status: 'pending'
-    };
-
-    await this.patientService.addAssessment(this.patientId, assessment);
-    this.loadAssessments(); // Recharger les évaluations après l'ajout
-  }
-
-  // Marquer une évaluation comme complétée
-  async completeAssessment(assessmentId: string, routine: string): Promise<void> {
-    const nextDueDate = this.patientService.calculateNextDueDate(routine);
-    await this.patientService.updateAssessment(this.patientId, assessmentId, {
-      status: 'completed',
-      nextDueDate: nextDueDate
-    });
-    this.loadAssessments(); // Recharger les évaluations après la mise à jour
-  }
-
-  // Vérifier si une évaluation est dépassée
-  isOverdue(nextDueDate: string): boolean {
-    const today = new Date();
-    const dueDate = new Date(nextDueDate);
-    return dueDate < today;
-  }
-
 } 
