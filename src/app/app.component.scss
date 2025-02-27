@@ -17,9 +17,9 @@
 
       a {
         color: #fff;
-        text-decoration: none;
-        padding: 10px;
-        display: block;
+  text-decoration: none;
+  padding: 7px 12px;
+  display: inline-block;
         transition: background-color 0.3s, color 0.3s;
 
         &:hover {
@@ -82,7 +82,7 @@
 
     .logout-btn {
       border: none;
-      color: #0480fd;
+      color: #bbc3cc;
       padding: 10px 15px;
       border-radius: 4px;
       cursor: pointer;

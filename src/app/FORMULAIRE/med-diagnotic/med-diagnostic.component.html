@@ -15,9 +15,7 @@
       <div class="date-time-group">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="date" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <input matInput formControlName="date" type="date" required />
         </mat-form-field>
       </div>
     <!-- Type de Note -->

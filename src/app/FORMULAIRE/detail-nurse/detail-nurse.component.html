@@ -1,5 +1,6 @@
 <!-- Actions -->
-<div class="patient-actions">
+ <body>
+  <div class="patient-actions">
   <button mat-raised-button color="primary" (click)="editPatient()">Modifier</button>
   <button mat-raised-button color="accent" (click)="printPatient()">Imprimer</button>
   <button mat-raised-button color="warn" [routerLink]="['/patientCli']">Retour</button>
@@ -27,7 +28,7 @@
         <!-- Date de Naissance -->
         <ng-container matColumnDef="dob">
           <mat-header-cell *matHeaderCellDef> Date de Naissance </mat-header-cell>
-          <mat-cell *matCellDef="let patient"> {{ patient.dob *1000| date: 'medium' }} </mat-cell>
+          <mat-cell *matCellDef="let patient"> {{ patient.dob}} </mat-cell>
         </ng-container>
 
         <!-- Adresse -->
@@ -415,7 +416,7 @@
               <ng-container matColumnDef="date">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                 <mat-cell *matCellDef="let diagnostic">
-                  {{ diagnostic.date *1000| date: 'medium'}}
+                  {{ diagnostic.date}}
                 </mat-cell>
               </ng-container>
 
@@ -599,7 +600,7 @@
               <ng-container matColumnDef="administrationDate">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                 <mat-cell *matCellDef="let vaccination">
-                  {{ vaccination.administrationDate *1000| date: 'medium'}}
+                  {{ vaccination.administrationDate}}
                 </mat-cell>
               </ng-container>
 
@@ -631,7 +632,7 @@
               <ng-container matColumnDef="substanceExpirationDate">
                 <mat-header-cell *matHeaderCellDef> Expiration Date</mat-header-cell>
                 <mat-cell *matCellDef="let vaccination">
-                  {{ vaccination.substanceExpirationDate *1000| date: 'medium' }}
+                  {{ vaccination.substanceExpirationDate }}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="administeredBy">
@@ -690,7 +691,7 @@
               <!-- Colonne Date -->
               <ng-container matColumnDef="date">
                 <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-                <mat-cell *matCellDef="let prescription"> {{ prescription.date *1000| date: 'medium'}}
+                <mat-cell *matCellDef="let prescription"> {{ prescription.date}}
                 </mat-cell>
               </ng-container>
 
@@ -1344,7 +1345,7 @@
               <ng-container matColumnDef="effectiveDate">
                 <mat-header-cell *matHeaderCellDef> Date création</mat-header-cell>
                 <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.effectiveDate *1000| date: 'medium'}}
+                  {{ progressNote.effectiveDate}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="username">
@@ -1409,7 +1410,7 @@
               <ng-container matColumnDef="effectiveDate">
                 <mat-header-cell *matHeaderCellDef> Date création</mat-header-cell>
                 <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.effectiveDate *1000| date: 'medium'}}
+                  {{ progressNote.effectiveDate}}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="username">
@@ -1473,7 +1474,7 @@
               <ng-container matColumnDef="effectiveDate">
                 <mat-header-cell *matHeaderCellDef> Date création</mat-header-cell>
                 <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.effectiveDate *1000| date: 'medium'}}
+                  {{ progressNote.effectiveDate }}
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="username">
@@ -1497,3 +1498,4 @@
 
   </mat-tab-group>
 </div>
+ </body>

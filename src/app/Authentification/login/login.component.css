@@ -11,7 +11,8 @@
 }
 
 
-.login{
+body{
+  height: 100vh;
   background-image: url('https://res.cloudinary.com/dtdpx59sc/image/upload/v1668069890/nurse_assessment_ox4ro6.jpg');
   background-size: cover;
   background-position: center;

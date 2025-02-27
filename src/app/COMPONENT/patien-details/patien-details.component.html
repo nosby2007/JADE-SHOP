@@ -16,7 +16,7 @@
     <!-- Date de Naissance -->
     <ng-container matColumnDef="dob">
       <mat-header-cell *matHeaderCellDef> Date de Naissance </mat-header-cell>
-      <mat-cell *matCellDef="let patient"> {{ patient.dob.toDate() | date: 'dd/MM/yyyy' }} </mat-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.dob}} </mat-cell>
     </ng-container>
     
     <!-- Adresse -->
@@ -93,13 +93,13 @@
       <mat-header-cell *matHeaderCellDef> Téléphone </mat-header-cell>
       <mat-cell *matCellDef="let patient"> {{ patient.Ephone }} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="allergies">
+    <ng-container matColumnDef="allergie">
       <mat-header-cell *matHeaderCellDef> Allergies </mat-header-cell>
-      <mat-cell *matCellDef="let patient"> {{ patient.allergies }} </mat-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.allergie }} </mat-cell>
     </ng-container>    
-    <ng-container matColumnDef="reference">
+    <ng-container matColumnDef="hospital">
       <mat-header-cell *matHeaderCellDef> Hopital de reférence </mat-header-cell>
-      <mat-cell *matCellDef="let patient"> {{ patient.reference }} </mat-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.hospital }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="code">
       <mat-header-cell *matHeaderCellDef> Code statut</mat-header-cell>
@@ -107,7 +107,7 @@
     </ng-container>
     <ng-container matColumnDef="admission">
       <mat-header-cell *matHeaderCellDef> Admission</mat-header-cell>
-      <mat-cell *matCellDef="let patient"> {{ patient.admission.toDate() | date: 'dd/MM/yyyy'}} </mat-cell>
+      <mat-cell *matCellDef="let patient"> {{ patient.admission}} </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="emergencyColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: emergencyColumns;"></mat-row>

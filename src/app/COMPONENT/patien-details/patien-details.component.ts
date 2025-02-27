@@ -31,7 +31,7 @@ export class PatienDetailsComponent implements OnInit {
     'paiement',
   ];
 
-  emergencyColumns: string[] = ['Ename', 'relationship', 'Ephone', 'allergies', 'code', 'reference', 'admission'];
+  emergencyColumns: string[] = ['Ename', 'relationship', 'Ephone', 'allergie', 'code', 'hospital', 'admission'];
   
 
  

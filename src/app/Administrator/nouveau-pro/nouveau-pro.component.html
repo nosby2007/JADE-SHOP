@@ -24,7 +24,7 @@
         </ng-container>    
       <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </mat-header-cell>
-        <mat-cell *matCellDef="let professionel"> {{professionel.startDate.todate() | date:"dd/mm/yyyy"}} </mat-cell>
+        <mat-cell *matCellDef="let professionel"> {{professionel.startDate}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="npi">
           <mat-header-cell *matHeaderCellDef mat-sort-header> NPI </mat-header-cell>

@@ -25,12 +25,10 @@
 
     <!-- Effective Date and Time -->
     <div class="date-time-group">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Effective Date</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="effectiveDate" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      <mat-form-field appearance="outline">
+          <mat-label>Date Naissance</mat-label>
+          <input matInput formControlName="effectiveDate" type="date" required />
+        </mat-form-field>
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Time</mat-label>
         <input matInput formControlName="time" type="time" />

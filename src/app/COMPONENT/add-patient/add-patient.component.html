@@ -14,22 +14,16 @@
               </div>
 
               <div class="form-group">
-                <mat-form-field>
-                  <mat-label>Date de Naissance</mat-label>
-                  <input matInput [matDatepicker]="picker" formControlName="dob">
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
+                <mat-form-field appearance="outline">
+                  <mat-label>Date Naissance</mat-label>
+                  <input matInput formControlName="dob" type="date" required />
                 </mat-form-field>
               </div>
 
               <div class="form-group">
-                <mat-form-field>
-                  <mat-label>Admission Date</mat-label>
-                  <input matInput [matDatepicker]="picker1" formControlName="admission">
-                  <mat-hint>MM/DD/YYYY</mat-hint>
-                  <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
+                <mat-form-field appearance="outline">
+                  <mat-label>Date d'admission</mat-label>
+                  <input matInput formControlName="admission" type="date" required />
                 </mat-form-field>
               </div>
 
@@ -142,167 +136,4 @@
     </div>
 
   </form>
-</div>
-
-
-
-
-<div class="container">
-  <div class="row bg-primary">
-    <h1>FICHE d'ENREGISTREMENT</h1>
-  </div>
-  <br>
-
-
-
-  <div class="registration-form m-3 p-4">
-    <form [formGroup]="registerForm">
-      <div class="container">
-        <div class="row bg-primary">
-          <h2>Patient</h2>
-          <div class="row">
-            <div class="col-md-4">
-              <select class="form-select" formControlName="typatient" aria-label="Default select example">
-                <option value="Nouveau">NOUVEAU</option>
-                <option value="Ancien">ANCIEN</option>
-                <option value="Autre">AUTRES</option>
-              </select>
-            </div>
-
-            <div class="col-md-4">
-              <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-default">Type paiement</span>
-                <input type="text" class="form-control" formControlName="paiement" aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default">
-              </div>
-            </div>
-            <div class="col-md-4">
-
-              <mat-form-field appearance="outline">
-                <mat-label>Code Barre</mat-label>
-                <input type="number" formControlName="barre" matInput placeholder="Code Barrre">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 ,t-4">
-          <mat-form-field appearance="outline">
-            <mat-label>NOM</mat-label>
-            <input formControlName="firstName" matInput placeholder="Placeholder">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt'4">
-          <mat-form-field appearance="outline">
-            <mat-label>PRENOM</mat-label>
-            <input formControlName="lastName" matInput placeholder="Placeholder">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input formControlName="email" matInput placeholder="Placeholder">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Age</mat-label>
-            <input type="number" formControlName="age" matInput placeholder="age">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>TELEPHONE</mat-label>
-            <input formControlName="phone" matInput placeholder="Placeholder">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>No Visit</mat-label>
-            <input type="number" formControlName="ordre" matInput placeholder="ordre">
-            <mat-icon matSuffix><i class="fa fa-check" aria-hidden="true"></i></mat-icon>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Date Visit</mat-label>
-            <input formControlName="date" matInput [matDatepicker]="picker">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field class="example-outline">
-            <mat-label>Contact Whatsapp</mat-label>
-            <span matPrefix>+237 &nbsp;</span>
-            <input formControlName="EMContact" type="tel" matInput placeholder="600 000 000">
-            <mat-icon matSuffix>phone</mat-icon>
-            <mat-hint>Include area code</mat-hint>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>No CNI</mat-label>
-            <input formControlName="cni" matInput type="number" class="example-right-align">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline" floatLabel="always">
-            <mat-label>Adresse</mat-label>
-            <input formControlName="adresse" matInput type="text" class="example-right-align">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Genre</mat-label>
-            <mat-select formControlName="gender">
-              <mat-option *ngFor="let state of gender" [value]="state">{{state}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Raison</mat-label>
-            <mat-select formControlName="profession">
-              <mat-option *ngFor="let state of profession" [value]="state">{{state}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Type de paiement</mat-label>
-            <mat-select formControlName="region">
-              <mat-option *ngFor="let state of region" [value]="state">{{state}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Docteur</mat-label>
-            <mat-select formControlName="docteur">
-              <mat-option *ngFor="let state of docteur" [value]="state">{{state}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4 mt-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Departement</mat-label>
-            <mat-select formControlName="Department">
-              <mat-option *ngFor="let state of departement" [value]="state">{{state}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <button *ngIf="!isUpdateActive" (click)="submit()" mat-raised-button color="accent" class="mt-4">Submit</button>
-      <button *ngIf="isUpdateActive" (click)="update()" mat-raised-button color="accent" class="mt-4">Update</button>
-    </form>
-  </div>
 </div>

@@ -6,6 +6,6 @@ COPY . /usr/src/app
 
 RUN npm install -g @angular/cli
 
-RUN npm install
+RUN npm install --force
 
 CMD ["ng", "serve", "--host", "0.0.0.0"]

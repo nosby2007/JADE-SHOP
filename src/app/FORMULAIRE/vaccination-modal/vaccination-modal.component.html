@@ -13,9 +13,7 @@
     <!-- Date d'administration -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Date d'administration</mat-label>
-      <input matInput [matDatepicker]="adminDatePicker" formControlName="administrationDate" required>
-      <mat-datepicker-toggle matSuffix [for]="adminDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #adminDatePicker></mat-datepicker>
+      <input matInput formControlName="administrationDate" type="date" required />
     </mat-form-field>
 
     <!-- Heure -->
@@ -73,9 +71,7 @@
     <!-- Date d'expiration -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Date d'expiration</mat-label>
-      <input matInput [matDatepicker]="expDatePicker" formControlName="substanceExpirationDate">
-      <mat-datepicker-toggle matSuffix [for]="expDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #expDatePicker></mat-datepicker>
+      <input matInput formControlName="substanceExpirationDate" type="date" required />
     </mat-form-field>
 
     <!-- Nom du fabricant -->

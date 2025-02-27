@@ -223,28 +223,6 @@ export class AddPatientComponent implements OnInit {
     });
 
 
-    this.registerForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      email: [''],
-      phone: [''],
-      Department: [''],
-      ordre:[''],
-      profession: [''],
-      gender: [''],
-      region: [''],
-      date: [''],
-      EMContact: [''],
-      cni: [''],
-      docteur:[''],
-      age:[''],
-      adresse:[''],
-      typatient:[''],
-      barre:[''],
-      paiement:[''],
-    });
-
-
 
    }
 

@@ -2,10 +2,8 @@
 <mat-dialog-content [formGroup]="SuplementForm">
   <!-- Détails de la prescription --> 
    <mat-form-field appearance="fill">
-      <mat-label>Prescription Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date" required />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker  ></mat-datepicker>
+    <mat-label>Date Naissance</mat-label>
+    <input matInput formControlName="date" type="date" required />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -118,17 +116,17 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Date de Début</mat-label>
-      <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />
-      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #startDatePicker></mat-datepicker>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de debut</mat-label>
+        <input matInput formControlName="startDate" type="date" required />
+      </mat-form-field>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Date de Fin</mat-label>
-      <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
-      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de Fin</mat-label>
+        <input matInput formControlName="endDate" type="date" required />
+      </mat-form-field>
     </mat-form-field>
   </section>
 </mat-dialog-content>

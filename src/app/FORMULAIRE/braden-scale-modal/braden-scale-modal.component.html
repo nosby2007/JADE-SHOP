@@ -1,7 +1,7 @@
 <div class="braden-form-container">
   <h2>Échelle de Braden : Formulaire d'évaluation Du risque de <br> developpement des plaies de pression</h2>
 
-  <form [formGroup]="bradenForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="bradenForm">
     <!-- Perception sensorielle -->
     <div class="form-section">
       <h3 style="color: blue; font-weight:bold ; text-transform: capitalize;">1. Perception sensorielle</h3>
@@ -107,7 +107,7 @@
 
     <!-- Boutons -->
     <div class="button-group">
-      <button type="submit" [disabled]="!bradenForm.valid">Enregistrer</button>
+      <button type="submit" [disabled]="!bradenForm.valid" (click)="onSubmit()">Enregistrer</button>
       <button type="button" (click)="onReset()">Réinitialiser</button>
     </div>
   </form>

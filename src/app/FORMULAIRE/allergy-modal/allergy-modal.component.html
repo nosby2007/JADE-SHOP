@@ -11,9 +11,7 @@
 
     <mat-form-field class="full-width">
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput formControlName="date" type="date" required />
     </mat-form-field>
 
     <mat-form-field class="full-width">
