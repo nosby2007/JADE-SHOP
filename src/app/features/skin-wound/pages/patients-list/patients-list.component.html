@@ -1,0 +1,10 @@
+<h2>Skin & Wound — Patients</h2>
+<div style="display:flex; gap:8px; margin-bottom:12px;">
+  <input [formControl]="q" placeholder="Rechercher" (keyup.enter)="search()">
+  <button (click)="search()">Chercher</button>
+</div>
+<ul>
+  <li *ngFor="let p of patients">
+    <a (click)="open(p)">{{ p.displayName }}</a> <small>{{ p.dob }}</small>
+  </li>
+</ul>

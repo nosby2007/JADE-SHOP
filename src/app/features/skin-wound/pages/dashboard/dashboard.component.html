@@ -1,0 +1,106 @@
+<div class="skinwound">
+    <!-- Header / Tabs -->
+    <div class="header">
+      <div class="tabs">
+        <button [class.active]="tab==='wounds'"    (click)="setTab('wounds')">Wounds</button>
+        <button [class.active]="tab==='chart'"     (click)="setTab('chart')">Chart</button>
+        <button [class.active]="tab==='locations'" (click)="setTab('locations')">Locations</button>
+      </div>
+      <div class="date">
+        <input type="date" [formControl]="date" (change)="load()">
+      </div>
+    </div>
+  
+    <div class="content">
+      <!-- Sidebar filter -->
+      <aside class="filters">
+        <h3>Filter</h3>
+        <button class="save">Save</button>
+  
+        <section>
+          <h4>My Saved Filters</h4>
+          <div class="hint">—</div>
+        </section>
+  
+        <section>
+          <h4>Wound Types</h4>
+          <label><input type="checkbox"> Pressure</label>
+          <label><input type="checkbox"> Diabetic</label>
+          <label><input type="checkbox"> Venous</label>
+          <label><input type="checkbox"> Arterial</label>
+          <label><input type="checkbox"> Surgical</label>
+          <label><input type="checkbox"> Trauma</label>
+        </section>
+  
+        <section>
+          <h4>Acquired</h4>
+          <label><input type="checkbox"> In-House</label>
+          <label><input type="checkbox"> Community</label>
+        </section>
+  
+        <section>
+          <h4>Locations</h4>
+          <div class="hint">Select common body locations…</div>
+        </section>
+      </aside>
+  
+      <!-- Main -->
+      <main class="main">
+        <h2>Wound Status</h2>
+  
+        <!-- KPI row -->
+        <div class="kpi-row">
+          <div class="kpi"><div class="num">{{ kpi.new }}</div><div class="lbl">New</div></div>
+          <div class="kpi"><div class="num">{{ kpi.deteriorating }}</div><div class="lbl">Deteriorating</div></div>
+          <div class="kpi"><div class="num">{{ kpi.stalled }}</div><div class="lbl">Stalled</div></div>
+          <div class="kpi"><div class="num">{{ kpi.stable }}</div><div class="lbl">Stable</div></div>
+          <div class="kpi"><div class="num">{{ kpi.improving }}</div><div class="lbl">Improving</div></div>
+          <div class="kpi"><div class="num">{{ kpi.monitoring }}</div><div class="lbl">Monitoring</div></div>
+          <div class="kpi"><div class="num">{{ kpi.unknown }}</div><div class="lbl">Status<br>Unknown</div></div>
+        </div>
+  
+        <!-- Tabs content -->
+        <ng-container [ngSwitch]="tab">
+  
+          <!-- Wounds grid -->
+          <section *ngSwitchCase="'wounds'">
+            <div class="grid">
+              <article class="card" *ngFor="let w of wounds">
+                <div class="thumb" [class.placeholder]="!w.thumbUrl">
+                  <img *ngIf="w.thumbUrl" [src]="w.thumbUrl" alt="wound">
+                </div>
+                <div class="title">#{{ w.stage ? w.stage : '?' }} - {{ w.etiology | titlecase }}</div>
+                <ul class="meta">
+                  <li><b>Body Location:</b> {{ w.location }}</li>
+                  <li><b>Last Evaluated:</b> {{ lastEval(w) }}</li>
+                </ul>
+                <div class="flags">
+                  <span class="flag inhouse" *ngIf="w.acquired==='in-house'">In-House<br>Acquired</span>
+                </div>
+                <div class="patient">
+                  <div class="avatar"></div>
+                  <div class="who">
+                    <div class="name">{{ w.patient?.displayName || 'Patient' }}</div>
+                    <div class="sub">MRN: {{ w.patient?.mrn || '—' }}</div>
+                    <div class="sub">Room: {{ w.patient?.room || '—' }} &nbsp; Bed: {{ w.patient?.bed || '—' }}</div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+  
+          <!-- Chart placeholder -->
+          <section *ngSwitchCase="'chart'">
+            <div class="placeholder-box">[Chart — à brancher plus tard]</div>
+          </section>
+  
+          <!-- Locations placeholder -->
+          <section *ngSwitchCase="'locations'">
+            <div class="placeholder-box">[Heatmap des localisations — à brancher]</div>
+          </section>
+  
+        </ng-container>
+      </main>
+    </div>
+  </div>
+  

@@ -1,0 +1,25 @@
+<a routerLink="/skin-wound">← Patients</a>
+<h2>{{ patient?.displayName }}</h2>
+<p><small>{{ patient?.dob }}</small></p>
+
+<h3>Plaies</h3>
+<ul>
+  <li *ngFor="let w of wounds">
+    <b>{{ w.location }}</b> — {{ w.etiology }} <i *ngIf="w.stage">[{{ w.stage }}]</i>
+    <button (click)="pdf(w.id)">PDF</button>
+  </li>
+</ul>
+
+<h4>Ajouter une plaie</h4>
+<form (ngSubmit)="createWound()" [formGroup]="form" style="display:grid; gap:8px; max-width:420px;">
+  <input formControlName="location" placeholder="ex: heel-right">
+  <select formControlName="etiology">
+    <option>pressure</option><option>diabetic</option><option>venous</option>
+    <option>arterial</option><option>surgical</option><option>trauma</option><option>other</option>
+  </select>
+  <select formControlName="stage">
+    <option [ngValue]="undefined">-- stage --</option>
+    <option>I</option><option>II</option><option>III</option><option>IV</option><option>DTPI</option><option>Unstageable</option>
+  </select>
+  <button type="submit">Créer</button>
+</form>

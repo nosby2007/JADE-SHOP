@@ -1,0 +1,25 @@
+<a routerLink="/skin-wound">← Patients</a>
+<h2>Wound {{ id }}</h2>
+
+<h3>Nouvelle évaluation</h3>
+<form (ngSubmit)="saveAssessment()" [formGroup]="assess" style="display:grid; gap:8px; max-width:420px;">
+  <input formControlName="date" type="date">
+  <input formControlName="lengthCm" type="number" step="0.1" placeholder="Longueur (cm)">
+  <input formControlName="widthCm" type="number" step="0.1" placeholder="Largeur (cm)">
+  <input formControlName="depthCm" type="number" step="0.1" placeholder="Profondeur (cm)">
+  <select formControlName="exudate">
+    <option>none</option><option>scant</option><option>light</option><option>moderate</option><option>heavy</option>
+  </select>
+  <input formControlName="painScore" type="number" min="0" max="10" placeholder="Douleur /10">
+  <button type="submit">Enregistrer</button>
+</form>
+
+<h3>Photos</h3>
+<input type="file" (change)="fileSelected($event)">
+
+<h3>Historique</h3>
+<ul>
+  <li *ngFor="let a of assessments">
+    {{ a.date }} — {{ a.size?.lengthCm }}×{{ a.size?.widthCm }} cm — exsudat: {{ a.exudate }} — douleur: {{ a.painScore }}
+  </li>
+</ul>
