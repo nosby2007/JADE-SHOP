@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SkinWoundComponent } from './skin-wound.component';
 import { PatientDetailComponent } from './pages/patient-detail/patient-detail.component';
 import { PatientsListComponent } from './pages/patients-list/patients-list.component';
 import { WoundDetailComponent } from './pages/wound-detail/wound-detail.component';

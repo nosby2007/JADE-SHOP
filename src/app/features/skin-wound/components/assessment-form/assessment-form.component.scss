@@ -1,0 +1,6 @@
+.form-card { padding: 16px; }
+.grid { display: grid; gap: 16px; }
+.section { padding: 12px; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.actions { display: flex; gap: 12px; justify-content: flex-end; }
+.wide { grid-column: span 2; }

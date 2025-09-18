@@ -50,6 +50,9 @@ import { AllDiagComponent } from './COMPONENT/all-diag/all-diag.component';
 import { BradenScaleModalComponent } from './FORMULAIRE/braden-scale-modal/braden-scale-modal.component';
 import { FallRiskComponent } from './FORMULAIRE/fall-risk/fall-risk.component';
 import { NutritionComponent } from './FORMULAIRE/nutrition/nutrition.component';
+import { AssessmentFormComponent } from './features/skin-wound/components/assessment-form/assessment-form.component';
+import { PatientsListComponent } from './features/skin-wound/pages/patients-list/patients-list.component';
+import { PatientDetailComponent } from './features/skin-wound/pages/patient-detail/patient-detail.component';
 
 
 
@@ -114,15 +117,13 @@ const routes: Routes = [
   { path: 'braden', component: BradenScaleModalComponent },
   { path: 'fall-risk', component: FallRiskComponent },
   { path: 'nutrition', component: NutritionComponent },
-  { path: 'skin-wound', loadChildren: () => import('./features/skin-wound/skin-wound.module').then(m => m.SkinWoundModule) }
+  { path: 'skin-wound', loadChildren: () => import('./features/skin-wound/skin-wound.module').then(m => m.SkinWoundModule) },
+  { path: 'patients/:id/wounds', component: PatientsListComponent },
+  { path: 'patients/:id/wounds/new', component: AssessmentFormComponent },
+  { path: 'patients/:id/wounds/:assessmentId', component: PatientDetailComponent},
 
   
 ]; 
-[
-  { path: 'skin-wound', loadChildren: () => import('./features/skin-wound/skin-wound.module').then(m => m.SkinWoundModule) },
-  { path: '', redirectTo: 'skin-wound', pathMatch: 'full' },
-  { path: '**', redirectTo: 'skin-wound' }
-];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

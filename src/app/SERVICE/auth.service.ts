@@ -14,6 +14,17 @@ export class AuthService {
 
   constructor(private fireAuth: AngularFireAuth, private router: Router) {}
 
+  async signInAnonymously() {
+    const cred = await this.fireAuth.signInAnonymously();
+    return cred.user;
+  }
+
+  // Pour récupérer un idToken (string)
+  async getIdToken(forceRefresh = true): Promise<string | null> {
+    const user = await this.fireAuth.currentUser;
+    return user ? user.getIdToken(forceRefresh) : null;
+  }
+
   login(email: string, password: string) {
     this.fireAuth.signInWithEmailAndPassword(email, password).then(
       (userCredential) => {

@@ -44,7 +44,7 @@ export class PatienDetailsComponent implements OnInit {
   
     // Convert Firestore Timestamp to JavaScript Date
     if (this.patientDetails.createdAt instanceof Timestamp) {
-      this.patientDetails.createdAt = this.patientDetails.createdAt.toDate('today');
+      this.patientDetails.createdAt = this.patientDetails.createdAt.toDate();
     }
   }
   

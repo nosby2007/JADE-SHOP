@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -112,6 +113,11 @@ import { FallRiskComponent } from './FORMULAIRE/fall-risk/fall-risk.component';
 import { NutritionComponent } from './FORMULAIRE/nutrition/nutrition.component';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { AnbiotiqueModalComponent } from './FORMULAIRE/anbiotique-modal/anbiotique-modal.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatChipsModule } from '@angular/material/chips';
+import { AuthTokenInterceptor } from './core/token.interceptor';
+
+
 
 
 const routes: Routes = [
@@ -196,7 +202,7 @@ const routes: Routes = [
     AssessmentModalComponent,
     FallRiskComponent,
     NutritionComponent,
-    AnbiotiqueModalComponent
+    AnbiotiqueModalComponent,
     
     
     
@@ -238,14 +244,21 @@ const routes: Routes = [
     MatRadioModule,
     MatCheckboxModule,
     RouterModule.forRoot(routes),
-    MatTooltipModule
+    MatTooltipModule, MatInputModule, MatSelectModule, MatRadioModule, MatCheckboxModule,
+    MatDatepickerModule, MatNativeDateModule,
+    MatTableModule, MatIconModule, MatButtonModule,
+    MatCardModule, MatPaginatorModule, MatSortModule, MatChipsModule
+
+    
     
     
     
     
     
   ],
-  providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}, { provide: LocationStrategy, useClass: HashLocationStrategy }
+    ,  { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1108,61 +1108,16 @@
     <!-- peaux et plaie -->
     <mat-tab label="peau et Plaie">
       <div class="tab-content">
-
+        <button mat-raised-button color="primary" [routerLink]="['/patients', (patient$ | async)?.id, 'wounds']">
+          <mat-icon>healing</mat-icon> Wounds
+        </button>
         <div>
 
           <mat-menu #progressNoteMenu="matMenu">
-            <button mat-menu-item (click)="openProgressNoteModal('ProgressNote')">ProgressNote</button>
+           
+            
 
           </mat-menu>
-
-          <button mat-raised-button color="primary" [matMenuTriggerFor]="progressNoteMenu">
-            New Prescription
-          </button>
-
-          <button mat-raised-button color="primary" style="margin-left: 20px; background-color: #ff8c00;"
-            [routerLink]="'/allprog'">
-            Voir Toutes les Prescriptions
-          </button>
-
-          <div *ngIf="progressNotes.length > 0; else noData">
-
-            <mat-table [dataSource]="progressNotes" class="mat-elevation-z8">
-              <ng-container matColumnDef="type">
-                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-                <mat-cell *matCellDef="let progressNote">
-                  {{progressNote.type}}
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="time">
-                <mat-header-cell *matHeaderCellDef> Temps</mat-header-cell>
-                <mat-cell *matCellDef="let progressNote">
-                  {{progressNote.time}}
-                </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="noteText">
-                <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-                <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.noteText }}
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="effectiveDate">
-                <mat-header-cell *matHeaderCellDef> Date création</mat-header-cell>
-                <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.effectiveDate *1000| date: 'medium'}}
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="username">
-                <mat-header-cell *matHeaderCellDef> Créé Par: </mat-header-cell>
-                <mat-cell *matCellDef="let progressNote">
-                  {{ progressNote.username }}
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
-            </mat-table>
-          </div>
           <ng-template #noData>
             <p>Aucune prescription disponible pour le moment.</p>
           </ng-template>

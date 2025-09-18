@@ -1,1 +1,379 @@
-<p>assessment-form works!</p>
+<mat-card class="form-card" id="woundFormCard">
+    <div class="flex-between">
+      <h2>Skin & Wound Evaluation</h2>
+      <span>
+        <button mat-stroked-button (click)="exportPDF()">
+          <mat-icon>picture_as_pdf</mat-icon> PDF
+        </button>
+      </span>
+    </div>
+  
+    <form [formGroup]="form" (ngSubmit)="save()" class="grid">
+  
+      <!-- A. Describe -->
+      <mat-card class="section">
+        <mat-card-title>A. Describe</mat-card-title>
+        <div class="row" formGroupName="describe">
+          <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Stage (if pressure)</mat-label>
+            <mat-select formControlName="stage">
+              <mat-option *ngFor="let s of stages" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location" placeholder="Right lateral foot" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Acquired</mat-label>
+            <mat-select formControlName="acquired">
+              <mat-option value="In-House Acquired">In-House Acquired</mat-option>
+              <mat-option value="Present on Admission">Present on Admission</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Wound age</mat-label>
+            <mat-select formControlName="ageCategory">
+              <mat-option *ngFor="let a of ['New','Exact Date','1 week','2 weeks','1 month','1-3 months','3-6 months','6-9 months','9-12 months','1-2 years','Over 2 years','Unknown']" [value]="a">
+                {{ a }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Exact Date (if selected)</mat-label>
+            <input matInput [matDatepicker]="dp" formControlName="exactDate" />
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- B. Measurements -->
+      <mat-card class="section">
+        <mat-card-title>B. Measurements</mat-card-title>
+        <div class="row" formGroupName="measurements">
+          <mat-form-field>
+            <mat-label>Length (cm)</mat-label>
+            <input matInput type="number" formControlName="length" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Width (cm)</mat-label>
+            <input matInput type="number" formControlName="width" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Depth (cm)</mat-label>
+            <input matInput type="number" formControlName="depth" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Area (cm²)</mat-label>
+            <input matInput formControlName="area" [readonly]="true" />
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Undermining</mat-label>
+            <input matInput formControlName="undermining" />
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Tunneling</mat-label>
+            <input matInput formControlName="tunneling" />
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- D. Exudate -->
+      <mat-card class="section">
+        <mat-card-title>D. Exudate</mat-card-title>
+        <div class="row" formGroupName="exudate">
+          <mat-form-field>
+            <mat-label>Amount</mat-label>
+            <mat-select formControlName="amount">
+              <mat-option *ngFor="let a of amounts" [value]="a">{{ a }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let t of exuTypes" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Odor</mat-label>
+            <mat-select formControlName="odor">
+              <mat-option *ngFor="let o of odors" [value]="o">{{ o }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- C. Wound Bed -->
+      <mat-card class="section">
+        <mat-card-title>C. Wound Bed</mat-card-title>
+        <div class="row" formGroupName="woundBed">
+          <mat-checkbox formControlName="epithelial">Epithelial</mat-checkbox>
+  
+          <div formGroupName="granulation">
+            <mat-checkbox formControlName="present">Granulation present</mat-checkbox>
+            <mat-form-field>
+              <mat-label>% Granulation</mat-label>
+              <input matInput type="number" min="0" max="100" formControlName="percent" />
+            </mat-form-field>
+          </div>
+  
+          <div formGroupName="slough">
+            <mat-checkbox formControlName="present">Slough present</mat-checkbox>
+            <mat-form-field>
+              <mat-label>% Slough</mat-label>
+              <input matInput type="number" min="0" max="100" formControlName="percent" />
+            </mat-form-field>
+          </div>
+  
+          <mat-checkbox formControlName="eschar">Eschar</mat-checkbox>
+  
+          <mat-form-field class="wide">
+            <mat-label>Infection signs</mat-label>
+            <mat-select formControlName="infection" multiple>
+              <mat-option *ngFor="let s of infectionSigns" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Other wound bed findings</mat-label>
+            <mat-select formControlName="other" multiple>
+              <mat-option *ngFor="let o of woundOther" [value]="o">{{ o }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Other note</mat-label>
+            <input matInput formControlName="otherNote" />
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- E. Periwound -->
+      <mat-card class="section">
+        <mat-card-title>E. Periwound</mat-card-title>
+        <div class="row" formGroupName="periwound">
+          <mat-form-field>
+            <mat-label>Edges</mat-label>
+            <mat-select formControlName="edges">
+              <mat-option *ngFor="let e of edges" [value]="e">{{ e }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Surrounding skin (multi)</mat-label>
+            <mat-select formControlName="surrounding" multiple>
+              <mat-option *ngFor="let s of surroundingOpts" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Induration</mat-label>
+            <mat-select formControlName="induration">
+              <mat-option value="None present">None present</mat-option>
+              <mat-option value="<2cm">&lt;2cm</mat-option>
+              <mat-option value="2-4 cm <50%">2–4 cm &lt;50%</mat-option>
+              <mat-option value="2-4 cm >50%">2–4 cm &gt;50%</mat-option>
+              <mat-option value=">4 cm">&gt;4 cm</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Edema</mat-label>
+            <mat-select formControlName="edema">
+              <mat-option value="No swelling or edema">No swelling or edema</mat-option>
+              <mat-option value="Non-pitting < 4cm">Non-pitting &lt; 4cm</mat-option>
+              <mat-option value="Non-pitting > 4cm">Non-pitting &gt; 4cm</mat-option>
+              <mat-option value="Pitting < 4 cm">Pitting &lt; 4cm</mat-option>
+              <mat-option value="Pitting > 4 cm">Pitting &gt; 4cm</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Temperature</mat-label>
+            <mat-select formControlName="temperature">
+              <mat-option *ngFor="let t of ['Cool','Normal','Warm','Hot']" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- F. Pain -->
+      <mat-card class="section">
+        <mat-card-title>F. Pain</mat-card-title>
+        <div class="row" formGroupName="pain">
+          <mat-checkbox formControlName="cognitivelyImpaired">Cognitively Impaired</mat-checkbox>
+  
+          <mat-form-field>
+            <mat-label>Score (0–10)</mat-label>
+            <input matInput type="number" min="0" max="10" formControlName="score" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Frequency</mat-label>
+            <mat-select formControlName="frequency">
+              <mat-option *ngFor="let f of ['None','Intermittent','At Dressing','Continuous']" [value]="f">{{ f }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="2"></textarea>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- G. Orders -->
+      <mat-card class="section">
+        <mat-card-title>G. Goal of Care</mat-card-title>
+        <div class="row" formGroupName="orders">
+          <mat-form-field>
+            <mat-label>Goal</mat-label>
+            <mat-select formControlName="goalOfCare">
+              <mat-option *ngFor="let g of goals" [value]="g">{{ g }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- H. Treatment -->
+      <mat-card class="section">
+        <mat-card-title>H. Treatment</mat-card-title>
+        <div class="row" formGroupName="treatment">
+          <mat-form-field>
+            <mat-label>Dressing appearance</mat-label>
+            <mat-select formControlName="dressingAppearance">
+              <mat-option *ngFor="let a of ['Intact','Missing','Dry','Saturated','Leaking','None']" [value]="a">{{ a }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Cleansing</mat-label>
+            <mat-select formControlName="cleansing">
+              <mat-option *ngFor="let c of cleansingOpts" [value]="c">{{ c }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Debridement</mat-label>
+            <mat-select formControlName="debridement">
+              <mat-option *ngFor="let d of debridementOpts" [value]="d">{{ d }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Primary dressing</mat-label>
+            <mat-select formControlName="primary">
+              <mat-option *ngFor="let p of primaryDressings" [value]="p">{{ p }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Primary other</mat-label>
+            <input matInput formControlName="primaryOther" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Secondary dressing</mat-label>
+            <mat-select formControlName="secondary">
+              <mat-option *ngFor="let s of secondaryDressings" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Secondary other</mat-label>
+            <input matInput formControlName="secondaryOther" />
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Modalities</mat-label>
+            <mat-select formControlName="modalities">
+              <mat-option *ngFor="let m of modalities" [value]="m">{{ m }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Additional care (multi)</mat-label>
+            <mat-select formControlName="additionalCare" multiple>
+              <mat-option *ngFor="let ac of additionalCareOpts" [value]="ac">{{ ac }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-card>
+  
+      <!-- I. Progress & Notifications -->
+      <mat-card class="section">
+        <mat-card-title>I. Progress & Notifications</mat-card-title>
+  
+        <div class="row" formGroupName="progress">
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let p of progress" [value]="p">{{ p }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <mat-label>Infection status</mat-label>
+            <mat-select formControlName="infection">
+              <mat-option value="None">None</mat-option>
+              <mat-option value="Suspected">Suspected</mat-option>
+              <mat-option value="MD/Provider diagnosed infection">MD/Provider diagnosed</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Progress notes</mat-label>
+            <textarea matInput rows="2" formControlName="notes"></textarea>
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Education provided</mat-label>
+            <textarea matInput rows="2" formControlName="education"></textarea>
+          </mat-form-field>
+        </div>
+  
+        <div class="row" formGroupName="notifications">
+          <mat-form-field class="wide">
+            <mat-label>Practitioner notified</mat-label>
+            <input matInput formControlName="practitioner" />
+          </mat-form-field>
+  
+          <mat-form-field class="wide">
+            <mat-label>Resident / RP notified</mat-label>
+            <input matInput formControlName="residentOrRP" />
+          </mat-form-field>
+  
+          <mat-checkbox formControlName="dietician">Dietician notified</mat-checkbox>
+          <mat-checkbox formControlName="therapy">Therapy notified</mat-checkbox>
+        </div>
+      </mat-card>
+  
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>save</mat-icon> Save
+        </button>
+        <a mat-button [routerLink]="['/patients', patientId, 'wounds']">Cancel</a>
+      </div>
+  
+    </form>
+  </mat-card>
+  
