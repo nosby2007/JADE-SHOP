@@ -1,0 +1,15 @@
+<mat-card *ngIf="item$ | async as a; else loading">
+    <div class="flex-between">
+      <h2>Wound Assessment</h2>
+      <a mat-button [routerLink]="['/skin-wound', patientId, 'assessments']">Retour à la liste</a>
+    </div>
+  
+    <pre style="white-space: pre-wrap; font-size: .95rem; line-height: 1.25;">
+  {{ a | json }}
+    </pre>
+  </mat-card>
+  
+  <ng-template #loading>
+    <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+  </ng-template>
+  

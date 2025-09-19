@@ -1,15 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PatientDetailComponent } from './pages/patient-detail/patient-detail.component';
-import { PatientsListComponent } from './pages/patients-list/patients-list.component';
+
 import { WoundDetailComponent } from './pages/wound-detail/wound-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AssessmentFormComponent } from './components/assessment-form/assessment-form.component';
+import { AssessmentDetailComponent } from './pages/assessment-detail/assessment-detail.component';
+import { AssessmentListComponent } from './pages/assessment-list/assessment-list.component';
+import { SkinWoundDashboardComponent } from './pages/skin-wound-dashboard/skin-wound-dashboard.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, title: 'Skin & Wound Dashboard' },
-  { path: 'patients', component: PatientsListComponent, title: 'Skin & Wound - Patients' },
-  { path: 'patient/:id', component: PatientDetailComponent, title: 'Patient' },
-  { path: 'wound/:id', component: WoundDetailComponent, title: 'Wound' },
+  { path: 'dash', component: SkinWoundDashboardComponent },
+  { path: 'skin-wound/new/:id', component: AssessmentFormComponent },
+  { path: 'skin-wound/:id/assessments', component: AssessmentListComponent },
+  { path: 'skin-wound/:id/assessments/:assessmentId', component: AssessmentDetailComponent },
+
+
+
+ 
+
+
+  { path: '', component: SkinWoundDashboardComponent },                         // /skin-wound
+  { path: 'new/:id', component: AssessmentFormComponent },                      // /skin-wound/new/:patientId
+  { path: ':id/assessments', component: AssessmentListComponent },              // /skin-wound/:patientId/assessments
+  { path: ':id/assessments/:assessmentId', component: AssessmentDetailComponent } // /skin-wound/:patientId/assessments/:assessmentId
 ];
 
 

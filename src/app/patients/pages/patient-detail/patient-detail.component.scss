@@ -1,0 +1,35 @@
+:host {
+    display: block;
+    padding: 24px;
+  }
+  
+  mat-card {
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  
+  button[mat-stroked-button] {
+    margin-left: 8px;
+  }
+  
+  .grid {
+    margin-top: 20px;
+  }
+  
+  mat-card mat-card {
+    border: 1px solid #e5e7eb;
+    background: #fafafa;
+  }
+  
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  

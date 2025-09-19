@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Patient } from '../patient.model';
 import { collectionData } from '@angular/fire/firestore';
 import { addDoc, doc, updateDoc } from 'firebase/firestore';
+import firebase from 'firebase/compat/app';
 
 
 @Injectable({
@@ -26,6 +27,28 @@ export class PatientService {
         })
       )
     );
+  }
+
+
+  get(id: string): Observable<Patient | undefined> {
+    return this.firestore.doc<Patient>(`patients/${id}`).valueChanges()
+      .pipe(map(d => (d ? { id, ...d } : undefined)));
+  }
+
+  async create(data: Partial<Patient>) {
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    return this.firestore.collection('patients').add({ ...data, createdAt });
+  }
+
+  async update(id: string, patch: Partial<Patient>) {
+    return this.firestore.doc(`patients/${id}`).update(patch);
+  }
+
+  list(): Observable<Patient[]> {
+    return this.firestore.collection<Patient>('patients', ref => ref.orderBy('createdAt', 'desc'))
+      .snapshotChanges().pipe(
+        map(snaps => snaps.map(s => ({ id: s.payload.doc.id, ...(s.payload.doc.data() as Patient) })))
+      );
   }
 
   getPatients(): Observable<Patient[]> {
@@ -52,6 +75,10 @@ export class PatientService {
 
   deletePatient(id: string): Promise<void> {
     return this.patientCollection.doc(id).delete();
+  }
+
+  async remove(id: string) {
+    return this.firestore.doc(`patients/${id}`).delete();
   }
 
 

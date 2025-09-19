@@ -1,0 +1,35 @@
+<mat-card *ngIf="(patient$ | async) as p; else loading">
+    <div class="flex-between">
+      <h2>{{ p?.name || 'Patient' }}</h2>
+      <div>
+        <a mat-stroked-button color="primary" [routerLink]="['/patients', p.id, 'edit']">
+          <mat-icon>edit</mat-icon>&nbsp;Éditer
+        </a>
+        <button mat-stroked-button (click)="gotoWounds(p)">
+          <mat-icon>healing</mat-icon>&nbsp;Wounds
+        </button>
+        <a mat-button routerLink="/patients">Retour</a> <div class="actions">
+
+          </div>
+          
+      </div>
+    </div>
+  
+    <div class="grid2 mt-3">
+      <mat-card>
+        <b>Genre:</b> {{ p.gender || '—' }}<br>
+        <b>Naissance:</b> {{ p.dob ? (p.dob | date:'dd/MM/yyyy') : '—' }}<br>
+        <b>Téléphone:</b> {{ p.phone || '—' }}
+      </mat-card>
+      <mat-card>
+        <b>Email:</b> {{ p.email || '—' }}<br>
+        <b>Adresse:</b> {{ p.address || '—' }}<br>
+        <b>Docteur:</b> {{ p.docteur || '—' }}
+      </mat-card>
+    </div>
+  </mat-card>
+  
+  <ng-template #loading>
+    <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+  </ng-template>
+  

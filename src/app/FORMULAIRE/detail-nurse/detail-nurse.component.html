@@ -1108,9 +1108,17 @@
     <!-- peaux et plaie -->
     <mat-tab label="peau et Plaie">
       <div class="tab-content">
-        <button mat-raised-button color="primary" [routerLink]="['/patients', (patient$ | async)?.id, 'wounds']">
-          <mat-icon>healing</mat-icon> Wounds
-        </button>
+        <ng-container *ngIf="patient$ | async as patient">
+          <button mat-stroked-button color="accent"
+                  [routerLink]="['/patients', patient.id, 'wounds', 'list']">
+            <mat-icon>healing</mat-icon> Skin and Wound
+          </button>
+          <button mat-stroked-button color="accent"
+                  [routerLink]="['/patients', patient.id, 'wounds', 'new']">
+            <mat-icon>add</mat-icon> New assessment
+          </button>
+        </ng-container>
+        
         <div>
 
           <mat-menu #progressNoteMenu="matMenu">

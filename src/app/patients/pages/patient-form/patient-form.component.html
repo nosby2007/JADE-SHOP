@@ -1,0 +1,25 @@
+<mat-card>
+    <h2>{{ id ? 'Éditer Patient' : 'Nouveau Patient' }}</h2>
+  
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid2">
+      <mat-form-field><mat-label>Nom</mat-label><input matInput formControlName="name" required></mat-form-field>
+      <mat-form-field><mat-label>Genre</mat-label><input matInput formControlName="gender"></mat-form-field>
+      <mat-form-field><mat-label>Date de naissance</mat-label><input matInput formControlName="dob" placeholder="YYYY-MM-DD"></mat-form-field>
+      <mat-form-field><mat-label>Téléphone</mat-label><input matInput formControlName="phone"></mat-form-field>
+      <mat-form-field><mat-label>Email</mat-label><input matInput formControlName="email"></mat-form-field>
+      <mat-form-field class="wide"><mat-label>Adresse</mat-label><input matInput formControlName="address"></mat-form-field>
+      <mat-form-field><mat-label>Quartier</mat-label><input matInput formControlName="quartier"></mat-form-field>
+      <mat-form-field><mat-label>Département</mat-label><input matInput formControlName="departement"></mat-form-field>
+      <mat-form-field><mat-label>Docteur</mat-label><input matInput formControlName="docteur"></mat-form-field>
+      <mat-form-field><mat-label>Raison</mat-label><input matInput formControlName="raison"></mat-form-field>
+      <mat-form-field><mat-label>Paiement</mat-label><input matInput formControlName="paiement"></mat-form-field>
+  
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>save</mat-icon>&nbsp;Enregistrer
+        </button>
+        <a mat-button routerLink="/patients">Annuler</a>
+      </div>
+    </form>
+  </mat-card>
+  

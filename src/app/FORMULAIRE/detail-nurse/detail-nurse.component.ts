@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from 'src/app/SERVICE/patient.service';
 import { catchError, Observable, of } from 'rxjs';
 import { Patient } from 'src/app/patient.model';
@@ -213,11 +213,13 @@ export class DetailNurseComponent implements OnInit {
   createdDate = new Date();
 
 
-  constructor(private fb: FormBuilder, private param: ActivatedRoute, private patientService: PatientService, private dialog: MatDialog, private route: ActivatedRoute,) {
+  constructor(private fb: FormBuilder, private param: ActivatedRoute, private patientService: PatientService, private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
 
   }
 
-
+  goToWounds(patientId: string) {
+    this.router.navigate(['/patients', patientId]);
+  }
   loadAssessment(patientId: string): void {
     this.selectedPatientId = patientId;
     this.patientService.getAssessments(patientId).subscribe(
