@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WoundAssessmentService } from 'src/app/SERVICE/wound-assessment.service'; // Firestore direct
 import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+
 
 @Component({
   selector: 'app-assessment-detail',
@@ -12,9 +16,10 @@ export class AssessmentDetailComponent implements OnInit {
   patientId!: string;
   assessmentId!: string;
   item$!: Observable<any | undefined>;
+  public afAuth = inject(AngularFireAuth);
 
   constructor(private route: ActivatedRoute, private fsSvc: WoundAssessmentService) {}
-
+  public idTokenResult$ = this.afAuth.idTokenResult;
   ngOnInit(): void {
     this.patientId = this.route.snapshot.paramMap.get('id')!;
     this.assessmentId = this.route.snapshot.paramMap.get('assessmentId')!;

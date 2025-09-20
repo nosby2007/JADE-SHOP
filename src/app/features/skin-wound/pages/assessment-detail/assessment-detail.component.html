@@ -1,15 +1,190 @@
 <mat-card *ngIf="item$ | async as a; else loading">
-    <div class="flex-between">
-      <h2>Wound Assessment</h2>
-      <a mat-button [routerLink]="['/skin-wound', patientId, 'assessments']">Retour à la liste</a>
+  <div class="flex-between" style="align-items:center; gap:12px;">
+    <h2 class="m-0">Wound Assessment</h2>
+    <div style="margin-left:auto; display:flex; gap:8px;">
+      <a mat-button [routerLink]="['/skin-wound', patientId, 'assessments']">Retour</a>
+
+      <!-- Bouton Edit (toujours visible). 
+           Si tu veux l’afficher SEULEMENT pour admin, vois la note en bas. -->
+      <a mat-stroked-button color="primary"
+         [routerLink]="['/skin-wound', patientId, 'assessments', assessmentId, 'edit']">
+        <mat-icon>edit</mat-icon>&nbsp;Edit
+      </a>
     </div>
-  
-    <pre style="white-space: pre-wrap; font-size: .95rem; line-height: 1.25;">
-  {{ a | json }}
-    </pre>
-  </mat-card>
-  
-  <ng-template #loading>
-    <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
-  </ng-template>
-  
+  </div>
+
+  <!-- Photo -->
+  <div *ngIf="$any(a).photoURL" style="margin-top:12px;">
+    <img [src]="$any(a).photoURL" alt="Wound photo" style="max-width:320px;border-radius:8px;">
+  </div>
+  <a mat-stroked-button [routerLink]="['/skin-wound', patientId, 'media']">
+    <mat-icon>photo_library</mat-icon>&nbsp;Voir toutes les photos
+  </a>
+
+  <!-- Meta dates -->
+  <div style="margin:12px 0; font-size:.95rem; opacity:.85;">
+    <span *ngIf="$any(a).createdAt">
+      Créé :
+      {{ ($any(a).createdAt?.toDate ? $any(a).createdAt.toDate() : $any(a).createdAt) | date:'short' }}
+    </span>
+    <span *ngIf="$any(a).assessedAt" style="margin-left:16px;">
+      Évalué :
+      {{ ($any(a).assessedAt?.toDate ? $any(a).assessedAt.toDate() : $any(a).assessedAt) | date:'short' }}
+    </span>
+    <span *ngIf="$any(a).updatedAt" style="margin-left:16px;">
+      MAJ :
+      {{ ($any(a).updatedAt?.toDate ? $any(a).updatedAt.toDate() : $any(a).updatedAt) | date:'short' }}
+    </span>
+  </div>
+
+  <hr>
+
+  <!-- A. Describe -->
+  <h3 style="margin-top:12px;">A. Describe</h3>
+  <div class="grid-2">
+    <div><strong>Type:</strong> {{ $any(a).describe?.type || '—' }}</div>
+    <div><strong>Stage:</strong> {{ $any(a).describe?.stage || '—' }}</div>
+    <div><strong>Location:</strong> {{ $any(a).describe?.location || '—' }}</div>
+    <div><strong>Acquired:</strong> {{ $any(a).describe?.acquired || '—' }}</div>
+    <div><strong>Age:</strong> {{ $any(a).describe?.ageCategory || '—' }}</div>
+    <div *ngIf="$any(a).describe?.exactDate">
+      <strong>Exact date:</strong>
+      {{
+        ($any(a).describe.exactDate?.toDate
+          ? $any(a).describe.exactDate.toDate()
+          : $any(a).describe.exactDate) | date:'mediumDate'
+      }}
+    </div>
+    <div><strong>Staged by:</strong> {{ $any(a).describe?.stagedBy || '—' }}</div>
+  </div>
+
+  <hr>
+
+  <!-- B. Measurements -->
+  <h3>B. Measurements</h3>
+  <div class="grid-2">
+    <div><strong>Length (cm):</strong> {{ $any(a).measurements?.length }}</div>
+    <div><strong>Width (cm):</strong> {{ $any(a).measurements?.width }}</div>
+    <div><strong>Depth (cm):</strong> {{ $any(a).measurements?.depth }}</div>
+    <div><strong>Area (cm²):</strong> {{ $any(a).measurements?.area }}</div>
+    <div class="col-2"><strong>Undermining:</strong> {{ $any(a).measurements?.undermining || '—' }}</div>
+    <div class="col-2"><strong>Tunneling:</strong> {{ $any(a).measurements?.tunneling || '—' }}</div>
+  </div>
+
+  <hr>
+
+  <!-- C. Wound Bed -->
+  <h3>C. Wound Bed</h3>
+  <div class="grid-2">
+    <div><strong>Epithelial:</strong> {{ $any(a).woundBed?.epithelial ? 'Yes' : 'No' }}</div>
+    <div>
+      <strong>Granulation:</strong>
+      {{
+        $any(a).woundBed?.granulation?.present
+          ? (($any(a).woundBed?.granulation?.percent || 0) + '%')
+          : 'No'
+      }}
+    </div>
+    <div>
+      <strong>Slough:</strong>
+      {{
+        $any(a).woundBed?.slough?.present
+          ? (($any(a).woundBed?.slough?.percent || 0) + '%')
+          : 'No'
+      }}
+    </div>
+    <div><strong>Eschar:</strong> {{ $any(a).woundBed?.eschar ? 'Yes' : 'No' }}</div>
+    <div class="col-2">
+      <strong>Infection signs:</strong>
+      {{ $any(a).woundBed?.infection?.join(', ') || '—' }}
+    </div>
+    <div class="col-2">
+      <strong>Other:</strong>
+      {{ $any(a).woundBed?.other?.join(', ') || '—' }}
+    </div>
+    <div class="col-2" *ngIf="$any(a).woundBed?.otherNote">
+      <strong>Note:</strong> {{ $any(a).woundBed?.otherNote }}
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- D. Exudate -->
+  <h3>D. Exudate</h3>
+  <div class="grid-2">
+    <div><strong>Amount:</strong> {{ $any(a).exudate?.amount || '—' }}</div>
+    <div><strong>Type:</strong> {{ $any(a).exudate?.type || '—' }}</div>
+    <div><strong>Odor:</strong> {{ $any(a).exudate?.odor || '—' }}</div>
+  </div>
+
+  <hr>
+
+  <!-- E. Periwound -->
+  <h3>E. Periwound</h3>
+  <div class="grid-2">
+    <div><strong>Edges:</strong> {{ $any(a).periwound?.edges || '—' }}</div>
+    <div><strong>Induration:</strong> {{ $any(a).periwound?.induration || '—' }}</div>
+    <div><strong>Edema:</strong> {{ $any(a).periwound?.edema || '—' }}</div>
+    <div><strong>Temperature:</strong> {{ $any(a).periwound?.temperature || '—' }}</div>
+    <div class="col-2">
+      <strong>Surrounding:</strong> {{ $any(a).periwound?.surrounding?.join(', ') || '—' }}
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- F. Pain -->
+  <h3>F. Pain</h3>
+  <div class="grid-2">
+    <div><strong>Cognitive impairment:</strong> {{ $any(a).pain?.cognitivelyImpaired ? 'Yes' : 'No' }}</div>
+    <div><strong>Score:</strong> {{ ($any(a).pain?.score ?? '—') }}</div>
+    <div class="col-2"><strong>Frequency:</strong> {{ $any(a).pain?.frequency || '—' }}</div>
+    <div class="col-2" *ngIf="$any(a).pain?.notes"><strong>Notes:</strong> {{ $any(a).pain?.notes }}</div>
+  </div>
+
+  <hr>
+
+  <!-- G. Orders -->
+  <h3>G. Goal of Care</h3>
+  <p><strong>Goal:</strong> {{ $any(a).orders?.goalOfCare || '—' }}</p>
+
+  <hr>
+
+  <!-- H. Treatment -->
+  <h3>H. Treatment</h3>
+  <div class="grid-2">
+    <div><strong>Dressing appearance:</strong> {{ $any(a).treatment?.dressingAppearance || '—' }}</div>
+    <div><strong>Cleansing:</strong> {{ $any(a).treatment?.cleansing || '—' }}</div>
+    <div><strong>Debridement:</strong> {{ $any(a).treatment?.debridement || '—' }}</div>
+    <div><strong>Primary:</strong> {{ $any(a).treatment?.primary || '—' }}</div>
+    <div><strong>Secondary:</strong> {{ $any(a).treatment?.secondary || '—' }}</div>
+    <div><strong>Modalities:</strong> {{ $any(a).treatment?.modalities || '—' }}</div>
+    <div class="col-2"><strong>Additional care:</strong> {{ $any(a).treatment?.additionalCare?.join(', ') || '—' }}</div>
+  </div>
+
+  <hr>
+
+  <!-- I. Progress & Notifications -->
+  <h3>I. Progress & Notifications</h3>
+  <div class="grid-2">
+    <div><strong>Status:</strong> {{ $any(a).progress?.status || '—' }}</div>
+    <div><strong>Infection:</strong> {{ $any(a).progress?.infection || '—' }}</div>
+    <div class="col-2" *ngIf="$any(a).progress?.notes"><strong>Notes:</strong> {{ $any(a).progress?.notes }}</div>
+    <div class="col-2" *ngIf="$any(a).progress?.education"><strong>Education:</strong> {{ $any(a).progress?.education }}</div>
+  </div>
+
+  <hr>
+
+  <h3>Notifications</h3>
+  <div class="grid-2">
+    <div><strong>Practitioner:</strong> {{ $any(a).notifications?.practitioner || '—' }}</div>
+    <div><strong>Resident / RP:</strong> {{ $any(a).notifications?.residentOrRP || '—' }}</div>
+    <div><strong>Dietician:</strong> {{ $any(a).notifications?.dietician ? 'Yes' : 'No' }}</div>
+    <div><strong>Therapy:</strong> {{ $any(a).notifications?.therapy ? 'Yes' : 'No' }}</div>
+  </div>
+</mat-card>
+
+
+<ng-template #loading>
+  <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+</ng-template>

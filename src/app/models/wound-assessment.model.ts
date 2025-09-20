@@ -1,3 +1,6 @@
+import { Timestamp } from "rxjs";
+
+
 export type WoundType =
   | 'Abrasion'|'Abscess'|'Arterial'|'Blister'|'Bruise'|'Burn'|'Cancer Lesion'
   | 'Diabetic'|'Hematoma'|'Hidradenitis Suppurativa'|'Laceration'
@@ -7,7 +10,7 @@ export type WoundType =
 
 export interface WoundAssessment {
   id?: string;
-  createdAt: any; // Firebase Timestamp
+  createdAt?: any; // Firebase Timestamp
   createdByUid?: string;
   createdByName?: string;
   describe: {

@@ -1,11 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
+
 import { AuthService } from 'src/app/SERVICE/auth.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-//import firebase from 'firebase/compat/app';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,77 +12,64 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  email : string = '';
-  password: string = '';
-  /*private afAuth = inject(AngularFireAuth);
-  private http = inject(HttpClient);
-  userUid: string | null = null;
-  lastToken: string | null = null;
-  apiResult: any;*/
-  constructor(private auth:AuthService, private router:Router) { }
+  email = '';
+  password = '';
 
-  ngOnInit(): void {
-  }
-  login(){
-    if(this.email== ''){
-      alert('veuillez entrer votre email');
-    return;
+  loading = false;
+  errorMsg: string | null = null;
+
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private afs: AngularFirestore
+  ) {}
+
+  ngOnInit(): void {}
+
+  async login() {
+    this.errorMsg = null;
+
+    if (!this.email?.trim()) {
+      this.errorMsg = 'Veuillez entrer votre email.';
+      return;
     }
-    
-     if(this.password== ''){
-      alert('veuillez entrer votre mot de pass');
-    return;
-     }
-    this.auth.login(this.email, this.password);
-
-    this.email= '';
-    this.password='';
-    
-  }
-  /*async loginAnon() {
-    const cred = await this.afAuth.signInAnonymously();
-    console.log('Anon user:', cred.user?.uid);
-    console.log('idToken:', await cred.user?.getIdToken(true));
-  }
-
-  async loginGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const cred = await this.afAuth.signInWithPopup(provider);
-    console.log('Google user:', cred.user?.uid);
-    console.log('idToken:', await cred.user?.getIdToken(true));
-  }
-
-  callApi() {
-    const patientId = 'SOME_PATIENT_ID';
-    this.http.get(`${environment.apiBase}/wounds/${patientId}`).subscribe({
-      next: (r) => console.log('API OK', r),
-      error: (e) => console.error('API ERR', e)
-    });
-  }
-
-
-  // Ex. dans ton LoginComponent de debug*/
-/*createAssessment() {
-  const patientId = 'K3tWW91rDkqnciVk2Yry';
-  const data = {
-    describe: {
-      type: 'Pressure',
-      location: 'Heel',
-      acquired: 'In-House Acquired',
-      ageCategory: 'New'
+    if (!this.password?.trim()) {
+      this.errorMsg = 'Veuillez entrer votre mot de passe.';
+      return;
     }
-  };
-  this.http.post(`${environment.apiBase}/wounds`, { patientId, data })
-    .subscribe({
-      next: (r) => {
-        console.log('Created', r);
-        // Recharge la liste
-        this.http.get(`${environment.apiBase}/wounds/${patientId}`)
-          .subscribe(x => console.log('List after create:', x));
-      },
-      error: (e) => console.error('Create ERR', e),
-    });
-}*/
 
+    this.loading = true;
+    try {
+      // ⚠️ Assure-toi que AuthService expose bien cette méthode et qu’elle retourne un UserCredential (Firebase)
+      const cred = await this.auth.signInWithEmailAndPassword(this.email, this.password);
+      if (!cred?.user?.uid) throw new Error('Utilisateur introuvable après connexion');
 
+      // Récupère le profil pour lire les rôles
+      const doc = await firstValueFrom(this.afs.doc(`users/${cred.user.uid}`).valueChanges());
+      const roles: string[] =
+        (doc as any)?.roles || ((doc as any)?.role ? [(doc as any).role] : []);
+
+      // Redirection selon rôle
+      if (roles.includes('admin')) {
+        await this.router.navigateByUrl('/admin');
+      } else if (roles.includes('employer')) {
+        await this.router.navigateByUrl('/employer');
+      } else {
+        await this.router.navigateByUrl('/dashboard');
+      }
+      await this.afs.doc(`users/${cred.user.uid}`).set({
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      // Optionnel: nettoyer le formulaire
+      this.email = '';
+      this.password = '';
+    } catch (err: any) {
+      console.error('Login error:', err);
+      // Message utilisateur simplifié (tu peux mapper les codes Firebase si tu veux)
+      this.errorMsg = err?.message || 'Connexion impossible. Vérifiez vos identifiants.';
+    } finally {
+      this.loading = false;
+    }
+  }
 }

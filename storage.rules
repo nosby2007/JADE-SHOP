@@ -1,12 +1,214 @@
 rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+    /* -------------------- Helpers -------------------- */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // admin si:
+    //  - présent dans /admins/{uid}
+    //  - OU a custom-claims roles[] contenant 'admin'
+    //  - OU son doc users/{uid} a role='admin' ou roles[] contient 'admin'
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(db)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.roles is list && "admin" in request.auth.token.roles) ||
+        (
+          exists(/databases/$(db)/documents/users/$(request.auth.uid)) &&
+          (
+            get(/databases/$(db)/documents/users/$(request.auth.uid)).data.role == "admin" ||
+            (
+              "roles" in get(/databases/$(db)/documents/users/$(request.auth.uid)).data &&
+              "admin" in get(/databases/$(db)/documents/users/$(request.auth.uid)).data.roles
+            )
+          )
+        )
+      );
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // autorise serverTimestamp() ou timestamp
+    function isTS(x) {
+      return x is timestamp || x == request.time;
+    }
+
+    // pour payloads imbriqués sous /patients/{patientId}/...
+    function hasPatientIdMatchingPath(patientId) {
+      return request.resource.data.patientId == patientId;
+    }
+
+    /* -------------------- Admins collection -------------------- */
+    match /admins/{uid} {
+      // seuls les admins déjà admins peuvent gérer la liste d’admins
+      allow get, list, create, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    /* -------------------- Users collection -------------------- */
+    match /users/{uid} {
+      // lecture: admin voit tout; sinon l’utilisateur voit son propre doc
+      allow get:  if isAdmin() || isSelf(uid);
+      allow list: if isAdmin();
+
+      // création/suppression: admin uniquement
+      allow create: if isAdmin() && (request.resource.data.uid == uid) && isTS(request.resource.data.createdAt);
+      allow delete: if isAdmin();
+
+      // mise à jour:
+      // - admin: tout
+      // - self: seulement champs inoffensifs
+      allow update: if
+        (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+        (
+          isSelf(uid) &&
+          isTS(request.resource.data.updatedAt) &&
+          request.resource.data.diff(resource.data).changedKeys().hasOnly([
+            'displayName','photoURL','phoneNumber','status','isVerified'
+          ])
+        );
+    }
+
+    /* -------------------- Patients & sous-collections -------------------- */
+    match /patients/{patientId} {
+      // READ
+      // - admin : OK
+      // - autres : OK (si tu veux restreindre, remplace par isSelf(patientId))
+      allow get, list: if isAdmin() || isSignedIn();
+
+      // CREATE / UPDATE
+      // - admin : OK
+      // - autres : OK avec validations minimales
+      allow create: if
+        (isAdmin()) ||
+        (isSignedIn() &&
+          hasPatientIdMatchingPath(patientId) &&
+          request.resource.data.createdBy == request.auth.uid &&
+          isTS(request.resource.data.createdAt)
+        );
+
+      allow update: if
+        (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+        (isSignedIn() && isTS(request.resource.data.updatedAt));
+
+      // DELETE
+      allow delete: if isAdmin();
+
+      /* ---- assessments ---- */
+      match /assessments/{assessmentId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt) &&
+            isTS(request.resource.data.assessedAt)
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+
+      /* ---- wounds ---- */
+      match /wounds/{woundId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt)
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+
+      /* ---- media ---- */
+      match /media/{mediaId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt) &&
+            request.resource.data.url is string
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+
+      /* ---- carePlans ---- */
+      match /carePlans/{cpId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt)
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+
+      /* ---- tasks ---- */
+      match /tasks/{taskId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt)
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+
+      /* ---- notes ---- */
+      match /notes/{noteId} {
+        allow get, list: if isAdmin() || isSignedIn();
+        allow create: if
+          (isAdmin()) ||
+          (isSignedIn() &&
+            hasPatientIdMatchingPath(patientId) &&
+            request.resource.data.createdBy == request.auth.uid &&
+            isTS(request.resource.data.createdAt) &&
+            request.resource.data.text is string
+          );
+        allow update: if
+          (isAdmin() && isTS(request.resource.data.updatedAt)) ||
+          (isSignedIn() && isTS(request.resource.data.updatedAt));
+        allow delete: if isAdmin();
+      }
+    }
+
+    /* -------------------- Collections globales (exemples) -------------------- */
+    match /appointments/{appointmentId} {
+      allow get, list: if isAdmin() || isSignedIn();
+      allow create, update: if isAdmin() || isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    match /professionals/{professionalId} {
+      allow get, list: if isAdmin() || isSignedIn();
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
     }
   }
 }

@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Add user</h2>
+<mat-dialog-content [formGroup]="form" style="display:grid;gap:12px;min-width:420px;">
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Display name</mat-label>
+    <input matInput formControlName="displayName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="role">
+      <mat-option *ngFor="let r of roles" [value]="r">{{ r }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phoneNumber" placeholder="+237612345678">
+    <mat-hint>Format E.164: +[code pays][numéro], sans espaces</mat-hint>
+  </mat-form-field>
+  
+
+  <mat-form-field appearance="outline">
+    <mat-label>Photo URL</mat-label>
+    <input matInput formControlName="photoURL">
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="loading">
+    <mat-spinner *ngIf="loading" diameter="18" style="margin-right:8px;"></mat-spinner>
+    Create
+  </button>
+</mat-dialog-actions>

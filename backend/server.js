@@ -7,9 +7,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Endpoint pour générer un PDF
 const fs = require('fs');
-// Sauvegarder le fichier PDF localement pour inspection
-fs.writeFileSync('test-pdf.pdf', pdfBuffer);
-console.log('Fichier PDF généré et sauvegardé localement.');
 
 app.get('/api/generate-pdf', async (req, res) => {
     try {
@@ -49,6 +46,10 @@ app.get('/api/generate-pdf', async (req, res) => {
         const page = await browser.newPage();
         await page.setContent(html);
         const pdfBuffer = await page.pdf({ format: 'A4' });
+        
+        // Sauvegarder le fichier PDF localement pour inspection
+        fs.writeFileSync('rapport-' + Date.now() + '.pdf', pdfBuffer);
+        console.log('Fichier PDF généré et sauvegardé localement.');
 
         await page.waitForTimeout(2000); // Attendre 2 secondes
 

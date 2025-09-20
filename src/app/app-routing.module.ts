@@ -120,11 +120,12 @@ const routes: Routes = [
   { path: 'patients/:id/wounds', component: PatientListComponent },
   { path: 'patients/:id/wounds/new', component: AssessmentFormComponent },
   { path: 'patients/:id/wounds/:assessmentId', component: PatientDetailComponent},
-  { path: '', redirectTo: 'patients', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'patients', loadChildren: () => import('./patients/patients.module').then(m => m.PatientsModule) },
 
   { path: 'skin-wound', loadChildren: () => import('./features/skin-wound/skin-wound.module').then(m => m.SkinWoundModule) },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
 
   { path: '**', redirectTo: 'patients' },
 

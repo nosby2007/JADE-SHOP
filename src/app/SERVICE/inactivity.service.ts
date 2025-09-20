@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class InactivityService {
   private timeout: any;
   private countdownInterval: any;
-  private readonly timeoutDuration = 2 * 60 * 1000; // 2 minutes
+  private readonly timeoutDuration = 2 * 60 * 10000; // 2 minutes
   private readonly countdownDuration = 10; // 10 secondes pour confirmer
 
   constructor(private router: Router, private ngZone: NgZone, private dialog:MatDialog, private auth: AngularFireAuth,) {

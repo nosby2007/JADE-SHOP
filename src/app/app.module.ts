@@ -116,6 +116,7 @@ import { AnbiotiqueModalComponent } from './FORMULAIRE/anbiotique-modal/anbiotiq
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { AuthTokenInterceptor } from './core/token.interceptor';
+import { REGION } from '@angular/fire/compat/functions';
 
 
 
@@ -258,6 +259,7 @@ const routes: Routes = [
   ],
   providers: [ {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}, { provide: LocationStrategy, useClass: HashLocationStrategy }
     ,  { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
+    { provide: REGION, useValue: 'us-central1' }
   ],
   bootstrap: [AppComponent]
 })

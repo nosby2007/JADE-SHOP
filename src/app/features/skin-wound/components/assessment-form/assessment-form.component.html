@@ -9,7 +9,26 @@
     </div>
   
     <form [formGroup]="form" (ngSubmit)="save()" class="grid">
-  
+      <!-- I. Photo -->
+<mat-card class="section">
+  <mat-card-title>Photo</mat-card-title>
+
+  <div class="row">
+    <button type="button" mat-stroked-button (click)="fileInput.click()" [disabled]="uploading">
+      <mat-icon>photo_camera</mat-icon>&nbsp;Sélectionner une photo
+    </button>
+    <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+
+    <span *ngIf="file" style="margin-left:1rem">{{ file.name }}</span>
+  </div>
+
+  <div *ngIf="file" style="margin-top:12px">
+    <img [src]="file ? (file | filePreview) : null" alt="Preview" style="max-width: 280px; border-radius:8px;">
+  </div>
+
+  <mat-progress-bar *ngIf="uploading" mode="indeterminate" style="margin-top:8px"></mat-progress-bar>
+</mat-card>
+
       <!-- A. Describe -->
       <mat-card class="section">
         <mat-card-title>A. Describe</mat-card-title>

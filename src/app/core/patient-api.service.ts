@@ -1,13 +1,13 @@
+// src/app/core/patient-api.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
 
 export interface Patient {
   id?: string;
   name: string;
   gender?: 'male' | 'female' | 'other' | string;
-  dob?: any;              // string | Date | Firestore Timestamp
+  dob?: string | Date | { seconds: number; nanoseconds: number } | any;
   phone?: string;
   email?: string;
   address?: string;
@@ -16,20 +16,85 @@ export interface Patient {
   docteur?: string;
   raison?: string;
   paiement?: string;
-  createdAt?: any;        // Firestore Timestamp
+  createdAt?: any;
+  updatedAt?: any;      // ← utile si l’API renvoie ce champ
   payor?: string;
   uin?: string;
-  ssn?: string
-
+  ssn?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class PatientApiService {
   private http = inject(HttpClient);
   private base = `${environment.apiBase}/patients`;
-  list()   { return this.http.get<Patient[]>(this.base); }                    // GET /api/patients
-  get(id: string) { return this.http.get<Patient>(`${this.base}/${id}`); }   // GET /api/patients/:id
-  create(data: Partial<Patient>) { return this.http.post<{id:string}>(this.base, data); } // POST /api/patients
-  update(id: string, patch: Partial<Patient>) { return this.http.patch<{ok:true}>(`${this.base}/${id}`, patch); }
-  remove(id: string) { return this.http.delete<{ok:true}>(`${this.base}/${id}`); }
+
+  // --------- helpers payload ---------
+  private toIsoOrUndefined(d: unknown): string | undefined {
+    if (!d) return undefined;
+    // Firestore Timestamp compat
+    if (typeof (d as any)?.toDate === 'function') {
+      const date = (d as any).toDate();
+      return isNaN(date?.getTime?.()) ? undefined : date.toISOString();
+    }
+    // {seconds, nanoseconds}
+    if (typeof (d as any)?.seconds === 'number') {
+      const date = new Date((d as any).seconds * 1000);
+      return isNaN(date.getTime()) ? undefined : date.toISOString();
+    }
+    // Date
+    if (d instanceof Date) {
+      return isNaN(d.getTime()) ? undefined : d.toISOString();
+    }
+    // string parsable
+    if (typeof d === 'string') {
+      const date = new Date(d);
+      return isNaN(date.getTime()) ? undefined : date.toISOString();
+    }
+    return undefined;
+  }
+
+  private stripNullish<T extends Record<string, any>>(obj: T): Partial<T> {
+    const out: any = {};
+    Object.keys(obj || {}).forEach(k => {
+      const v = (obj as any)[k];
+      if (v !== null && v !== undefined) out[k] = v;
+    });
+    return out;
+  }
+
+  // Normalise le payload envoyé à l’API (dob → ISO, enlève null/undefined)
+  private buildPayload(p: Partial<Patient>): Partial<Patient> {
+    const dobIso = this.toIsoOrUndefined(p.dob);
+    const payload = {
+      ...p,
+      dob: dobIso, // peut être undefined si invalide
+    };
+    return this.stripNullish(payload);
+  }
+
+  // --------- endpoints ---------
+  list() {
+    return this.http.get<Patient[]>(this.base);
+  }
+
+  get(id: string) {
+    return this.http.get<Patient>(`${this.base}/${id}`);
+  }
+
+  create(data: Partial<Patient>) {
+    const payload = this.buildPayload(data);
+    // createdAt est ajouté côté backend (voir ta function POST /patients)
+    return this.http.post<{ id: string }>(this.base, payload);
+  }
+
+  update(id: string, patch: Partial<Patient>) {
+    const payload = this.buildPayload(patch);
+    // on ajoute un updatedAt ISO pour homogénéiser (ton backend l’acceptera tel quel)
+    const withUpdated = { ...payload, updatedAt: new Date().toISOString() };
+    return this.http.patch<{ ok: true }>(`${this.base}/${id}`, withUpdated);
+  }
+
+  remove(id: string) {
+    return this.http.delete<{ ok: true }>(`${this.base}/${id}`);
+  }
 }

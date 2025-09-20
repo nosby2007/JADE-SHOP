@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WoundAssessmentService } from 'src/app/SERVICE/wound-assessment.service';
@@ -7,6 +7,7 @@ import { WoundAssessment, WoundType } from 'src/app/models/wound-assessment.mode
 import firebase from 'firebase/compat/app';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FilePreviewPipe } from 'src/app/file-preview.pipe';
 
 const STAGES = ['Stage 1','Stage 2','Stage 3','Stage 4','Deep Tissue Injury','Mucosal Membrane','Unstageable'] as const;
 type Stage = typeof STAGES[number];
@@ -26,6 +27,10 @@ export class AssessmentFormComponent implements OnInit {
     'Fever','Increased drainage','Increased pain','Malaise',
     'Redness/inflammation','Streaking','Warmth','None'
   ];
+  @Input() patientId!: string;
+
+  uploading = false;
+  file?: File;
 
   woundOther = [
     'Bleeding','Bone','Fibrin','Gangrene','Hematoma','Hypergranulated',
@@ -75,8 +80,6 @@ export class AssessmentFormComponent implements OnInit {
     'Pain management','Education done'
   ];
   
-
-  patientId!: string;
   assessmentId?: string;
   types: WoundType[] = ['Pressure','Skin Tear','Diabetic','Venous','Arterial','Surgical','MASD','Rash','Blister','Laceration','Open Lesion','Hematoma','Burn','Abscess','Other'];
  
@@ -166,11 +169,19 @@ export class AssessmentFormComponent implements OnInit {
     residentOrRP: [''],
     dietician: [false],
     therapy: [false]
-  })
+  }),
+  photoURL: [''] 
 });
 
 
   constructor(private fb: FormBuilder, private ar: ActivatedRoute, private svc: WoundAssessmentService, private router: Router) {}
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.file = input.files[0];
+    }
+  }
 
   ngOnInit(): void {
     this.patientId = this.ar.snapshot.paramMap.get('id')!;
@@ -216,7 +227,6 @@ async save() {
 
   const payload: WoundAssessment = {
     createdAt: firebase.firestore.Timestamp.now(),
-
     describe: {
       type: raw.describe.type as WoundType,
       stage: this.coerceStage(raw.describe.stage),
@@ -226,7 +236,6 @@ async save() {
       exactDate: raw.describe.exactDate ?? undefined,
       stagedBy: this.coerceStagedBy(raw.describe.stagedBy),
     },
-
     measurements: {
       length: Number(raw.measurements.length) || 0,
       width: Number(raw.measurements.width) || 0,
@@ -235,7 +244,6 @@ async save() {
       undermining: raw.measurements.undermining || '',
       tunneling: raw.measurements.tunneling || '',
     },
-
     woundBed: {
       epithelial: !!raw.woundBed.epithelial,
       granulation: {
@@ -249,15 +257,13 @@ async save() {
       eschar: !!raw.woundBed.eschar,
       infection: raw.woundBed.infection ?? [],
       other: raw.woundBed.other ?? [],
-      otherNote: raw.woundBed.otherNote || undefined, // sera supprimé si vide
+      otherNote: raw.woundBed.otherNote || undefined,
     },
-
     exudate: {
       amount: raw.exudate.amount as 'None'|'Light'|'Moderate'|'Heavy',
       type: raw.exudate.type as 'None'|'Serous'|'Sanguineous/Bloody'|'Serosanguineous'|'Purulent'|'Seropurulent',
       odor: raw.exudate.odor as 'None'|'Faint'|'Moderate'|'Strong',
     },
-
     periwound: {
       edges: raw.periwound.edges as 'Attached'|'Non-Attached'|'Rolled Edge (Epibole)'|'Epithelialization',
       surrounding: raw.periwound.surrounding ?? [],
@@ -265,18 +271,13 @@ async save() {
       edema: raw.periwound.edema as 'No swelling or edema'|'Non-pitting < 4cm'|'Non-pitting > 4cm'|'Pitting < 4 cm'|'Pitting > 4 cm',
       temperature: raw.periwound.temperature as 'Cool'|'Normal'|'Warm'|'Hot',
     },
-
     pain: {
       cognitivelyImpaired: !!raw.pain.cognitivelyImpaired,
       score: raw.pain.score ?? undefined,
       frequency: (raw.pain.frequency || 'None') as 'None'|'Intermittent'|'At Dressing'|'Continuous',
       notes: raw.pain.notes || undefined,
     },
-
-    orders: {
-      goalOfCare: raw.orders.goalOfCare as 'Healable'|'Slow to Heal'|'Monitor/Manage',
-    },
-
+    orders: { goalOfCare: raw.orders.goalOfCare as 'Healable'|'Slow to Heal'|'Monitor/Manage' },
     treatment: {
       dressingAppearance: raw.treatment.dressingAppearance as 'Intact'|'Missing'|'Dry'|'Saturated'|'Leaking'|'None',
       cleansing: raw.treatment.cleansing || 'Normal Saline',
@@ -288,33 +289,46 @@ async save() {
       modalities: raw.treatment.modalities || 'None',
       additionalCare: raw.treatment.additionalCare ?? [],
     },
-
     progress: {
       status: raw.progress.status as 'New'|'Improving'|'Stable'|'Stalled'|'Deteriorating'|'Monitoring'|'Resolved',
       infection: raw.progress.infection as 'None'|'Suspected'|'MD/Provider diagnosed infection',
       notes: raw.progress.notes || undefined,
       education: raw.progress.education || undefined,
     },
-
     notifications: {
       practitioner: raw.notifications.practitioner || undefined,
       residentOrRP: raw.notifications.residentOrRP || undefined,
       dietician: !!raw.notifications.dietician,
       therapy: !!raw.notifications.therapy,
     },
+    // photoURL ajouté plus bas si uploadé
   };
 
-  // 🔧 enlève toutes les clés undefined
+  // 1) upload éventuel
+  try {
+    if (this.file) {
+      this.uploading = true;
+      const url = await this.svc.uploadPhoto(this.patientId, this.file);
+      (payload as any).photoURL = url;
+      await this.svc.createMedia(this.patientId, {
+        url,
+        kind: 'wound-photo',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  } finally {
+    this.uploading = false;
+  }
+
+  // 2) nettoyage et create
   const payloadClean = this.stripUndefined(payload);
-
-  // (facultatif) vérifier ce qui part
-  // console.log('payloadClean', JSON.stringify(payloadClean, null, 2));
-
-  // ✅ N'APPELLE QUE CETTE LIGNE :
   await this.svc.create(this.patientId, payloadClean);
 
+  // 3) redirect
   this.router.navigate(['/patients', this.patientId, 'wounds']);
 }
+
+
 
 
   // Export PDF (simple capture du formulaire)

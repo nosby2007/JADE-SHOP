@@ -1,0 +1,27 @@
+<!-- src/app/features/skin-wound/pages/media-gallery/media-gallery.component.html -->
+<mat-card>
+    <div class="flex-between">
+      <h2>Galerie des photos</h2>
+      <a mat-button [routerLink]="['/skin-wound', patientId, 'assessments']">Retour aux évaluations</a>
+    </div>
+  
+    <div class="grid">
+      <ng-container *ngIf="items$ | async as items; else loading">
+        <ng-container *ngIf="items.length; else empty">
+          <a *ngFor="let m of items"
+             [href]="m.url" target="_blank" rel="noopener"
+             class="thumb" title="{{ m.kind || 'photo' }}">
+            <img [src]="m.url" alt="wound photo">
+          </a>
+        </ng-container>
+      </ng-container>
+    </div>
+  
+    <ng-template #loading>
+      <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+    </ng-template>
+    <ng-template #empty>
+      <p>Aucune photo pour ce patient pour le moment.</p>
+    </ng-template>
+  </mat-card>
+  

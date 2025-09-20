@@ -27,6 +27,11 @@ import { AssessmentDetailComponent } from './pages/assessment-detail/assessment-
 
 import { WoundDetailComponent } from './pages/wound-detail/wound-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { SharedModule } from 'src/app/shared/shared.module';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatDividerModule } from '@angular/material/divider';
+import { MediaGalleryComponent } from './pages/media-gallery/media-gallery.component';
 
 
 @NgModule({
@@ -38,6 +43,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
         AssessmentDetailComponent,
         WoundDetailComponent,
         DashboardComponent,
+        MediaGalleryComponent
         
   ],
   imports: [
@@ -61,7 +67,11 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     MatPaginatorModule,
     MatSortModule,
 
-    SkinWoundRoutingModule
+    SkinWoundRoutingModule,
+    SharedModule,
+    AngularFireStorageModule,
+    MatProgressBarModule,
+    MatDividerModule
   ]
 })
 export class SkinWoundModule {}

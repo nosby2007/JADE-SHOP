@@ -1,0 +1,27 @@
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  
+  button[mat-raised-button] {
+    min-width: 100px;
+  }
+  
+  mat-spinner {
+    margin-right: 8px;
+  }
+  

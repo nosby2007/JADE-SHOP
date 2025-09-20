@@ -6,6 +6,7 @@ import { Patient } from '../patient.model';
 import { collectionData } from '@angular/fire/firestore';
 import { addDoc, doc, updateDoc } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class PatientService {
   patient$: Observable<Patient[]>;
   
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore, private afs: AngularFirestore, private afAuth: AngularFireAuth) {
     this.patientCollection = this.firestore.collection<Patient>('patients');
     this.patient$ = this.patientCollection.snapshotChanges().pipe(
       map(actions =>
@@ -35,13 +36,25 @@ export class PatientService {
       .pipe(map(d => (d ? { id, ...d } : undefined)));
   }
 
-  async create(data: Partial<Patient>) {
-    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    return this.firestore.collection('patients').add({ ...data, createdAt });
+  async create(data: any) {
+    const user = await this.afAuth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+
+    const payload = {
+      ...data,
+      createdBy: user.uid,              // 🔴 règles
+      createdAt: now,                   // 🔴 règles (si tu les vérifies)
+      updatedAt: now,                   // cohérence
+    };
+
+    return this.afs.collection('patients').add(payload);
   }
 
-  async update(id: string, patch: Partial<Patient>) {
-    return this.firestore.doc(`patients/${id}`).update(patch);
+  async update(id: string, data: any) {
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    // merge + updatedAt automatique
+    return this.afs.doc(`patients/${id}`).set({ ...data, updatedAt: now }, { merge: true });
   }
 
   list(): Observable<Patient[]> {

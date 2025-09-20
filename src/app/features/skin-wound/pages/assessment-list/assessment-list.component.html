@@ -1,46 +1,55 @@
 <mat-card>
-    <div class="flex-between">
-      <h2>Évaluations – Patient {{ patientId }}</h2>
-      <div>
-        <button mat-stroked-button (click)="newAssessment()">
-          <mat-icon>add</mat-icon>&nbsp;Nouvelle évaluation
-        </button>
-        <a mat-button [routerLink]="['/patients', patientId]">Retour patient</a>
-      </div>
+  <div class="header flex-between">
+    <h2>Évaluations – Patient {{ patientId}}</h2>
+    <div>
+      <button mat-stroked-button color="primary" (click)="newAssessment()">
+        <mat-icon>add</mat-icon>&nbsp;Nouvelle évaluation
+      </button>
+      <a mat-button [routerLink]="['/patients', patientId]">Retour patient</a>
     </div>
-  
-    <ng-container *ngIf="items$ | async as items; else loading">
-      <table mat-table [dataSource]="items">
+  </div>
+
+  <ng-container *ngIf="items$ | async as items; else loading">
+    <div class="table-container">
+      <table mat-table [dataSource]="items" class="mat-elevation-z2 full-table">
+
+        <!-- ID -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>Id</th>
-          <td mat-cell *matCellDef="let it">{{ it.id }}</td>
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let it">{{ it.describe.acquired}}</td>
         </ng-container>
-  
+
+        <!-- Date -->
         <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <th mat-header-cell *matHeaderCellDef>Type</th>
           <td mat-cell *matCellDef="let it">
-            {{ it.createdAt?.toDate?.() || it.createdAt | date:'short' }}
+            {{ it.describe.type}}
           </td>
         </ng-container>
-  
+
+        <!-- Actions -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let it">
-            <a mat-button color="primary"
-               [routerLink]="['/skin-wound', patientId, 'assessments', it.id]">Ouvrir</a>
-            <button mat-button color="warn" (click)="remove(it)">Supprimer</button>
+          <td mat-cell *matCellDef="let it" class="actions">
+            <a mat-stroked-button color="primary"
+               [routerLink]="['/skin-wound', patientId, 'assessments', it.id]">
+              <mat-icon>visibility</mat-icon>&nbsp;Ouvrir
+            </a>
+            <button mat-stroked-button color="warn" (click)="remove(it)">
+              <mat-icon>delete</mat-icon>&nbsp;Supprimer
+            </button>
           </td>
         </ng-container>
-  
+
         <tr mat-header-row *matHeaderRowDef="['id','date','actions']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['id','date','actions']"></tr>
       </table>
-  
-      <div *ngIf="!items.length" class="muted mt-3">Aucune évaluation.</div>
-    </ng-container>
-  
-    <ng-template #loading>
-      <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
-    </ng-template>
-  </mat-card>
-  
+    </div>
+
+    <div *ngIf="!items.length" class="muted mt-3">Aucune évaluation.</div>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+  </ng-template>
+</mat-card>

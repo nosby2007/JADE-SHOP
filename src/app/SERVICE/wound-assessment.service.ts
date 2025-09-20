@@ -1,24 +1,49 @@
 // src/app/SERVICE/wound-assessment.service.ts
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 import { environment } from 'src/environments/environment';
 import { WoundAssessment } from '../models/wound-assessment.model';
 
+type WoundAssessmentCreate = Partial<WoundAssessment>;
+type WoundAssessmentPatch  = Partial<WoundAssessment>;
+type WoundAssessmentView = WoundAssessment & {
+  id?: string;
+  photoURL?: string;
+  createdAt?: any;
+  assessedAt?: any;
+  updatedAt?: any;
+};
 @Injectable({ providedIn: 'root' })
 export class WoundAssessmentService {
-  private afs = inject(AngularFirestore);
+  private afs  = inject(AngularFirestore);
   private http = inject(HttpClient);
   private base = environment.apiBase; // ex: https://us-central1-.../api
 
-  /** -------- READS: Firestore (live) -------- */
+  constructor(private afAuth: AngularFireAuth, private storage: AngularFireStorage,) {}
+
+  item$!: Observable<WoundAssessmentView | undefined>;
+
+  
+  // ✅ upload d’une photo et retour de l’URL publique
+  async uploadPhoto(patientId: string, file: File): Promise<string> {
+    const safeName = file.name.replace(/\s+/g, '_');
+    const path = `patients/${patientId}/wounds/${Date.now()}_${safeName}`;
+    const task = await this.storage.upload(path, file);
+    return await task.ref.getDownloadURL();
+  }
+  /* ---------------- READS (live) ---------------- */
+
   list(patientId: string) {
     return this.afs
       .collection<WoundAssessment>(
-        `patients/${patientId}/woundAssessments`,
+        `patients/${patientId}/woundAssessments`,   // ✅ chemin corrigé
         ref => ref.orderBy('createdAt', 'desc')
       )
       .snapshotChanges()
@@ -31,75 +56,112 @@ export class WoundAssessmentService {
         )
       );
   }
-
+  
   get(patientId: string, assessmentId: string) {
     return this.afs
-      .doc<WoundAssessment>(`patients/${patientId}/woundAssessments/${assessmentId}`)
+      .doc<WoundAssessment>(`patients/${patientId}/woundAssessments/${assessmentId}`) // ✅
       .valueChanges();
   }
-
-  /** -------- WRITES: API first, Firestore fallback -------- */
-
-  /** Crée une évaluation. Retourne l'id créé. */
-  async create(patientId: string, data: WoundAssessment): Promise<string> {
-    const clean = this.stripUndefined(data);
-    // 1) Tente via API (crée et renvoie { id })
+  
+  async createMedia(patientId: string, data: any) {
+    return this.afs.collection(`patients/${patientId}/media`).add(data);
+  }
+  
+  async create(patientId: string, data: WoundAssessmentCreate): Promise<string> {
+    const user = await this.afAuth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+  
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    const clean = this.stripUndefined<WoundAssessmentCreate>(data);
+  
+    const payload = {
+      ...clean,
+      patientId,
+      createdBy: user.uid,
+      createdAt: now,
+      updatedAt: now,
+      assessedAt: (clean as any)?.assessedAt ?? now,
+    };
+  
     try {
       const res = await firstValueFrom(
-        this.http.post<{ id: string }>(`${this.base}/wounds`, { patientId, data: clean })
+        this.http.post<{ id: string }>(`${this.base}/woundAssessments`, { patientId, data: payload })
       );
       return res.id;
-    } catch (e) {
-      // 2) Fallback Firestore direct
-      const createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      const ref = await this.afs
-        .collection(`patients/${patientId}/woundAssessments`)
-        .add({ ...clean, createdAt });
+    } catch {
+      const ref = await this.afs.collection(`patients/${patientId}/woundAssessments`).add(payload); // ✅
       return ref.id;
     }
   }
-
-  /** Met à jour partiellement une évaluation */
-  async update(
-    patientId: string,
-    assessmentId: string,
-    patch: Partial<WoundAssessment>
-  ): Promise<void> {
-    const clean = this.stripUndefined(patch);
-    // 1) API
+  
+  async update(patientId: string, assessmentId: string, patch: WoundAssessmentPatch): Promise<void> {
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    const clean = this.stripUndefined<WoundAssessmentPatch>(patch);
+  
     try {
       await firstValueFrom(
         this.http.patch<{ ok: true }>(
-          `${this.base}/wounds/${patientId}/${assessmentId}`,
-          clean
+          `${this.base}/woundAssessments/${patientId}/${assessmentId}`,
+          { ...clean, updatedAt: now }
         )
       );
-      return;
-    } catch (e) {
-      // 2) Fallback Firestore
+    } catch {
       await this.afs
-        .doc(`patients/${patientId}/woundAssessments/${assessmentId}`)
-        .update(clean as any);
+        .doc(`patients/${patientId}/woundAssessments/${assessmentId}`) // ✅
+        .set({ ...clean, updatedAt: now } as any, { merge: true });
     }
   }
+  
 
-  /** Supprime une évaluation */
+  /* -------------- WRITES: API-first / FS fallback -------------- */
+
+ 
+
+  /** Supprime un assessment */
   async remove(patientId: string, assessmentId: string): Promise<void> {
     // 1) API
     try {
       await firstValueFrom(
-        this.http.delete<{ ok: true }>(`${this.base}/wounds/${patientId}/${assessmentId}`)
+        this.http.delete<{ ok: true }>(`${this.base}/assessments/${patientId}/${assessmentId}`)
       );
       return;
-    } catch (e) {
+    } catch {
       // 2) Fallback Firestore
-      await this.afs
-        .doc(`patients/${patientId}/woundAssessments/${assessmentId}`)
-        .delete();
+      await this.afs.doc(`patients/${patientId}/assessments/${assessmentId}`).delete();
     }
   }
 
-  /** -------- Utils -------- */
+  /* -------------- (Optionnel) Wounds CRUD si tu en as besoin -------------- */
+
+  /** Crée une *wound* sous patients/{patientId}/wounds (règles déjà couvertes) */
+  async createWound(patientId: string, data: any): Promise<string> {
+    const user = await this.afAuth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+
+    const now   = firebase.firestore.FieldValue.serverTimestamp();
+    const clean = this.stripUndefined<any>(data);
+
+    const payload = {
+      ...clean,
+      patientId,
+      createdBy: user.uid,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    try {
+      const res = await firstValueFrom(
+        this.http.post<{ id: string }>(`${this.base}/wounds`, { patientId, data: payload })
+      );
+      return res.id;
+    } catch {
+      const ref = await this.afs.collection(`patients/${patientId}/wounds`).add(payload);
+      return ref.id;
+    }
+  }
+
+  /* ---------------- Utils ---------------- */
+
   /** supprime récursivement les `undefined` (Firestore n’en veut pas) */
   private stripUndefined<T>(val: T): T {
     return this._strip(val) as T;

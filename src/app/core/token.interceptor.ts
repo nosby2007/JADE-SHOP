@@ -12,6 +12,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!req.url.startsWith(environment.apiBase)) return next.handle(req);
+  
     return this.afAuth.authState.pipe(
       take(1),
       switchMap(user => {
@@ -25,4 +26,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       })
     );
   }
+
+  
 }
