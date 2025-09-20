@@ -9,16 +9,12 @@ export class AdminGuard implements CanActivate {
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {}
 
   canActivate() {
-    return this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (!user) return of(false);
-        return this.afs.doc(`admins/${user.uid}`).get().pipe(
-          map(snap => {
-            const ok = snap.exists;
-            if (!ok) this.router.navigateByUrl('/'); // redirige si non admin
-            return ok;
-          })
-        );
+    return this.afAuth.idTokenResult.pipe(
+      map(res => {
+        const roles = (res?.claims?.['roles'] as string[]) || [];
+        const ok = roles.includes('admin');
+        if (!ok) this.router.navigateByUrl('/login');
+        return ok;
       })
     );
   }

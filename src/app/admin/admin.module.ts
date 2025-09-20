@@ -18,9 +18,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminUserListComponent } from './pages/admin-user-list/admin-user-list.component';
 import { AddUserDialogComponent } from './components/add-user-dialog/add-user-dialog.component';
+import { AdminShellComponent } from './shell/admin-shell/admin-shell.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { AdminDashbordComponent } from './pages/admin-dashboard/admin-dashbord/admin-dashbord.component';
+import { AdminGuard } from './guards/admin.guard';
 
 @NgModule({
-  declarations: [AdminUserListComponent, AddUserDialogComponent],
+  declarations: [AdminUserListComponent, AddUserDialogComponent, AdminShellComponent, AdminDashbordComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -38,7 +44,12 @@ import { AddUserDialogComponent } from './components/add-user-dialog/add-user-di
     MatTableModule,
     MatChipsModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
-  ]
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule
+  ],
+  providers: [AdminGuard],
 })
+
 export class AdminModule {}

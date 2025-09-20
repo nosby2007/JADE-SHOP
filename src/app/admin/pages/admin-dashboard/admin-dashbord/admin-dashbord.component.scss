@@ -1,0 +1,27 @@
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .kpi {
+    padding: 16px;
+    text-align: center;
+  }
+  .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .kpi-label {
+    color: #666;
+  }
+  
+  .panel { padding: 0; }
+  .panel-head {
+    padding: 12px 16px; display:flex; justify-content:space-between; align-items:center;
+    border-bottom: 1px solid #eee;
+  }
+  .table-wrap { padding: 12px 16px; }
+  .full-table { width: 100%; }
+  
