@@ -24,6 +24,15 @@ import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { AdminDashbordComponent } from './pages/admin-dashboard/admin-dashbord/admin-dashbord.component';
 import { AdminGuard } from './guards/admin.guard';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
+
 
 @NgModule({
   declarations: [AdminUserListComponent, AddUserDialogComponent, AdminShellComponent, AdminDashbordComponent],
@@ -47,7 +56,14 @@ import { AdminGuard } from './guards/admin.guard';
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatDividerModule,
+    NgxEchartsModule.forRoot({ echarts }),
+
   ],
   providers: [AdminGuard],
 })

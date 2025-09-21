@@ -1,0 +1,71 @@
+<mat-card class="shell">
+  <div class="head flex-between">
+    <div class="title">
+      <h2 class="m0">Dossier patient</h2>
+      <div class="muted">ID: {{ patientId }}</div>
+    </div>
+
+    <a mat-stroked-button [routerLink]="['/nurse','patients']">
+      <mat-icon>arrow_back</mat-icon>&nbsp;Retour liste
+    </a>
+  </div>
+
+  <mat-tab-group>
+    <!-- Onglet 1 : Infos -->
+    <mat-tab label="Infos">
+      <div class="pad">
+        <ng-container *ngIf="patient$ | async as p; else loadingTpl">
+          <div class="grid">
+            <div>
+              <div class="label">Nom</div>
+              <div class="val">{{ p?.name || '—' }}</div>
+            </div>
+            <div>
+              <div class="label">Genre</div>
+              <div class="val">{{ p?.gender || '—' }}</div>
+            </div>
+            <div>
+              <div class="label">Date de naissance</div>
+              <div class="val">{{ toDate(p?.dob) | date:'yyyy-MM-dd' }}</div>
+            </div>
+            <div>
+              <div class="label">Téléphone</div>
+              <div class="val">{{ p?.phone || '—' }}</div>
+            </div>
+            <div class="span-2">
+              <div class="label">Adresse</div>
+              <div class="val">{{ p?.address || '—' }}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+
+    <!-- Onglet 2 : Prescriptions -->
+    <mat-tab label="Prescriptions">
+      <div class="pad">
+        <app-nurse-prescriptions></app-nurse-prescriptions>
+      </div>
+    </mat-tab>
+
+    <!-- Onglet 3 : Tâches -->
+    <mat-tab label="Tâches">
+      <div class="pad">
+        <app-nurse-tasks></app-nurse-tasks>
+      </div>
+    </mat-tab>
+
+    <!-- Onglet 4 : Assessments (placeholder) -->
+    <mat-tab label="Assessments">
+      <div class="pad">
+        <div class="muted">À venir : UDA/Assessments type PCC (intégration écran wound/évaluations).</div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+
+<ng-template #loadingTpl>
+  <div class="center pad">
+    <mat-spinner diameter="36"></mat-spinner>
+  </div>
+</ng-template>

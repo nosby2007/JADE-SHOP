@@ -1,0 +1,85 @@
+<mat-card>
+  <h3 class="mb-2">Tâches infirmières</h3>
+
+  <!-- Le form existe toujours (créé dans la propriété) -->
+  <form [formGroup]="form" (ngSubmit)="createTask()">
+
+    <!-- Nouveau formulaire de création -->
+    <div formGroupName="newTask" class="grid">
+      <mat-form-field class="span-2">
+        <mat-label>Titre</mat-label>
+        <input matInput formControlName="title" placeholder="Prise de constantes, pansement..." />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Priorité</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option value="low">Faible</mat-option>
+          <mat-option value="normal">Normale</mat-option>
+          <mat-option value="high">Haute</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Assignée à</mat-label>
+        <input matInput formControlName="assignedTo" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Échéance</mat-label>
+        <input matInput [matDatepicker]="dp" formControlName="dueAt" />
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="span-2">
+        <mat-label>Notes</mat-label>
+        <textarea matInput rows="2" formControlName="notes"></textarea>
+      </mat-form-field>
+
+      <div formGroupName="repeat" class="repeat-row">
+        <mat-checkbox formControlName="enabled">Répéter</mat-checkbox>
+
+        <mat-form-field>
+          <mat-label>Interval</mat-label>
+          <input matInput type="number" min="1" formControlName="interval"
+                 [disabled]="!repeatFG.get('enabled')?.value">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Unité</mat-label>
+          <mat-select formControlName="unit" [disabled]="!repeatFG.get('enabled')?.value">
+            <mat-option value="day">Jour(s)</mat-option>
+            <mat-option value="week">Semaine(s)</mat-option>
+            <mat-option value="month">Mois</mat-option>
+            <mat-option value="year">Année(s)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Début</mat-label>
+          <input matInput [matDatepicker]="dp2" formControlName="startDate"
+                 [disabled]="!repeatFG.get('enabled')?.value">
+          <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+          <mat-datepicker #dp2></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="actions span-2">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || newTaskFG.invalid">
+          <mat-spinner *ngIf="loading" diameter="18"></mat-spinner>
+          <span *ngIf="!loading"><mat-icon>save</mat-icon>&nbsp;Créer</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Si tu affiches une liste éditable (facultatif) -->
+    
+    <div formArrayName="tasks">
+      <div *ngFor="let g of tasksFA.controls; let i = index" [formGroupName]="i">
+        ... champs ...
+      </div>
+    </div>
+    
+  </form>
+</mat-card>
