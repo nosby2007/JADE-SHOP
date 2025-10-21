@@ -1,37 +1,76 @@
-<body>
-  <div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="row w-100">
-    <div class="col-12 col-md-8 col-lg-4 mx-auto">
-      <div class="card shadow">
-        <div class="card-body">
-          <form>
-            <div class="mb-3 text-center">
-              <h1 class="text-white text-center text-uppercase fs-1 fw-bold">INOVACARE PRO</h1>
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputEmail" class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="email" [(ngModel)]="email" placeholder="Enter your email"
-                required />
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" name="password" [(ngModel)]="password"
-                placeholder="Enter your password" required />
-            </div>
-            <button type="button" class="btn btn-info w-100" (click)="login()">Se Connecter</button>
+<div class="login-page">
+  <div class="login-illustration" aria-hidden="true"></div>
 
-            <div class="row mt-3">
-              <div class="col-12 text-center mt-2">
-                <a href="#" class="text-white">Mot de passe oublié ?</a>
-              </div>
-            </div>
-          </form>
+  <div class="login-panel">
+    <div class="panel-content">
+      <header class="panel-header">
+        <div class="brand">
+          <div class="brand-logo" aria-hidden="true">ip</div>
+          <span class="brand-name">InovaCare Pro</span>
         </div>
-      </div>
+        <a class="create-account" routerLink="/register">Créer un compte</a>
+      </header>
+
+      <main class="panel-body">
+        <h1 class="panel-title">Se connecter</h1>
+        <a class="alternative-login" href="javascript:void(0)">
+          Se connecter avec un numéro de téléphone portable
+        </a>
+
+        <form novalidate (ngSubmit)="login()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="email">Nom d'utilisateur ou adresse e-mail</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              autocomplete="username"
+              placeholder="Adresse e-mail"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              autocomplete="current-password"
+              placeholder="Mot de passe"
+            />
+          </div>
+
+          <div *ngIf="errorMsg" class="error-message" role="alert">{{ errorMsg }}</div>
+
+          <button type="submit" class="primary-button" [disabled]="loading">
+            <span *ngIf="!loading">Utiliser le mot de passe</span>
+            <span *ngIf="loading">Connexion...</span>
+          </button>
+
+          <button type="button" class="secondary-button">
+            Envoyer un code de connexion
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>ou</span>
+        </div>
+
+        <label class="remember-option">
+          <input type="checkbox" />
+          <span>Se souvenir de mon nom d'utilisateur ou adresse e-mail</span>
+        </label>
+
+        <a class="forgot-link" routerLink="/reset-password">Nom d'utilisateur oublié ?</a>
+      </main>
+
+      <footer class="panel-footer">
+        <a href="javascript:void(0)">Confidentialité</a>
+      </footer>
     </div>
   </div>
 </div>
-
-
-
-</body>
