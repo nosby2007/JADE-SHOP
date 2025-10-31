@@ -1,3 +1,5 @@
+
+import { Timestamp } from 'firebase/firestore';
 export interface Patient {
     id?: string;
     name: string;
@@ -13,15 +15,25 @@ export interface Patient {
   export interface Rx {
     id?: string;
     name: string;
-    dose?: string;
-    route?: string;           // PO, IV…
-    frequency?: string;       // q8h, BID…
-    startDate?: any;          // Date | Timestamp | ISO
-    endDate?: any;
-    notes?: string;
-    createdAt?: any;
-    createdBy?: string;
-    updatedAt?: any;
+    dose?: string | null;
+    route?: string | null;
+    frequency?: string | null;
+  
+    medicationType?: string;  // NEW
+    medicationForm?: string;  // NEW
+    prescriber?: string;      // NEW
+  
+    startDate?: Timestamp | null; // now Timestamp
+    endDate?: Timestamp | null;   // now Timestamp
+    notes?: string | null;
+  
+    eSignature?: {
+      signerUid: string;
+      signerEmail: string | null;
+      signerName?: string | null;
+      signedAt: Timestamp | any;  // serverTimestamp() on write, becomes Timestamp on read
+      method: 'password';
+    };
   }
   export type TaskFreq = 'once' | 'daily' | 'weekly' | 'custom';
   
@@ -32,11 +44,29 @@ export interface Patient {
     details?: string;
     dueAt?: any;
     completed?: boolean;
-    repeat?: { freq: TaskFreq; interval?: number }; // custom every N days
+    notes?: string;
+    
     link?: { rxId?: string; assessmentProgramId?: string };
-    createdAt?: any;
+   
     createdBy?: string;
-    updatedAt?: any;
+    
+    // Récurrence (facultatif)
+  repeat?: {
+    enabled: boolean;         // true = tâche récurrente
+    every: number;            // ex: 1, 2, 4
+    unit: 'day'|'week'|'month';
+    // bornes
+    count?: number;           // ex: faire 12 occurrences
+    until?: any;              // Firestore Timestamp (fin)
+    byWeekday?: number[];     // 0..6 (optionnel, pour “chaque Lundi/Mercredi”)
+  };
+
+  // pour gestion des occurrences
+  parentTaskId?: string;      // id de la tâche “mère” si occurrence
+  occurrenceIndex?: number;   // 0,1,2,… (n° d’instance)
+  createdAt?: any;
+  updatedAt?: any;
+
   }
   
   export interface Assessment {

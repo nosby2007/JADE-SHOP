@@ -1,0 +1,26 @@
+.dialog-body { padding-top: 6px; }
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.full { grid-column: 1 / -1; }
+
+.form-section {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.days-grid {
+  margin-top: 8px;
+  .days {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 6px 12px;
+  }
+}

@@ -5,7 +5,10 @@
       <button mat-stroked-button color="primary" (click)="newAssessment()">
         <mat-icon>add</mat-icon>&nbsp;Nouvelle évaluation
       </button>
-      <a mat-button [routerLink]="['/patients', patientId]">Retour patient</a>
+
+      <a mat-stroked-button [routerLink]="['/nurse','patients']">
+        <mat-icon>arrow_back</mat-icon>&nbsp;Retour liste
+      </a>
     </div>
   </div>
 

@@ -1,11 +1,13 @@
-// src/app/patients/pages/patient-form/patient-form.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { PatientApiService } from 'src/app/core/patient-api.service';
-import { PatientService } from 'src/app/SERVICE/patient.service';
+
 import { environment } from 'src/environments/environment';
+import { PatientService } from 'src/app/service/patient.service';
+
+type AnyRec = Record<string, any>;
 
 @Component({
   selector: 'app-patient-form',
@@ -15,20 +17,55 @@ import { environment } from 'src/environments/environment';
 export class PatientFormComponent implements OnInit {
   useApi = !!environment.apiBase;
   id?: string;
+  submitting = false;
 
-  // ✅ dob en Date | null (au lieu de string)
-  form = this.fb.group({
-    name: ['', Validators.required],
-    gender: [''],
-    dob: [null as Date | null],
-    phone: [''],
-    email: [''],
-    address: [''],
-    quartier: [''],
-    departement: [''],
-    docteur: [''],
-    raison: [''],
-    paiement: ['']
+  form: FormGroup = this.fb.group({
+    demographics: this.fb.group({
+      legalName: ['', Validators.required],
+      preferredName: [''],
+      gender: [''],
+      dob: [null as Date | null, Validators.required],
+      admissionDate: [null as Date | null, Validators.required],
+      phone: [''],
+      email: ['', Validators.email],
+      address1: [''],
+      address2: [''],
+      city: [''],
+      state: [''],
+      zip: [''],
+      country: [''],
+      language: [''],
+      maritalStatus: ['']
+    }),
+    identity: this.fb.group({
+      ssn: [''],
+      idType: [''],
+      idNumber: [''],
+      insuranceProvider: [''],
+      insuranceId: [''],
+      groupNumber: [''],
+      payor: [''],
+      policyHolder: [''],
+      emergencyContactName: [''],
+      emergencyContactPhone: [''],
+      emergencyRelation: ['']
+    }),
+    clinical: this.fb.group({
+      reasonForAdmission: [''],
+      diagnoses: this.fb.array([]),
+      allergies: this.fb.array([]),
+      primaryCareProvider: [''],
+      referringProvider: [''],
+      codeStatus: [''],
+      preferredPharmacy: [''],
+      heightCm: [''],
+      weightKg: ['']
+    }),
+    consent: this.fb.group({
+      hipaaAck: [false, Validators.requiredTrue],
+      privacyNoticeAck: [false, Validators.requiredTrue],
+      financialAgreementAck: [false, Validators.requiredTrue]
+    })
   });
 
   constructor(
@@ -37,91 +74,197 @@ export class PatientFormComponent implements OnInit {
     private router: Router,
     private api: PatientApiService,
     private fs: PatientService,
-    private afAuth: AngularFireAuth,
+    private afAuth: AngularFireAuth
   ) {}
+
+  // Form group getters (for template)
+  get demographicsFG(): FormGroup { return this.form.get('demographics') as FormGroup; }
+  get identityFG(): FormGroup     { return this.form.get('identity') as FormGroup; }
+  get clinicalFG(): FormGroup     { return this.form.get('clinical') as FormGroup; }
+  get consentFG(): FormGroup      { return this.form.get('consent') as FormGroup; }
+
+  // Safe value getters for review (plain objects)
+  get demVal(): AnyRec  { return (this.demographicsFG?.value ?? {}) as AnyRec; }
+  get idVal(): AnyRec   { return (this.identityFG?.value ?? {}) as AnyRec; }
+  get clinVal(): AnyRec { return (this.clinicalFG?.value ?? {}) as AnyRec; }
+
+  get dxFA(): FormArray  { return this.clinicalFG.get('diagnoses') as FormArray; }
+  get algFA(): FormArray { return this.clinicalFG.get('allergies') as FormArray; }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || undefined;
     if (this.id) {
       const load$ = this.useApi ? this.api.get(this.id) : this.fs.get(this.id);
-      (load$ as any).subscribe((p: any) => {
+      (load$ as any).subscribe((p: AnyRec) => {
         if (!p) return;
-        this.form.patchValue({
-          name: p?.name ?? '',
-          gender: p?.gender ?? '',
-          // ✅ normalise en Date pour le contrôle
-          dob: this.toSafeDate(p?.dob),
-          phone: p?.phone ?? '',
-          email: p?.email ?? '',
-          address: p?.address ?? '',
-          quartier: p?.quartier ?? '',
-          departement: p?.departement ?? '',
-          docteur: p?.docteur ?? '',
-          raison: p?.raison ?? '',
-          paiement: p?.paiement ?? ''
-        });
+        const pv = (p || {}) as AnyRec;
+
+        const patch: AnyRec = { demographics: {}, identity: {}, clinical: {} };
+
+        // demographics
+        patch['demographics'] = patch['demographics'] || {};
+        patch['demographics']['legalName']     = pv['name'] ?? '';
+        patch['demographics']['preferredName'] = pv['preferredName'] ?? '';
+        patch['demographics']['gender']        = pv['gender'] ?? '';
+        patch['demographics']['dob']           = this.toSafeDate(pv['dob']);
+        patch['demographics']['admissionDate']           = this.toSafeDate(pv['admissionDate']);
+        patch['demographics']['phone']         = pv['phone'] ?? '';
+        patch['demographics']['email']         = pv['email'] ?? '';
+        patch['demographics']['address1']      = pv['address'] ?? '';
+        patch['demographics']['city']          = pv['city'] ?? '';
+        patch['demographics']['state']         = pv['state'] ?? '';
+        patch['demographics']['zip']           = pv['zip'] ?? '';
+        patch['demographics']['country']       = pv['country'] ?? '';
+        patch['demographics']['language']      = pv['language'] ?? '';
+        patch['demographics']['maritalStatus'] = pv['maritalStatus'] ?? '';
+
+        // identity / clinical (back-compat)
+        patch['identity'] = patch['identity'] || {};
+        patch['identity']['payor'] = pv['paiement'] ?? pv['payor'] ?? '';
+
+        patch['clinical'] = patch['clinical'] || {};
+        patch['clinical']['reasonForAdmission']  = pv['raison'] ?? pv['reasonForAdmission'] ?? '';
+        patch['clinical']['primaryCareProvider'] = pv['docteur'] ?? pv['primaryCareProvider'] ?? '';
+
+        // arrays
+        const dx  = Array.isArray(pv['diagnoses']) ? pv['diagnoses'] : [];
+        const alg = Array.isArray(pv['allergies']) ? pv['allergies'] : [];
+        this.dxFA.clear();  dx.forEach((v: string) => this.dxFA.push(this.fb.control(v)));
+        this.algFA.clear(); alg.forEach((v: string) => this.algFA.push(this.fb.control(v)));
+
+        this.form.patchValue(patch, { emitEvent: false });
       });
     }
   }
 
-  /** Convertit Timestamp/seconds/ISO/Date -> Date | null */
   private toSafeDate(input: any): Date | null {
     if (!input) return null;
     if (typeof input?.toDate === 'function') { try { return input.toDate(); } catch { return null; } }
     if (typeof input?.seconds === 'number') { try { return new Date(input.seconds * 1000); } catch { return null; } }
     if (input instanceof Date) return isNaN(input.getTime()) ? null : input;
-    if (typeof input === 'string') {
+    if (typeof input === 'string' || typeof input === 'number') {
       const d = new Date(input);
       return isNaN(d.getTime()) ? null : d;
     }
     return null;
   }
 
+  addDiagnosis(v: string) {
+    const val = (v || '').trim();
+    if (val) this.dxFA.push(this.fb.control(val));
+  }
+  removeDiagnosis(i: number) { this.dxFA.removeAt(i); }
+
+  addAllergy(v: string) {
+    const val = (v || '').trim();
+    if (val) this.algFA.push(this.fb.control(val));
+  }
+  removeAllergy(i: number) { this.algFA.removeAt(i); }
+
   async submit() {
     if (this.form.invalid) return;
+    this.submitting = true;
+    try {
+      const raw = this.form.getRawValue() as AnyRec;
 
-    const raw = this.form.getRawValue();
+      const dem  = (raw['demographics'] || {}) as AnyRec;
+      const iden = (raw['identity'] || {}) as AnyRec;
+      const clin = (raw['clinical'] || {}) as AnyRec;
+      const cons = (raw['consent'] || {}) as AnyRec;
 
-    // nettoie null -> undefined
-    const nn = <T extends Record<string, any>>(o: T) => {
-      const out: any = {};
-      for (const k of Object.keys(o)) out[k] = (o as any)[k] === null ? undefined : (o as any)[k];
-      return out as { [K in keyof T]: Exclude<T[K], null> | undefined };
-    };
+      const name    = (dem['legalName'] ?? '').toString();
+      const dobDate = this.toSafeDate(dem['dob']);
+      const admissionDate = this.toSafeDate(dem['admissionDate']);
 
-    const data = nn(raw) as Partial<import('src/app/patient.model').Patient>;
-    data.name = (raw.name ?? '').toString();
+      const payload: AnyRec = {
+        demographics: dem,
+        identity: iden,
+        clinical: {
+          ...clin,
+          diagnoses: Array.isArray(clin['diagnoses']) ? clin['diagnoses'] : [],
+          allergies: Array.isArray(clin['allergies']) ? clin['allergies'] : []
+        },
+        consent: cons,
 
-    // 🎯 Sortie selon la cible
-    const dobDate = raw.dob ? this.toSafeDate(raw.dob) : null;
-    if (this.useApi) {
-      // API: ISO string (backend convertira si besoin)
-      (data as any).dob = dobDate ? dobDate.toISOString() : undefined;
-    } else {
-      // Firestore direct: un Date (compat sait le sérialiser)
-      (data as any).dob = dobDate ?? undefined;
-    }
+        // Back-compat flat fields
+        name,
+preferredName: dem['preferredName'] || '',
+gender: dem['gender'] || '',
+dob: this.useApi ? (dobDate ? dobDate.toISOString() : undefined) : (dobDate ?? undefined),
+admissionDate: this.useApi ? (admissionDate ? admissionDate.toISOString() : undefined) : (admissionDate ?? undefined),
 
-    if (!this.id) {
-      // CREATE
-      if (this.useApi) {
-        this.api.create(data).subscribe(({ id }) => this.router.navigate(['/patients', id]));
+// Contact / address
+phone: dem['phone'] || '',
+email: dem['email'] || '',
+address: dem['address1'] || '',
+address1: dem['address1'] || '',
+address2: dem['address2'] || '',
+city: dem['city'] || '',
+state: dem['state'] || '',
+zip: dem['zip'] || '',
+country: dem['country'] || '',
+language: dem['language'] || '',
+maritalStatus: dem['maritalStatus'] || '',
+
+// Identity (flat)
+ssn: iden['ssn'] || '',
+idType: iden['idType'] || '',
+idNumber: iden['idNumber'] || '',
+insuranceProvider: iden['insuranceProvider'] || '',
+insuranceId: iden['insuranceId'] || '',
+groupNumber: iden['groupNumber'] || '',
+payor: iden['payor'] || '',
+policyHolder: iden['policyHolder'] || '',
+emergencyContactName: iden['emergencyContactName'] || '',
+emergencyContactPhone: iden['emergencyContactPhone'] || '',
+emergencyRelation: iden['emergencyRelation'] || '',
+
+// Clinical (flat)
+reasonForAdmission: clin['reasonForAdmission'] || '',
+primaryCareProvider: clin['primaryCareProvider'] || '',
+referringProvider: clin['referringProvider'] || '',
+codeStatus: clin['codeStatus'] || '',
+preferredPharmacy: clin['preferredPharmacy'] || '',
+heightCm: clin['heightCm'] || '',
+weightKg: clin['weightKg'] || '',
+
+// Consent (flat)
+hipaaAck: !!cons['hipaaAck'],
+privacyNoticeAck: !!cons['privacyNoticeAck'],
+financialAgreementAck: !!cons['financialAgreementAck'],
+
+// Legacy aliases for older consumers
+docteur: clin['primaryCareProvider'] || '',
+raison: clin['reasonForAdmission'] || '',
+paiement: iden['payor'] || '',
+
+// Optional legacy nested emergencyContact object
+emergencyContact: {
+  name: iden['emergencyContactName'] || '',
+  phone: iden['emergencyContactPhone'] || '',
+  relation: iden['emergencyRelation'] || ''
+},
+ };
+
+      if (!this.id) {
+        if (this.useApi) {
+          this.api.create(payload).subscribe(({ id }) => this.router.navigate(['/patients', id]));
+        } else {
+          const ref = await this.fs.create(payload);
+          const id = (await ref).id;
+          this.router.navigate(['/patients', id]);
+        }
       } else {
-        // ✅ Les métadonnées seront ajoutées dans PatientService.create (voir patch 2)
-        const ref = await this.fs.create(data as any);
-        this.router.navigate(['/patients', (await ref).id]);
+        if (this.useApi) {
+          this.api.update(this.id, { ...payload, updatedAt: new Date().toISOString() })
+              .subscribe(() => this.router.navigate(['/patients', this.id!]));
+        } else {
+          await this.fs.update(this.id, payload);
+          this.router.navigate(['/patients', this.id!]);
+        }
       }
-    } else {
-      // UPDATE
-      if (this.useApi) {
-        // Optionnel: envoyer updatedAt ISO pour cohérence
-        this.api.update(this.id, { ...data, updatedAt: new Date().toISOString() } as any)
-          .subscribe(() => this.router.navigate(['/patients', this.id!]));
-      } else {
-        // ✅ updatedAt sera ajouté dans PatientService.update (voir patch 2)
-        await this.fs.update(this.id, data as any);
-        this.router.navigate(['/patients', this.id!]);
-      }
+    } finally {
+      this.submitting = false;
     }
   }
 }

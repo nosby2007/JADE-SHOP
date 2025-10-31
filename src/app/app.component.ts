@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
-import { AuthService } from './SERVICE/auth.service';
-import { InactivityService } from './SERVICE/inactivity.service';
+
 import { Timestamp } from 'firebase/firestore';
+import { AuthService } from './service/auth.service';
 
 
 
@@ -27,7 +27,7 @@ export class AppComponent {
   mynumber: any;
   nurseDetails: any; // Assuming this contains the Firestore data
   items: any[] = []; // Define the items property
-  constructor(private router:Router, public authService: AuthService, private inactivityService: InactivityService) {
+  constructor(private router:Router, public authService: AuthService) {
     this.jstoday = formatDate(this.today, 'MMM dd, yyyy , hh:mm:ss a', 'en-US');
     this.mynumber = +911234567890;
 
@@ -48,17 +48,6 @@ export class AppComponent {
   }
   }
   ngOnInit(): void {
-    this.inactivityService.initActivityListener();
-     this.loggedInUser = sessionStorage.getItem('user');
-     this.router.events.subscribe(() => {
-      // Masquer la barre de navigation sur les pages de connexion et d'inscription
-      const currentUrl = this.router.url;
-      if (currentUrl === '/login' || currentUrl === '/register') {
-        this.showNavbar = false;
-      } else {
-        this.showNavbar = true;
-      }
-    });
     this.authService.userName$.subscribe((name) => {
       this.userName = name;
     });

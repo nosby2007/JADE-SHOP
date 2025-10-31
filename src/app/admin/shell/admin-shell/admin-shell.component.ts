@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/SERVICE/auth.service'; // adapte si chemin différent
+import { AuthService } from 'src/app/service/auth.service';
+
 
 @Component({
   selector: 'app-admin-shell',

@@ -1,0 +1,164 @@
+<h2 mat-dialog-title>Add Prescription — Pharmacy</h2>
+
+<mat-dialog-content [formGroup]="pharmacyForm" class="dialog-body">
+  <div class="grid">
+    <mat-form-field appearance="fill">
+      <mat-label>Prescription date</mat-label>
+      <input matInput formControlName="date" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Time</mat-label>
+      <input matInput type="time" formControlName="time" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <input matInput formControlName="category" readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Method</mat-label>
+      <mat-select formControlName="method" required>
+        <mat-option value="Phone">Phone</mat-option>
+        <mat-option value="Verbal">Verbal</mat-option>
+        <mat-option value="Written">Written</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Prescriber</mat-label>
+      <input matInput formControlName="prescriber" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Medication</mat-label>
+      <input matInput formControlName="medication" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option *ngFor="let c of medClasses" [value]="c">{{ c }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Route</mat-label>
+      <mat-select formControlName="route" required>
+        <mat-option *ngFor="let r of routes" [value]="r">{{ r }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Dose</mat-label>
+      <input matInput formControlName="dose" placeholder="e.g., 500 mg" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Frequency</mat-label>
+      <mat-select formControlName="frequency">
+        <mat-option value="Once daily">Once daily</mat-option>
+        <mat-option value="Twice daily">Twice daily</mat-option>
+        <mat-option value="Morning">Morning</mat-option>
+        <mat-option value="Evening">Evening</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Schedule</mat-label>
+      <mat-select formControlName="scheduleType" (selectionChange)="onScheduleTypeChange($event.value)">
+        <mat-option value="daily">Daily</mat-option>
+        <mat-option value="every-x-days">Every X days</mat-option>
+        <mat-option value="specific-days">Specific days</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="selectedScheduleType === 'every-x-days'">
+      <mat-label>Every how many days</mat-label>
+      <input matInput type="number" formControlName="everyXDays" />
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="selectedScheduleType === 'specific-days'" class="days-grid">
+    <h4>Select days</h4>
+    <div class="days">
+      <mat-checkbox formControlName="monday">Mon</mat-checkbox>
+      <mat-checkbox formControlName="tuesday">Tue</mat-checkbox>
+      <mat-checkbox formControlName="wednesday">Wed</mat-checkbox>
+      <mat-checkbox formControlName="thursday">Thu</mat-checkbox>
+      <mat-checkbox formControlName="friday">Fri</mat-checkbox>
+      <mat-checkbox formControlName="saturday">Sat</mat-checkbox>
+      <mat-checkbox formControlName="sunday">Sun</mat-checkbox>
+    </div>
+  </div>
+
+  <div class="grid">
+    <mat-form-field appearance="fill">
+      <mat-label>Facility time code</mat-label>
+      <mat-select formControlName="timeCode">
+        <mat-option value="weekly">Weekly</mat-option>
+        <mat-option value="weekly-on-shift">Weekly on shift</mat-option>
+        <mat-option value="day-shift">Day shift</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Associated diagnosis</mat-label>
+      <textarea matInput formControlName="diagnosis"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Posology / instructions</mat-label>
+      <textarea matInput formControlName="instructions" placeholder="How to take"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Indications</mat-label>
+      <textarea matInput formControlName="indications"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Start date</mat-label>
+      <input matInput formControlName="startDate" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>End date</mat-label>
+      <input matInput formControlName="endDate" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes"></textarea>
+    </mat-form-field>
+  </div>
+
+  <!-- e-Signature -->
+  <section class="form-section">
+    <h3>Electronic signature</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>User email</mat-label>
+        <input matInput type="email" formControlName="signerEmail" required />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hidePw ? 'password' : 'text'" formControlName="signerPassword" required />
+        <button type="button" mat-icon-button matSuffix (click)="hidePw = !hidePw" [attr.aria-label]="'toggle password'">
+          <mat-icon>{{ hidePw ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-checkbox class="full" formControlName="attest">
+        I attest the information is accurate and authorize saving my signature.
+      </mat-checkbox>
+    </div>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="pharmacyForm.invalid" (click)="validatePrescription()">
+    Save
+  </button>
+</mat-dialog-actions>

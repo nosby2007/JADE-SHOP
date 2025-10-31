@@ -1,8 +1,10 @@
 // src/app/nurse/pages/nurse-patient-detail/nurse-patient-detail.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { NurseDataService } from '../../service/nurse-data.service';
+import { Patient } from '../../models/patient.model';
+
 
 
 @Component({
@@ -17,7 +19,9 @@ export class NursePatientDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private data: NurseDataService
+    private data: NurseDataService,
+    private router: Router
+
   ) {}
 
   ngOnInit(): void {
@@ -36,4 +40,7 @@ export class NursePatientDetailComponent implements OnInit {
     const d = new Date(v);
     return isNaN(+d) ? null : d;
   }
+   gotoWounds(p: Patient) {
+       this.router.navigate(['/skin-wound', p.id, 'assessments']);
+     }
 }

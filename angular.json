@@ -32,7 +32,10 @@
               "src/styles.scss",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
-            "scripts": []
+           "scripts": [
+              "node_modules/pdfmake/build/pdfmake.js",
+              "node_modules/pdfmake/build/vfs_fonts.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -123,4 +126,6 @@
   "cli": {
     "analytics": "d74c97d4-0be9-4954-b1f5-79e26b2ea33d"
   }
+  
+  
 }

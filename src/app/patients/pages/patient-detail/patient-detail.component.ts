@@ -5,7 +5,9 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Patient } from 'src/app/patient.model';
 import { PatientApiService } from 'src/app/core/patient-api.service';
-import { PatientService } from 'src/app/SERVICE/patient.service';
+import { PatientService } from 'src/app/service/patient.service';
+import { Location } from '@angular/common'; // ⬅️ add
+
 
 @Component({
   selector: 'app-patient-detail',
@@ -21,7 +23,8 @@ export class PatientDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private api: PatientApiService,
-    private fs: PatientService
+    private fs: PatientService,
+    private location: Location   
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +38,19 @@ export class PatientDetailComponent implements OnInit {
         );
   }
 
+  // Safe address builder for template (avoids arrow functions in bindings)
+address(p: any): string {
+  const d = (p?.demographics as any) || {};
+  const parts: string[] = [];
+  if (d.address1) parts.push(d.address1);
+  if (d.address2) parts.push(d.address2);
+  const flat = (p as any)?.address;
+  const out = parts.join(', ') || flat || '—';
+  return out;
+}
+
   gotoWounds(p: Patient) {
     this.router.navigate(['/skin-wound', p.id, 'assessments']);
   }
+  
 }

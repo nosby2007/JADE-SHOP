@@ -1,0 +1,341 @@
+<h2 mat-dialog-title>Ajouter une Prescription</h2>
+
+<mat-dialog-content [formGroup]="diagnosticForm" class="dialog-body">
+
+  <!-- Header -->
+  <div class="grid">
+    <mat-form-field appearance="fill">
+      <mat-label>Prescription Date</mat-label>
+      <input matInput formControlName="date" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Time</mat-label>
+      <input matInput type="time" formControlName="time" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Categorie</mat-label>
+      <mat-select formControlName="category" required>
+        <mat-option value="Laboratory">Laboratoire</mat-option>
+        <mat-option value="Pharmacy">Pharmacie</mat-option>
+        <mat-option value="Diagnostic">Diagnostique</mat-option>
+        <mat-option value="Supplement">Supplement</mat-option>
+        <mat-option value="Nutrition">Nutrition</mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rang</mat-label>
+      <mat-select formControlName="route" required>
+        <mat-option value="Primaire Medical">Primaire Médical</mat-option>
+        <mat-option value="Primaire Infirmiere">Primaire Infirmiere</mat-option>
+        <mat-option value="secondaire">Secondaire</mat-option>
+        <mat-option value="Diffrentiel">Diffrentiel</mat-option>
+        <mat-option value="systemique">Systémique</mat-option>
+        <mat-option value="Autre">Autres</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Prescriber</mat-label>
+      <input matInput formControlName="prescriber" placeholder="Enter prescriber name" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" placeholder="Enter The medication Routine Administration" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Methode</mat-label>
+      <mat-select formControlName="method" required>
+        <mat-option value="Téléphone">Téléphone</mat-option>
+        <mat-option value="Verbale">Verbale</mat-option>
+        <mat-option value="Ecrite">Écrite</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" required>
+        <mat-option value="Directives Avancée">Directives Avancée</mat-option>
+        <mat-option value="Comportement">Comportement</mat-option>
+        <mat-option value="Surveillance Comportement">Surveillance Comportement</mat-option>
+        <mat-option value="Glycemie">Glycémie</mat-option>
+        <mat-option value="Evaluation de la peau">Évaluation de la peau</mat-option>
+        <mat-option value="Pansement">Pansement</mat-option>
+        <mat-option value="Signes vitaux">Signes vitaux</mat-option>
+        <mat-option value="Poids">Poids</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Routine -->
+  <section class="form-section">
+    <h3>Routine</h3>
+    <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Fréquence</mat-label>
+        <mat-select formControlName="frequency">
+          <mat-option value="once-a-day">Une fois par jour</mat-option>
+          <mat-option value="twice-a-day">Deux fois par jour</mat-option>
+          <mat-option value="morning">Le matin</mat-option>
+          <mat-option value="evening">Le soir</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Planification</mat-label>
+        <mat-select formControlName="scheduleType" (selectionChange)="onScheduleTypeChange($event.value)">
+          <mat-option value="daily">Tous les jours</mat-option>
+          <mat-option value="every-x-days">Chaque X jours</mat-option>
+          <mat-option value="specific-days">Jours spécifiques de la semaine</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" *ngIf="selectedScheduleType === 'every-x-days'">
+        <mat-label>Chaque combien de jours</mat-label>
+        <input matInput type="number" formControlName="everyXDays" placeholder="Nombre de jours" />
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="selectedScheduleType === 'specific-days'" class="days-grid">
+      <h4>Sélectionnez les jours</h4>
+      <div class="days">
+        <mat-checkbox formControlName="monday">Lundi</mat-checkbox>
+        <mat-checkbox formControlName="tuesday">Mardi</mat-checkbox>
+        <mat-checkbox formControlName="wednesday">Mercredi</mat-checkbox>
+        <mat-checkbox formControlName="thursday">Jeudi</mat-checkbox>
+        <mat-checkbox formControlName="friday">Vendredi</mat-checkbox>
+        <mat-checkbox formControlName="saturday">Samedi</mat-checkbox>
+        <mat-checkbox formControlName="sunday">Dimanche</mat-checkbox>
+      </div>
+    </div>
+
+    <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Code Temps de la Structure</mat-label>
+        <mat-select formControlName="timeCode">
+          <mat-option value="zeekly">Weekly</mat-option>
+          <mat-option value="zeekly-on-shift">Weekly on Shift</mat-option>
+          <mat-option value="day-shift">Day Shift</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Diagnostic Associé</mat-label>
+        <textarea matInput formControlName="diagnosis" placeholder="Diagnostic"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Autres Directives</mat-label>
+        <textarea matInput formControlName="instructions" placeholder="Directives"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Indications</mat-label>
+        <textarea matInput formControlName="indications" placeholder="Indications"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Début</mat-label>
+        <input matInput formControlName="startDate" type="date" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Fin</mat-label>
+        <input matInput formControlName="endDate" type="date" required />
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- Examen Physique / Symptômes -->
+  <section class="form-section">
+    <h3>Examen Physique — Symptômes possibles</h3>
+    <div class="symptom-grid">
+      <mat-checkbox formControlName="abdominalCramps">a. Crampes abdominales</mat-checkbox>
+      <mat-checkbox formControlName="bpDecrease">b. Tension artérielle - diminution</mat-checkbox>
+      <mat-checkbox formControlName="diarrhea">c. Diarrhée</mat-checkbox>
+      <mat-checkbox formControlName="dizziness">d. Étourdissements</mat-checkbox>
+      <mat-checkbox formControlName="facialSwelling">e. Gonflement du visage</mat-checkbox>
+      <mat-checkbox formControlName="fever">f. Fièvre</mat-checkbox>
+      <mat-checkbox formControlName="hives">g. Urticaire</mat-checkbox>
+      <mat-checkbox formControlName="itchingSkin">h. Démangeaisons cutanées</mat-checkbox>
+      <mat-checkbox formControlName="itchyWateryEyes">i. Yeux qui démangent / larmoiements</mat-checkbox>
+      <mat-checkbox formControlName="lossOfAppetite">j. Perte d'appétit</mat-checkbox>
+      <mat-checkbox formControlName="lossOfConsciousness">k. Perte de conscience</mat-checkbox>
+      <mat-checkbox formControlName="nausea">l. Nausées</mat-checkbox>
+      <mat-checkbox formControlName="weakRapidPulse">m. Pouls faible, rapide</mat-checkbox>
+      <mat-checkbox formControlName="runnyNose">n. Nez qui coule</mat-checkbox>
+      <mat-checkbox formControlName="seizure">o. Crises d'épilepsie</mat-checkbox>
+      <mat-checkbox formControlName="shortnessOfBreath">p. Essoufflement</mat-checkbox>
+      <mat-checkbox formControlName="skinRash">q. Éruption cutanée</mat-checkbox>
+      <mat-checkbox formControlName="softStools">r. Selles molles</mat-checkbox>
+      <mat-checkbox formControlName="stomachDistress">s. Maux d'estomac</mat-checkbox>
+      <mat-checkbox formControlName="swellingEdema">t. Gonflement / Œdème</mat-checkbox>
+      <mat-checkbox formControlName="tighteningAirway">u. Rétrécissement voies respiratoires</mat-checkbox>
+      <mat-checkbox formControlName="troubleBreathing">v. Difficulté à respirer</mat-checkbox>
+      <mat-checkbox formControlName="vomiting">w. Vomissements</mat-checkbox>
+      <mat-checkbox formControlName="wheezing">x. Respiration sifflante</mat-checkbox>
+      <mat-checkbox formControlName="yeastInfectionVaginal">y. Infection à levures (vaginale)</mat-checkbox>
+      <mat-checkbox formControlName="yeastInfectionOral">z. Infection à levures (orale)</mat-checkbox>
+      <mat-checkbox formControlName="other">aa. Autres</mat-checkbox>
+      <mat-checkbox formControlName="none">ab. Aucun</mat-checkbox>
+    </div>
+
+    <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Température (°C)</mat-label>
+        <input matInput type="number" formControlName="temperature" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Fréquence Cardiaque</mat-label>
+        <input matInput type="number" formControlName="frequenceCardiaque" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Pouls</mat-label>
+        <input matInput formControlName="pouls" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Tension artérielle</mat-label>
+        <input matInput formControlName="tensionArterielle" />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Symptome Actuel de L'infection</mat-label>
+        <textarea matInput formControlName="autresObservations"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Niveau D'activite</mat-label>
+        <textarea matInput formControlName="activity"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Repas</mat-label>
+        <textarea matInput formControlName="repas"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Fluides</mat-label>
+        <textarea matInput formControlName="fluides"></textarea>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- Ordres Diagnostiques -->
+  <section class="form-section">
+    <h3>Ordres Diagnostiques</h3>
+    <div class="symptom-grid">
+      <mat-checkbox formControlName="testsLabo">Tests de laboratoire</mat-checkbox>
+      <mat-checkbox formControlName="radiologie">Radiologie</mat-checkbox>
+      <mat-checkbox formControlName="autresDiagnostics">Autres diagnostics</mat-checkbox>
+    </div>
+  </section>
+
+  <!-- Évaluation de Transition aux Antibiotiques PO -->
+  <section class="form-section">
+    <h3>Évaluation de Transition aux Antibiotiques PO</h3>
+
+    <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Fournisseur — Nom</mat-label>
+        <input matInput formControlName="providerName" placeholder="Dr. ..." />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Fournisseur — Téléphone</mat-label>
+        <input matInput formControlName="providerPhone" placeholder="xxx-xxxx" />
+      </mat-form-field>
+    </div>
+
+    <h4>Informations Notifiées</h4>
+    <div class="symptom-grid">
+      <mat-checkbox formControlName="adverseReactions">Réactions indésirables</mat-checkbox>
+      <mat-checkbox formControlName="currentStatus">État clinique actuel</mat-checkbox>
+      <mat-checkbox formControlName="labResults">Résultats labo</mat-checkbox>
+      <mat-checkbox formControlName="microbiologyResults">Microbiologie / culture</mat-checkbox>
+      <mat-checkbox formControlName="radiologyResults">Radiologie</mat-checkbox>
+      <mat-checkbox formControlName="otherInfo">Autres</mat-checkbox>
+    </div>
+
+    <h4>Ordonnances Antibiotiques Révisées</h4>
+    <mat-radio-group formControlName="antibioticReview" class="radio-row">
+      <mat-radio-button value="yes">Oui</mat-radio-button>
+      <mat-radio-button value="no">Non</mat-radio-button>
+    </mat-radio-group>
+
+    <h4>Détermination du Fournisseur</h4>
+    <mat-radio-group formControlName="providerDetermination" class="radio-col">
+      <mat-radio-button value="continueTherapy">Continuer la thérapie actuelle</mat-radio-button>
+      <mat-radio-button value="adjustTherapy">Ajuster la thérapie</mat-radio-button>
+      <mat-radio-button value="discontinueTherapy">Arrêter la thérapie</mat-radio-button>
+      <mat-radio-button value="awaitResults">Attendre résultats restants</mat-radio-button>
+      <mat-radio-button value="other">Autres</mat-radio-button>
+    </mat-radio-group>
+
+    <h4>Durée Totale du Traitement</h4>
+    <mat-radio-group formControlName="treatmentLength" class="radio-row">
+      <mat-radio-button value="5days">5 jours</mat-radio-button>
+      <mat-radio-button value="10days">10 jours</mat-radio-button>
+      <mat-radio-button value="14days">14 jours</mat-radio-button>
+      <mat-radio-button value="21days">21 jours</mat-radio-button>
+      <mat-radio-button value="other">Autres</mat-radio-button>
+    </mat-radio-group>
+  </section>
+
+  <!-- Nouvelle Ordonnance Antibiotique -->
+  <section class="form-section">
+    <h3>Nouvelle Ordonnance Antibiotique</h3>
+    <div class="grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Nom du Médicament</mat-label>
+        <input matInput formControlName="medicationName" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Dosage</mat-label>
+        <input matInput formControlName="dosage" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Voie</mat-label>
+        <input matInput formControlName="routeOrder" placeholder="PO / IV / etc." />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Fréquence</mat-label>
+        <input matInput formControlName="frequencyOrder" placeholder="q8h / BID / ..." />
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes"></textarea>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- e-Signature -->
+  <section class="form-section">
+    <h3>Signature Électronique</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Email (utilisateur)</mat-label>
+        <input matInput type="email" formControlName="signerEmail" required />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hidePw ? 'password' : 'text'" formControlName="signerPassword" required />
+        <button type="button" mat-icon-button matSuffix (click)="hidePw = !hidePw" [attr.aria-label]="'toggle password'">
+          <mat-icon>{{ hidePw ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-checkbox class="full" formControlName="attest">
+        J’atteste que ces informations sont exactes et j’autorise l’enregistrement de ma signature.
+      </mat-checkbox>
+    </div>
+  </section>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" [disabled]="diagnosticForm.invalid" (click)="onSave()">
+    Enregistrer
+  </button>
+</mat-dialog-actions>

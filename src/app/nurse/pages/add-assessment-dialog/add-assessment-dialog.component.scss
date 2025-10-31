@@ -1,0 +1,252 @@
+/* ====== AddAssessmentDialog styles (applies to Antibiotic modal too) ====== */
+
+:host {
+    display: block;
+  }
+  
+  /* Dialog body */
+  mat-dialog-content {
+    padding: 12px 8px 4px;
+  }
+  
+  /* Utility grid + span */
+  .grid {
+    display: grid;
+    gap: 12px;
+    align-items: start;
+  }
+  .full {
+    grid-column: 1 / -1;
+  }
+  
+  /* Base card container for Antibiotic + Braden sections */
+  .evaluation-form-container,
+  .braden-form-container {
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #ffffff, #fafafa);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Section blocks */
+  .form-section {
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    margin-top: 12px;
+    position: relative;
+  
+    /* subtle colored accent bar */
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 12px 0 0 12px;
+      background: #1976d2;
+      opacity: 0.15;
+    }
+  
+    h3, h4 {
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      color: #0d47a1;
+      letter-spacing: 0.2px;
+    }
+  
+    h5 {
+      margin: 4px 0 8px;
+      font-weight: 600;
+      color: #1a237e;
+    }
+  }
+  
+  /* Sub-sections in the Transition-to-PO area */
+  .sub-section {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fafcff;
+    border: 1px dashed rgba(25, 118, 210, 0.25);
+  }
+  
+  /* Checkbox grids (Antibiotic symptoms + diagnostics) */
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  
+    /* prettier checkboxes */
+    ::ng-deep .mat-mdc-checkbox {
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow 160ms ease, transform 120ms ease, border-color 160ms ease;
+    }
+    ::ng-deep .mat-mdc-checkbox:hover {
+      box-shadow: 0 2px 8px rgba(25,118,210,0.12);
+      border-color: rgba(25,118,210,0.25);
+      transform: translateY(-1px);
+    }
+  }
+  
+  /* Radio rows for Braden choices */
+  .radio-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 8px;
+    transition: box-shadow 160ms ease, border-color 160ms ease;
+  
+    &:hover {
+      box-shadow: 0 2px 8px rgba(25,118,210,0.12);
+      border-color: rgba(25,118,210,0.25);
+    }
+  
+    input[type="radio"] {
+      transform: scale(1.05);
+      accent-color: #1976d2;
+    }
+  }
+  
+  /* Date row (plain input type=date inside Braden/Antibiotic sections) */
+  .date-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+  
+    input[type="date"] {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.12);
+      outline: none;
+    }
+    input[type="date"]:focus-visible {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25,118,210,0.15);
+    }
+  }
+  
+  /* Score + risk chips (reused by Braden; handy if you later add risk to Antibiotics) */
+  .score-section {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f7fbff;
+    border: 1px solid rgba(25,118,210,0.18);
+  
+    .risk-line {
+      margin-top: 6px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .risk-chip {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+  
+    /* Braden risk theme */
+    .risk-vh { background: #ffebee; color: #b71c1c; }   /* Very high */
+    .risk-h  { background: #fff3e0; color: #e65100; }   /* High */
+    .risk-m  { background: #fffde7; color: #827717; }   /* Moderate */
+    .risk-r  { background: #e3f2fd; color: #0d47a1; }   /* At risk */
+    .risk-n  { background: #e8f5e9; color: #1b5e20; }   /* Minimal/none */
+  }
+  
+  /* Material form fields in grids */
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Inline vitals chart container (from Vital Signs tab) */
+  .vitals-inline-chart {
+    margin: 6px 0 12px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 12px;
+  }
+  
+  /* Dialog footer */
+  mat-dialog-actions {
+    padding: 12px 8px 16px;
+  
+    button[color="primary"] {
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+  }
+  
+  /* Headings inside the Antibiotic container */
+  .evaluation-form-container > h3 {
+    margin: 0 0 8px;
+    color: #1565c0;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+  
+  /* Accessibility: visible focus for interactive elements */
+  button:focus-visible,
+  [mat-raised-button]:focus-visible,
+  .mat-mdc-checkbox:focus-within,
+  input:focus-visible,
+  textarea:focus-visible,
+  .mat-mdc-radio-button:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(25,118,210,0.25) !important;
+    border-radius: 8px;
+  }
+  
+  /* Responsive tweaks */
+  @media (min-width: 680px) {
+    /* 2-column feel inside antibiotic sections where .grid.full is used */
+    .evaluation-form-container .grid.full {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .evaluation-form-container,
+    .braden-form-container {
+      padding: 12px;
+    }
+    .form-section {
+      padding: 10px;
+    }
+  }
+  
+  /* Optional: slim legend styling (Braden) */
+  .legend {
+    background: #ffffff;
+    border: 1px dashed rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 10px 12px;
+  
+    div {
+      font-size: 12px;
+      color: #37474f;
+      line-height: 1.35;
+    }
+  }
+  

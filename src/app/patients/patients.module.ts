@@ -19,6 +19,9 @@ import { PatientDetailComponent } from './pages/patient-detail/patient-detail.co
 import { PatientWoundsComponent } from './pages/patient-wounds/patient-wounds.component';
 import { PatientFormComponent } from './pages/patient-form/patient-form.component';
 import {MatListModule} from '@angular/material/list';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -44,7 +47,11 @@ import {MatListModule} from '@angular/material/list';
     MatInputModule,
     MatProgressSpinnerModule,
     PatientsRoutingModule,
+    MatStepperModule,
     MatListModule,
+    MatDatepickerModule,
+    MatCheckboxModule,
+    
     
   ],
 })

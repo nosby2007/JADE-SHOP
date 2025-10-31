@@ -13,7 +13,7 @@ export class NursePatientListComponent implements OnInit {
   private api = inject(NursePatientApiService);
 
   items$!: Observable<Patient[]>;
-displayed = ['id','name','gender','dob','phone','email','address','createdAt','actions'];
+displayed = ['name','gender','dob','phone','address','admissionDate', 'paiement','raison','actions'];
 
   q = '';
 

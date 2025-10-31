@@ -2,12 +2,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WoundAssessmentService } from 'src/app/SERVICE/wound-assessment.service';
 import { WoundAssessment, WoundType } from 'src/app/models/wound-assessment.model';
 import firebase from 'firebase/compat/app';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { FilePreviewPipe } from 'src/app/file-preview.pipe';
+import { WoundAssessmentService } from 'src/app/service/wound-assessment.service';
 
 const STAGES = ['Stage 1','Stage 2','Stage 3','Stage 4','Deep Tissue Injury','Mucosal Membrane','Unstageable'] as const;
 type Stage = typeof STAGES[number];

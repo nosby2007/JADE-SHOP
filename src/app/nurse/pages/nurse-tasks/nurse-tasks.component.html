@@ -1,85 +1,245 @@
-<mat-card>
-  <h3 class="mb-2">Tâches infirmières</h3>
-
-  <!-- Le form existe toujours (créé dans la propriété) -->
-  <form [formGroup]="form" (ngSubmit)="createTask()">
-
-    <!-- Nouveau formulaire de création -->
-    <div formGroupName="newTask" class="grid">
-      <mat-form-field class="span-2">
-        <mat-label>Titre</mat-label>
-        <input matInput formControlName="title" placeholder="Prise de constantes, pansement..." />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Priorité</mat-label>
-        <mat-select formControlName="priority">
-          <mat-option value="low">Faible</mat-option>
-          <mat-option value="normal">Normale</mat-option>
-          <mat-option value="high">Haute</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Assignée à</mat-label>
-        <input matInput formControlName="assignedTo" />
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Échéance</mat-label>
-        <input matInput [matDatepicker]="dp" formControlName="dueAt" />
-        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field class="span-2">
-        <mat-label>Notes</mat-label>
-        <textarea matInput rows="2" formControlName="notes"></textarea>
-      </mat-form-field>
-
-      <div formGroupName="repeat" class="repeat-row">
-        <mat-checkbox formControlName="enabled">Répéter</mat-checkbox>
-
-        <mat-form-field>
-          <mat-label>Interval</mat-label>
-          <input matInput type="number" min="1" formControlName="interval"
-                 [disabled]="!repeatFG.get('enabled')?.value">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Unité</mat-label>
-          <mat-select formControlName="unit" [disabled]="!repeatFG.get('enabled')?.value">
-            <mat-option value="day">Jour(s)</mat-option>
-            <mat-option value="week">Semaine(s)</mat-option>
-            <mat-option value="month">Mois</mat-option>
-            <mat-option value="year">Année(s)</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Début</mat-label>
-          <input matInput [matDatepicker]="dp2" formControlName="startDate"
-                 [disabled]="!repeatFG.get('enabled')?.value">
-          <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
-          <mat-datepicker #dp2></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <div class="actions span-2">
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading || newTaskFG.invalid">
-          <mat-spinner *ngIf="loading" diameter="18"></mat-spinner>
-          <span *ngIf="!loading"><mat-icon>save</mat-icon>&nbsp;Créer</span>
-        </button>
+<mat-card *ngIf="(patient$ | async) as p; else loading" class="wfull">
+    <div class="flex-between header">
+      <div>
+        <h2 class="title">{{ ($any(p).demographics?.legalName || p.name) || 'Patient' }}</h2>
+        <div class="subtitle">
+          DOB:
+          {{
+            (
+              $any(p).demographics?.dob?.toDate?.() ||
+              $any(p).demographics?.dob ||
+              $any(p).dob?.toDate?.() ||
+              p.dob
+            ) | date:'yyyy-MM-dd'
+          }}
+          • {{ $any(p).demographics?.gender || p.gender || '—' }}
+        </div>
       </div>
     </div>
+  
+    <!-- Sections grid -->
+    <div class="sections">
+      <!-- Demographics -->
+      <mat-card class="section">
+        <h3>Demographics</h3>
+        <div class="grid two">
+          <div><b>Legal name:</b> {{ $any(p).demographics?.legalName || p.name || '—' }}</div>
+          <div><b>Preferred name:</b> {{ $any(p).demographics?.preferredName || '—' }}</div>
+  
+          <div>
+            <b>DOB:</b>
+            {{
+              (
+                $any(p).demographics?.dob?.toDate?.() ||
+                $any(p).demographics?.dob ||
+                $any(p).dob?.toDate?.() ||
+                p.dob
+              ) | date:'yyyy-MM-dd'
+            }}
+          </div>
+          <div><b>Gender:</b> {{ $any(p).demographics?.gender || p.gender || '—' }}</div>
+  
+          <div><b>Phone:</b> {{ $any(p).demographics?.phone || p.phone || '—' }}</div>
+          <div><b>Email:</b> {{ $any(p).demographics?.email || p.email || '—' }}</div>
+  
+          <div class="full">
+            <b>Address:</b> {{ address(p) }}
+          </div>
+  
+          <div><b>City:</b> {{ $any(p).demographics?.city || $any(p).city || '—' }}</div>
+          <div><b>State/Province:</b> {{ $any(p).demographics?.state || $any(p).state || '—' }}</div>
+          <div><b>ZIP:</b> {{ $any(p).demographics?.zip || $any(p).zip || '—' }}</div>
+          <div><b>Country:</b> {{ $any(p).demographics?.country || $any(p).country || '—' }}</div>
+  
+          <div><b>Language:</b> {{ $any(p).demographics?.language || $any(p).language || '—' }}</div>
+          <div><b>Marital status:</b> {{ $any(p).demographics?.maritalStatus || $any(p).maritalStatus || '—' }}</div>
+        </div>
+      </mat-card>
+  
+      <!-- Identity & Payor -->
+      <mat-card class="section">
+        <h3>Identity & Payor</h3>
+        <div class="grid two">
+          <div><b>SSN / National ID:</b> {{ $any(p).identity?.ssn || '—' }}</div>
+          <div><b>ID Type:</b> {{ $any(p).identity?.idType || '—' }}</div>
+          <div><b>ID Number:</b> {{ $any(p).identity?.idNumber || '—' }}</div>
+  
+          <div><b>Insurance provider:</b> {{ $any(p).identity?.insuranceProvider || '—' }}</div>
+          <div><b>Insurance ID:</b> {{ $any(p).identity?.insuranceId || '—' }}</div>
+          <div><b>Group #:</b> {{ $any(p).identity?.groupNumber || '—' }}</div>
+  
+          <div><b>Payor:</b> {{ $any(p).identity?.payor || $any(p).paiement || $any(p).payor || '—' }}</div>
+          <div><b>Policy holder:</b> {{ $any(p).identity?.policyHolder || '—' }}</div>
+  
+          <div class="full"><b>Emergency contact:</b> {{ $any(p).identity?.emergencyContactName || '—' }}</div>
+          <div><b>Emergency phone:</b> {{ $any(p).identity?.emergencyContactPhone || '—' }}</div>
+          <div><b>Relationship:</b> {{ $any(p).identity?.emergencyRelation || '—' }}</div>
+        </div>
+      </mat-card>
+  
+      <!-- Clinical -->
+      <mat-card class="section">
+        <h3>Clinical</h3>
+        <div class="grid two">
+          <div class="full">
+            <b>Reason for admission:</b> {{ $any(p).clinical?.reasonForAdmission || $any(p).raison || '—' }}
+          </div>
+  
+          <div class="full">
+            <b>Primary Care Provider (PCP):</b> {{ $any(p).clinical?.primaryCareProvider || $any(p).docteur || '—' }}
+          </div>
+  
+          <div class="full"><b>Referring provider:</b> {{ $any(p).clinical?.referringProvider || '—' }}</div>
+  
+          <div><b>Code status:</b> {{ $any(p).clinical?.codeStatus || '—' }}</div>
+          <div><b>Preferred pharmacy:</b> {{ $any(p).clinical?.preferredPharmacy || '—' }}</div>
+  
+          <div><b>Height (cm):</b> {{ $any(p).clinical?.heightCm || '—' }}</div>
+          <div><b>Weight (kg):</b> {{ $any(p).clinical?.weightKg || '—' }}</div>
+        </div>
+  
+        <div class="lists">
+          <div>
+            <h4>Diagnoses</h4>
+            <ul class="chips">
+              <li *ngFor="let d of ($any(p).clinical?.diagnoses || $any(p).diagnoses || [])">{{ d }}</li>
+              <li *ngIf="!($any(p).clinical?.diagnoses?.length || $any(p).diagnoses?.length)" class="muted">None</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Allergies</h4>
+            <ul class="chips">
+              <li *ngFor="let a of ($any(p).clinical?.allergies || $any(p).allergies || [])">{{ a }}</li>
+              <li *ngIf="!($any(p).clinical?.allergies?.length || $any(p).allergies?.length)" class="muted">None</li>
+            </ul>
+          </div>
+        </div>
+      </mat-card>
+  
+      <!-- Consents -->
+      <mat-card class="section">
+        <h3>Consents</h3>
+        <div class="consents">
+          <div class="consent">
+            <mat-icon [class.ok]="$any(p).consent?.hipaaAck" [class.no]="!$any(p).consent?.hipaaAck">
+              {{ $any(p).consent?.hipaaAck ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            <span>HIPAA Notice acknowledged</span>
+          </div>
+          <div class="consent">
+            <mat-icon [class.ok]="$any(p).consent?.privacyNoticeAck" [class.no]="!$any(p).consent?.privacyNoticeAck">
+              {{ $any(p).consent?.privacyNoticeAck ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            <span>Privacy Notice received</span>
+          </div>
+          <div class="consent">
+            <mat-icon [class.ok]="$any(p).consent?.financialAgreementAck" [class.no]="!$any(p).consent?.financialAgreementAck">
+              {{ $any(p).consent?.financialAgreementAck ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            <span>Financial Agreement accepted</span>
+          </div>
+        </div>
+      </mat-card>
+      <div class="section">
+        <mat-card class="section">
+          <div class="grid two">
+            <!-- Table -->
+              <div class="table-wrap">
+  <h3>Prescriptions</h3>
+  <table mat-table [dataSource]="(items$ | async) ?? []" class="mat-elevation-z2 full-table">
 
-    <!-- Si tu affiches une liste éditable (facultatif) -->
-    
-    <div formArrayName="tasks">
-      <div *ngFor="let g of tasksFA.controls; let i = index" [formGroupName]="i">
-        ... champs ...
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let r">{{ r.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dose">
+      <th mat-header-cell *matHeaderCellDef>Dosage</th>
+      <td mat-cell *matCellDef="let r">{{ r.dose || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="route">
+      <th mat-header-cell *matHeaderCellDef>Voie</th>
+      <td mat-cell *matCellDef="let r">{{ r.route || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="frequency">
+      <th mat-header-cell *matHeaderCellDef>Fréquence</th>
+      <td mat-cell *matCellDef="let r">{{ r.frequency || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="medicationType">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let r"><mat-chip appearance="outlined">{{ r.medicationType || '—' }}</mat-chip></td>
+    </ng-container>
+
+    <ng-container matColumnDef="medicationForm">
+      <th mat-header-cell *matHeaderCellDef>Forme</th>
+      <td mat-cell *matCellDef="let r"><mat-chip appearance="outlined">{{ r.medicationForm || '—' }}</mat-chip></td>
+    </ng-container>
+
+    <ng-container matColumnDef="prescriber">
+      <th mat-header-cell *matHeaderCellDef>Prescripteur</th>
+      <td mat-cell *matCellDef="let r">{{ r.prescriber || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef>Début</th>
+      <td mat-cell *matCellDef="let p">
+        {{ toJsDate(p.startDate) ? (toJsDate(p.startDate) | date:'yyyy-MM-dd') : '—' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef>Fin</th>
+      <td mat-cell *matCellDef="let p">
+        {{ toJsDate(p.endDate) ? (toJsDate(p.endDate) | date:'yyyy-MM-dd') : '—' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="notes">
+      <th mat-header-cell *matHeaderCellDef>Notes</th>
+      <td mat-cell *matCellDef="let r" class="truncate" [title]="r.notes">{{ r.notes || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="esign">
+      <th mat-header-cell *matHeaderCellDef>Signature</th>
+      <td mat-cell *matCellDef="let r">
+        <ng-container *ngIf="toJsDate(r?.eSignature?.signedAt) as sAt; else noSig">
+          Signé par {{ r.eSignature?.signerName || r.eSignature?.signerEmail }}
+          le {{ sAt | date:'short' }}
+        </ng-container>
+        <ng-template #noSig>—</ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let r">
+        <button mat-button color="primary" disabled><mat-icon>edit</mat-icon>&nbsp;Éditer</button>
+        <button mat-button color="warn" disabled><mat-icon>delete</mat-icon>&nbsp;Supprimer</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayed"></tr>
+  </table>
+              </div>
+          </div>
+        </mat-card>
       </div>
+
+       <!-- Assessments -->
+       <mat-card class="section">
+        <h3>Assessments</h3>
+        <div class="consents">
+        </div>
+      </mat-card>
+
     </div>
-    
-  </form>
-</mat-card>
+  </mat-card>
+  
+  
+  <ng-template #loading>
+    <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+  </ng-template>

@@ -1,0 +1,163 @@
+/* -------------------------------------------
+   Nurse Assessments — Full-width, responsive
+-------------------------------------------- */
+
+:host {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: var(--page-bg, #f6f7fb);
+    box-sizing: border-box;
+  }
+  
+  /* Card shell */
+  .card {
+    width: 100%;
+    margin: 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Header row */
+  .flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .flex-between h2 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: .2px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  /* Tabs */
+  mat-tab-group {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  /* Tab-level actions */
+  .tab-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0 12px;
+  }
+  
+  /* Optional external wrapper if you add it in the template */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;         /* safe on tiny screens */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Table */
+  .full-table {
+    width: 100% !important;
+    min-width: 0 !important;  /* allow true 100% */
+    table-layout: fixed;      /* responsive columns */
+    border-radius: 12px;
+    overflow: hidden;         /* keeps rounded corners with sticky header */
+  }
+  
+  /* Sticky header */
+  .mat-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  }
+  
+  /* Cells */
+  .mat-header-cell,
+  .mat-cell {
+    padding: 14px 16px;
+    vertical-align: middle;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    box-sizing: border-box;
+  }
+  
+  /* Let text wrap naturally (no forced ellipsis) */
+  .mat-header-cell,
+  .mat-cell {
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  /* Header look */
+  .mat-header-cell {
+    font-weight: 600;
+    color: rgba(0,0,0,0.72);
+  }
+  
+  /* Zebra + hover */
+  .mat-row {
+    transition: background-color .15s ease;
+  }
+  .mat-row:hover {
+    background: rgba(0,0,0,0.03);
+  }
+  .mat-row:nth-child(even) {
+    background: rgba(0,0,0,0.015);
+  }
+  
+  /* Column-specific niceties */
+  .mat-column-createdAt {
+    width: 180px;   /* hint only; table-layout: fixed will adapt */
+  }
+  
+  .mat-column-signed {
+    width: 240px;   /* hint */
+  }
+  
+  .mat-column-pdf a {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid rgba(0,0,0,0.12);
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .mat-column-pdf a:hover {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.18);
+  }
+  
+  /* Buttons */
+  button[mat-stroked-button],
+  button[mat-raised-button] {
+    border-radius: 10px !important;
+  }
+  
+  /* Small screens */
+  @media (max-width: 900px) {
+    :host { padding: 10px; }
+    .card { padding: 14px; border-radius: 14px; }
+    .mat-header-cell, .mat-cell { padding: 12px 14px; }
+  }
+  
+  @media (max-width: 600px) {
+    :host { padding: 8px; }
+    .card { padding: 12px; border-radius: 12px; }
+  
+    .actions { width: 100%; gap: 6px; }
+    .tab-actions { justify-content: stretch; }
+    .tab-actions button { width: 100%; }     /* big friendly Add button */
+  
+    .mat-column-createdAt { width: 140px; }
+    .mat-column-signed { width: auto; }
+  }
+  

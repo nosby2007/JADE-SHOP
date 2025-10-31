@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { WoundAssessmentService } from 'src/app/SERVICE/wound-assessment.service'; // Firestore direct
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { WoundAssessmentService } from 'src/app/service/wound-assessment.service';
 
 
 

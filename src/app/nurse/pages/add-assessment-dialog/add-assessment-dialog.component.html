@@ -1,0 +1,457 @@
+<h2 mat-dialog-title>New Assessment — {{ typeLabel }}</h2>
+
+<mat-dialog-content>
+  <ng-container [ngSwitch]="$any(type)">
+
+    <!-- Vital Signs (unchanged) -->
+    <form *ngSwitchCase="'vitalSigns'" [formGroup]="vitalsFG" class="grid full">
+      <mat-form-field>
+        <mat-label>Measured at</mat-label>
+        <input matInput [matDatepicker]="dt" formControlName="measuredAt" required>
+        <mat-datepicker-toggle matSuffix [for]="dt"></mat-datepicker-toggle>
+        <mat-datepicker #dt></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Systolic</mat-label>
+        <input matInput type="number" formControlName="systolic">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Diastolic</mat-label>
+        <input matInput type="number" formControlName="diastolic">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Heart rate (bpm)</mat-label>
+        <input matInput type="number" formControlName="heartRate">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Resp. rate (/min)</mat-label>
+        <input matInput type="number" formControlName="respiratoryRate">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Temperature (°C)</mat-label>
+        <input matInput type="number" step="0.1" formControlName="temperatureC">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>SpO₂ (%)</mat-label>
+        <input matInput type="number" formControlName="spo2">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Pain (0–10)</mat-label>
+        <input matInput type="number" min="0" max="10" formControlName="painScore">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Position</mat-label>
+        <input matInput formControlName="position">
+      </mat-form-field>
+
+      <mat-form-field><mat-label>Device</mat-label>
+        <input matInput formControlName="device">
+      </mat-form-field>
+
+      <mat-form-field class="full">
+        <mat-label>Note</mat-label>
+        <textarea matInput rows="2" formControlName="note"></textarea>
+      </mat-form-field>
+    </form>
+
+    <!-- Antibiotic Assessment -->
+    <form *ngSwitchCase="'antibiotic'" [formGroup]="antibioticFG" class="grid full">
+      <div class="evaluation-form-container full">
+        <h3>Antibiotic Control Sheet</h3>
+
+        <!-- Core -->
+        <div class="form-section grid full">
+          <h4 class="full">Antibiotic</h4>
+          <mat-form-field appearance="fill">
+            <mat-label>Medication name</mat-label>
+            <input matInput formControlName="medication" placeholder="Medication name" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Prescriber</mat-label>
+            <input matInput formControlName="prescriber" placeholder="Prescriber name" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Indication</mat-label>
+            <textarea matInput formControlName="indication" placeholder="Indication"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full">
+            <mat-label>Clinical symptoms present</mat-label>
+            <textarea matInput formControlName="clinicalSymptoms" placeholder="Describe clinical symptoms"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Symptoms checklist -->
+        <div class="form-section">
+          <h4>Physical exam</h4>
+          <h5>Possible symptoms (check all that apply)</h5>
+          <div class="checkbox-group grid full" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 8px;">
+            <mat-checkbox formControlName="abdominalCramps">Abdominal cramps</mat-checkbox>
+            <mat-checkbox formControlName="bpDecrease">Blood pressure – decreased</mat-checkbox>
+            <mat-checkbox formControlName="diarrhea">Diarrhea</mat-checkbox>
+            <mat-checkbox formControlName="dizziness">Dizziness / lightheadedness</mat-checkbox>
+            <mat-checkbox formControlName="facialSwelling">Facial swelling</mat-checkbox>
+            <mat-checkbox formControlName="fever">Fever</mat-checkbox>
+            <mat-checkbox formControlName="hives">Hives</mat-checkbox>
+            <mat-checkbox formControlName="itchingSkin">Itching skin</mat-checkbox>
+            <mat-checkbox formControlName="itchyWateryEyes">Itchy/watery eyes</mat-checkbox>
+            <mat-checkbox formControlName="lossOfAppetite">Loss of appetite</mat-checkbox>
+            <mat-checkbox formControlName="lossOfConsciousness">Loss of consciousness</mat-checkbox>
+            <mat-checkbox formControlName="nausea">Nausea</mat-checkbox>
+            <mat-checkbox formControlName="weakRapidPulse">Weak, rapid pulse</mat-checkbox>
+            <mat-checkbox formControlName="runnyNose">Runny nose</mat-checkbox>
+            <mat-checkbox formControlName="seizure">Seizure</mat-checkbox>
+            <mat-checkbox formControlName="shortnessOfBreath">Shortness of breath</mat-checkbox>
+            <mat-checkbox formControlName="skinRash">Skin rash</mat-checkbox>
+            <mat-checkbox formControlName="softStools">Soft stools</mat-checkbox>
+            <mat-checkbox formControlName="stomachDistress">Stomach distress</mat-checkbox>
+            <mat-checkbox formControlName="swellingEdema">Swelling / Edema</mat-checkbox>
+            <mat-checkbox formControlName="tighteningAirway">Airway/throat tightening</mat-checkbox>
+            <mat-checkbox formControlName="troubleBreathing">Trouble breathing</mat-checkbox>
+            <mat-checkbox formControlName="vomiting">Vomiting</mat-checkbox>
+            <mat-checkbox formControlName="wheezing">Wheezing</mat-checkbox>
+            <mat-checkbox formControlName="yeastInfectionVaginal">Yeast infection (vaginal)</mat-checkbox>
+            <mat-checkbox formControlName="yeastInfectionOral">Yeast infection (oral)</mat-checkbox>
+            <mat-checkbox formControlName="otherSymptom">Other</mat-checkbox>
+            <mat-checkbox formControlName="noneSymptoms">None</mat-checkbox>
+          </div>
+
+          <div class="grid full" style="margin-top: 8px;">
+            <mat-form-field>
+              <mat-label>Temperature (°C)</mat-label>
+              <input matInput type="number" formControlName="temperatureC" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Respiratory rate (/min)</mat-label>
+              <input matInput type="number" formControlName="respiratoryRate" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Heart rate (bpm)</mat-label>
+              <input matInput type="number" formControlName="heartRate" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Blood pressure</mat-label>
+              <input matInput type="text" formControlName="bloodPressure" placeholder="e.g., 118/72" />
+            </mat-form-field>
+
+            <mat-form-field class="full">
+              <mat-label>Current infection symptoms</mat-label>
+              <textarea matInput formControlName="infectionSymptoms" placeholder="Describe current infection symptoms"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="full">
+              <mat-label>Activity level</mat-label>
+              <textarea matInput formControlName="activityLevel" placeholder="No change / increased / declined"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="full">
+              <mat-label>Meals</mat-label>
+              <textarea matInput formControlName="meals" placeholder="No change / increased / declined"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="full">
+              <mat-label>Fluids</mat-label>
+              <textarea matInput formControlName="fluids" placeholder="No change / increased / declined"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Diagnostic orders -->
+        <div class="form-section">
+          <h4>Diagnostic orders</h4>
+          <div class="checkbox-group grid full" style="grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 8px;">
+            <mat-checkbox formControlName="testsLab">Laboratory tests</mat-checkbox>
+            <mat-checkbox formControlName="radiology">Radiology</mat-checkbox>
+            <mat-checkbox formControlName="otherDiagnostics">Other diagnostics</mat-checkbox>
+          </div>
+        </div>
+
+        <!-- Transition to PO -->
+        <div class="form-section">
+          <h3>Evaluation of Transition to PO Antibiotics</h3>
+
+          <div class="sub-section grid full">
+            <h4 class="full">1) Provider notified</h4>
+            <mat-form-field>
+              <mat-label>Name & title</mat-label>
+              <input matInput formControlName="providerName" placeholder="e.g., Dr. Smith" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="providerPhone" placeholder="e.g., 555-3000" />
+            </mat-form-field>
+          </div>
+
+          <div class="sub-section">
+            <h4>2) Notified information</h4>
+            <div class="checkbox-group grid full" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 8px;">
+              <mat-checkbox formControlName="adverseReactions">Suspected adverse reactions to antibiotic</mat-checkbox>
+              <mat-checkbox formControlName="currentStatus">Current clinical status</mat-checkbox>
+              <mat-checkbox formControlName="labResults">Laboratory test results</mat-checkbox>
+              <mat-checkbox formControlName="microbiologyResults">Microbiology / culture results</mat-checkbox>
+              <mat-checkbox formControlName="radiologyResults">Radiology study results</mat-checkbox>
+              <mat-checkbox formControlName="otherInfo">Other</mat-checkbox>
+            </div>
+          </div>
+
+          <div class="sub-section">
+            <h4>3) Antibiotic orders reviewed</h4>
+            <mat-radio-group formControlName="antibioticReview" class="grid" style="grid-auto-flow: column; gap:12px;">
+              <mat-radio-button value="yes">Yes</mat-radio-button>
+              <mat-radio-button value="no">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="sub-section">
+            <h4>4) Provider determination</h4>
+            <mat-radio-group formControlName="providerDetermination" class="grid full" style="gap:8px;">
+              <mat-radio-button value="continueTherapy">Continue current antibiotic therapy</mat-radio-button>
+              <mat-radio-button value="adjustTherapy">Adjust antibiotic therapy based on clinical/diagnostic results</mat-radio-button>
+              <mat-radio-button value="discontinueTherapy">Discontinue antibiotic therapy – not indicated</mat-radio-button>
+              <mat-radio-button value="awaitResults">Contact provider when remaining results are available</mat-radio-button>
+              <mat-radio-button value="other">Other</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="sub-section">
+            <h4>5) Verify total treatment length</h4>
+            <mat-radio-group formControlName="treatmentLength" class="grid" style="grid-auto-flow: column; gap:12px; flex-wrap: wrap;">
+              <mat-radio-button value="5days">5 days</mat-radio-button>
+              <mat-radio-button value="10days">10 days</mat-radio-button>
+              <mat-radio-button value="14days">14 days</mat-radio-button>
+              <mat-radio-button value="21days">21 days</mat-radio-button>
+              <mat-radio-button value="other">Other</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="sub-section grid full">
+            <h4 class="full">6) New antibiotic order</h4>
+            <mat-form-field>
+              <mat-label>Medication</mat-label>
+              <input matInput formControlName="newMedicationName" placeholder="Medication name" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Dosage</mat-label>
+              <input matInput formControlName="dosage" placeholder="Dosage" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Route</mat-label>
+              <input matInput formControlName="route" placeholder="Oral / IV / etc." />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Frequency</mat-label>
+              <input matInput formControlName="frequency" placeholder="e.g., q8h" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-section grid full">
+            <mat-form-field class="full">
+              <mat-label>Notes</mat-label>
+              <textarea matInput formControlName="notes" placeholder="Add notes"></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="abdt" formControlName="date" />
+              <mat-datepicker-toggle matSuffix [for]="abdt"></mat-datepicker-toggle>
+              <mat-datepicker #abdt></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Skin (Weekly) -->
+    <form *ngSwitchCase="'skinWeekly'" [formGroup]="form" class="grid full">
+      <mat-form-field class="full">
+        <mat-label>Findings</mat-label>
+        <textarea matInput rows="4" formControlName="findings"></textarea>
+      </mat-form-field>
+    </form>
+
+    <!-- Pressure Injury (Weekly) -->
+    <form *ngSwitchCase="'pressureInjuryWeekly'" [formGroup]="form" class="grid full">
+      <mat-form-field><mat-label>Stage</mat-label>
+        <input matInput formControlName="stage">
+      </mat-form-field>
+      <mat-form-field><mat-label>Location</mat-label>
+        <input matInput formControlName="location">
+      </mat-form-field>
+      <mat-form-field><mat-label>Length (cm)</mat-label>
+        <input matInput type="number" formControlName="lengthCm">
+      </mat-form-field>
+      <mat-form-field><mat-label>Width (cm)</mat-label>
+        <input matInput type="number" formControlName="widthCm">
+      </mat-form-field>
+      <mat-form-field><mat-label>Depth (cm)</mat-label>
+        <input matInput type="number" formControlName="depthCm">
+      </mat-form-field>
+      <mat-form-field><mat-label>Exudate</mat-label>
+        <input matInput formControlName="exudate">
+      </mat-form-field>
+      <mat-form-field><mat-label>Odor</mat-label>
+        <input matInput formControlName="odor">
+      </mat-form-field>
+      <mat-form-field><mat-label>Dressing</mat-label>
+        <input matInput formControlName="dressing">
+      </mat-form-field>
+      <mat-form-field class="full"><mat-label>Notes</mat-label>
+        <textarea matInput rows="3" formControlName="piNotes"></textarea>
+      </mat-form-field>
+    </form>
+
+    <!-- Braden (EN) -->
+    <div *ngSwitchCase="'braden'" class="braden-form-container" [formGroup]="form">
+      <h3 style="color:#1565c0; font-weight:700;">Braden Scale: Pressure Injury Risk Assessment</h3>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">1. Sensory Perception</h4>
+        <label *ngFor="let option of sensoryOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="sensory" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">2. Moisture</h4>
+        <label *ngFor="let option of moistureOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="moisture" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">3. Activity</h4>
+        <label *ngFor="let option of activityOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="activity" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">4. Mobility</h4>
+        <label *ngFor="let option of mobilityOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="mobility" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">5. Nutrition</h4>
+        <label *ngFor="let option of nutritionOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="nutrition" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">6. Friction & Shear</h4>
+        <label *ngFor="let option of frictionOptions" class="radio-row">
+          <input type="radio" [value]="option.value" formControlName="friction" />
+          <span>{{ option.label }}</span>
+        </label>
+      </div>
+
+      <div class="form-section">
+        <h4 style="color:blue; font-weight:700;">Assessment date</h4>
+        <label class="date-row">
+          <input type="date" formControlName="bradenDate" />
+          <span>Date</span>
+        </label>
+      </div>
+
+      <div class="score-section">
+        <h4>Total score: {{ totalScore }}</h4>
+        <div class="risk-line">
+          Risk:
+          <span class="risk-chip" [ngClass]="'risk-' + bradenRiskClass">{{ bradenRiskText }}</span>
+        </div>
+      </div>
+
+      <div class="form-section legend">
+        <h4 style="font-weight:700; margin:0;">
+          <div>AT RISK 15–18</div>
+          <div>MODERATE RISK 13–14</div>
+          <div>HIGH RISK 10–12</div>
+          <div>VERY HIGH RISK 9 OR BELOW</div>
+        </h4>
+      </div>
+    </div>
+
+    <!-- Progress Note -->
+    <form *ngSwitchCase="'progressNote'" [formGroup]="form" class="grid full">
+      <mat-form-field><mat-label>Author role</mat-label>
+        <input matInput formControlName="authorRole">
+      </mat-form-field>
+      <mat-form-field><mat-label>Visit date</mat-label>
+        <input matInput [matDatepicker]="vd" formControlName="visitDate">
+        <mat-datepicker-toggle matSuffix [for]="vd"></mat-datepicker-toggle>
+        <mat-datepicker #vd></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="full"><mat-label>Note</mat-label>
+        <textarea matInput rows="4" formControlName="note"></textarea>
+      </mat-form-field>
+    </form>
+
+    <!-- Care Plan -->
+    <form *ngSwitchCase="'carePlan'" [formGroup]="form" class="grid full">
+      <mat-form-field class="full"><mat-label>Diagnoses (one per line)</mat-label>
+        <textarea matInput rows="3" formControlName="diagnoses"></textarea>
+      </mat-form-field>
+      <mat-form-field class="full"><mat-label>Goals (one per line)</mat-label>
+        <textarea matInput rows="3" formControlName="goals"></textarea>
+      </mat-form-field>
+      <mat-form-field class="full"><mat-label>Interventions (one per line)</mat-label>
+        <textarea matInput rows="3" formControlName="interventions"></textarea>
+      </mat-form-field>
+      <mat-form-field><mat-label>Target date</mat-label>
+        <input matInput [matDatepicker]="td" formControlName="targetDate">
+        <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+        <mat-datepicker #td></mat-datepicker>
+      </mat-form-field>
+    </form>
+
+  </ng-container>
+
+  <h3 class="mt-4">E-Signature</h3>
+  <form [formGroup]="esignFG" class="grid">
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <input matInput formControlName="role" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Signer name</mat-label>
+      <input matInput formControlName="signerName">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="signerEmail">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hidePw ? 'password' : 'text'" formControlName="signerPassword">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="
+      saving ||
+      esignFG.invalid ||
+      (($any(type) === 'vitalSigns') && vitalsFG.invalid) ||
+      (($any(type) === 'braden') && form.invalid)
+    "
+  >
+    Save
+  </button>
+</mat-dialog-actions>

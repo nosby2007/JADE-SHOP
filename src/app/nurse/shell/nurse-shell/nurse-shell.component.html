@@ -1,7 +1,7 @@
 <!-- src/app/nurse/shell/nurse-shell/nurse-shell.component.html -->
 <mat-sidenav-container class="nurse-shell">
     <mat-sidenav mode="side" opened class="nurse-sidenav">
-      <mat-toolbar color="primary">Infirmier</mat-toolbar>
+      <mat-toolbar color="primary">INNOVACARE NURSE</mat-toolbar>
       <mat-nav-list>
         <a mat-list-item routerLink="dashboard" routerLinkActive="active">
           <mat-icon>dashboard</mat-icon>
@@ -11,9 +11,16 @@
           <mat-icon>people</mat-icon>
           <span class="ml-2">Patients</span>
         </a>
-        <a mat-list-item routerLink="patients/ID/tasks" routerLinkActive="active">
-          <mat-icon>checklist</mat-icon>
-          <span class="ml-2">Tâches</span>
+        <mat-nav-list>
+          <a mat-list-item routerLink="tasks" routerLinkActive="active">
+            <mat-icon>checklist</mat-icon>
+            <span class="ml-2">Tâches</span>
+          </a>
+          <!-- autres entrées… -->
+        </mat-nav-list>
+        <a mat-list-item routerLink="patients/ID/prescriptions" routerLinkActive="active">
+          <mat-icon>medication</mat-icon>
+          <span class="ml-2">Prescriptions</span>
         </a>
         <a mat-list-item routerLink="patients/ID/uda" routerLinkActive="active">
           <mat-icon>folder</mat-icon>
@@ -24,9 +31,9 @@
   
     <mat-sidenav-content>
       <mat-toolbar color="primary">
-        <span>Module Infirmier</span>
+        
         <span class="spacer"></span>
-        <button mat-button routerLink="/patients">Patients (global)</button>
+        <span>Nurses Workplace</span>
       </mat-toolbar>
   
       <div class="page">

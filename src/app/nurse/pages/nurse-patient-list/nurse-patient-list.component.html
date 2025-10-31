@@ -3,8 +3,8 @@
       <h2>Patients</h2>
       <div class="actions">
         <mat-form-field appearance="outline" class="search">
-          <mat-label>Rechercher</mat-label>
-          <input matInput [(ngModel)]="q" placeholder="Nom, téléphone, email..." />
+          <mat-label>Search</mat-label>
+          <input matInput [(ngModel)]="q" placeholder="Name, telephone, email..." />
           <button *ngIf="q" mat-icon-button matSuffix (click)="q=''">
             <mat-icon>close</mat-icon>
           </button>
@@ -15,28 +15,21 @@
     <ng-container *ngIf="items$ | async as items; else loading">
       <div class="table-wrap">
         <table mat-table [dataSource]="items" class="mat-elevation-z2 full-table">
-  
-          <!-- ID -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Id</th>
-            <td mat-cell *matCellDef="let p">{{ p.id }}</td>
-          </ng-container>
-  
           <!-- Nom -->
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Nom</th>
+            <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let p">{{ p.name }}</td>
           </ng-container>
   
           <!-- Genre -->
           <ng-container matColumnDef="gender">
-            <th mat-header-cell *matHeaderCellDef>Genre</th>
+            <th mat-header-cell *matHeaderCellDef>Gender</th>
             <td mat-cell *matCellDef="let p">{{ p.gender || '—' }}</td>
           </ng-container>
   
           <!-- Naissance -->
           <ng-container matColumnDef="dob">
-            <th mat-header-cell *matHeaderCellDef>Naissance</th>
+            <th mat-header-cell *matHeaderCellDef>DOB</th>
             <td mat-cell *matCellDef="let p">
               <ng-container *ngIf="isFsTimestamp(p.dob); else dobPlain">
                 {{ toJsDate(p.dob) | date:'yyyy-MM-dd' }}
@@ -49,33 +42,40 @@
   
           <!-- Téléphone -->
           <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+            <th mat-header-cell *matHeaderCellDef>Phone</th>
             <td mat-cell *matCellDef="let p">{{ p.phone || '—' }}</td>
           </ng-container>
   
           <!-- Email -->
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let p">{{ p.email || '—' }}</td>
+          <ng-container matColumnDef="raison">
+            <th mat-header-cell *matHeaderCellDef>Complaint</th>
+            <td mat-cell *matCellDef="let p">{{ p.raison}}</td>
           </ng-container>
   
           <!-- Adresse -->
           <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef>Adresse</th>
+            <th mat-header-cell *matHeaderCellDef>Adress</th>
             <td mat-cell *matCellDef="let p" class="truncate" title="{{ p.address }}">
               {{ p.address || '—' }}
             </td>
           </ng-container>
+          <!-- Paiment -->
+          <ng-container matColumnDef="paiement">
+            <th mat-header-cell *matHeaderCellDef>Payor</th>
+            <td mat-cell *matCellDef="let p" class="truncate" title="{{ p.paiement }}">
+              {{ p.paiement}}
+            </td>
+          </ng-container>
   
           <!-- Créé le -->
-          <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef>Créé le</th>
+          <ng-container matColumnDef="admissionDate">
+            <th mat-header-cell *matHeaderCellDef>Admission Date</th>
             <td mat-cell *matCellDef="let p">
-              <ng-container *ngIf="isFsTimestamp(p.createdAt); else createdPlain">
-                {{ toJsDate(p.createdAt) | date:'short' }}
+              <ng-container *ngIf="isFsTimestamp(p.admissionDate); else createdPlain">
+                {{ toJsDate(p.admissionDate) | date:'yyyy-MM-dd' }}
               </ng-container>
               <ng-template #createdPlain>
-                {{ toJsDate(p.createdAt) ? (toJsDate(p.createdAt) | date:'short') : '—' }}
+                {{ toJsDate(p.admissionDate) || p.admissionDate ? (toJsDate(p.admissionDate) | date:'yyyy-MM-dd') : '—' }}
               </ng-template>
             </td>
           </ng-container>
@@ -84,7 +84,7 @@
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let p">
               <a mat-button color="primary" [routerLink]="['/nurse','patients', p.id]">
-                <mat-icon>open_in_new</mat-icon>&nbsp;Ouvrir
+                <mat-icon>open_in_new</mat-icon>&nbsp;Open
               </a>
             </td>
           </ng-container>
