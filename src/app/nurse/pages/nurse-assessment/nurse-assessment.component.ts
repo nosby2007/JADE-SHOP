@@ -10,12 +10,19 @@ import type { EChartsOption } from 'echarts';
 
 type TabKey = AssessmentType | 'vitalSigns' | 'antibiotic';
 
+declare const pdfMake: any;
+
+const docDef = { content: ['Hello PDF'] };
+pdfMake.createPdf(docDef).open();   // vfs is already set by vfs_fonts.js
+
 @Component({
   selector: 'app-nurse-assessment',
   templateUrl: './nurse-assessment.component.html',
   styleUrls: ['./nurse-assessment.component.scss']
 })
 export class NurseAssessmentsComponent implements OnInit {
+
+  
   patientId = '';
   tabs: { key: TabKey; label: string }[] = [
     { key: 'skinWeekly', label: 'Skin (Weekly)' },

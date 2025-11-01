@@ -10,3 +10,6 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+  declare const pdfMake: any;
+pdfMake.createPdf({ content: ['Hello'] }).open();

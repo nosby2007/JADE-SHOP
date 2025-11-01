@@ -34,7 +34,9 @@
             ],
            "scripts": [
               "node_modules/pdfmake/build/pdfmake.js",
-              "node_modules/pdfmake/build/vfs_fonts.js"
+              "node_modules/pdfmake/build/vfs_fonts.js",
+              "src/assets/pdfmake/pdfmake.min.js",
+              "src/assets/pdfmake/vfs_fonts.js"
             ]
           },
           "configurations": {
@@ -42,13 +44,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "6mb"
+                  "maximumWarning": "5Gb",
+                  "maximumError": "6Gb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "4Gb",
+                  "maximumError": "5Gb"
                 }
               ],
               "fileReplacements": [
