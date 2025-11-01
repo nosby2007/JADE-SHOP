@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Patient } from '../patient.model';
+
 import { collectionData } from '@angular/fire/firestore';
 import { addDoc, doc, updateDoc } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Patient } from '../nurse/models/patient.model';
 
 
 @Injectable({

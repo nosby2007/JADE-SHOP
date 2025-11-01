@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "woundapp-261e6"
-  }
+    "default": "woundapp-261e6",
+    "innovacare-app": "woundapp-261e6"
+  },
+  "targets": {},
+  "etags": {}
 }

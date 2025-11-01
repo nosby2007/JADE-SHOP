@@ -2,26 +2,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Patient } from '../nurse/models/patient.model';
 
-export interface Patient {
-  id?: string;
-  name: string;
-  gender?: 'male' | 'female' | 'other' | string;
-  dob?: string | Date | { seconds: number; nanoseconds: number } | any;
-  phone?: string;
-  email?: string;
-  address?: string;
-  quartier?: string;
-  departement?: string;
-  docteur?: string;
-  raison?: string;
-  paiement?: string;
-  createdAt?: any;
-  updatedAt?: any;      // ← utile si l’API renvoie ce champ
-  payor?: string;
-  uin?: string;
-  ssn?: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class PatientApiService {

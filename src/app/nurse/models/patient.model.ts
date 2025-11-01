@@ -3,13 +3,72 @@ import { Timestamp } from 'firebase/firestore';
 export interface Patient {
     id?: string;
     name: string;
+    preferredName?: string;
     gender?: string;
     dob?: string | Date;
+    admissionDate?: string | Date;
+
+    // Contact / address
     phone?: string;
     email?: string;
     address?: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+    language?: string;
+    maritalStatus?: string;
+
+    // Identity (flat)
+    ssn?: string;
+    idType?: string;
+    idNumber?: string;
+    insuranceProvider?: string;
+    insuranceId?: string;
+    groupNumber?: string;
+    payor?: string;
+    policyHolder?: string;
+    emergencyContactName?: string;
+    emergencyContactPhone?: string;
+    emergencyRelation?: string;
+
+    // Clinical (flat)
+    reasonForAdmission?: string;
+    primaryCareProvider?: string;
+    referringProvider?: string;
+    codeStatus?: string;
+    preferredPharmacy?: string;
+    heightCm?: string | number;
+    weightKg?: string | number;
+
+    // Consent (flat)
+    hipaaAck?: boolean;
+    privacyNoticeAck?: boolean;
+    financialAgreementAck?: boolean;
+
+    // Legacy aliases for older consumers
+    docteur?: string;
+    raison?: string;
+    paiement?: string;
+
+    // Optional legacy nested emergencyContact object
+    emergencyContact?: {
+      name?: string;
+      phone?: string;
+      relation?: string;
+    };
+
     createdAt?: any;
     updatedAt?: any;
+
+    // retained from previous model
+    allergies?: string[];
+    diagnoses?: string[];
+    payment?: string;
+    reason?: string;
+    occupation?: string;
   }
   
   export interface Rx {

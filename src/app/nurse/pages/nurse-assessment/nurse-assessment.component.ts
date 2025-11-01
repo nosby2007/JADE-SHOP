@@ -9,6 +9,7 @@ import { VitalsTrendDialogComponent } from '../vitals-trend-dialog/vitals-trend-
 import type { EChartsOption } from 'echarts';
 
 type TabKey = AssessmentType | 'vitalSigns' | 'antibiotic';
+declare const pdfMake: any;
 
 @Component({
   selector: 'app-nurse-assessment',
@@ -26,6 +27,7 @@ export class NurseAssessmentsComponent implements OnInit {
     { key: 'vitalSigns', label: 'Vital Signs' },
     { key: 'antibiotic', label: 'Antibiotics' }
   ];
+  
 
   streams: Partial<Record<TabKey, Observable<Assessment[]>>> = {};
   vitalsOptions$?: Observable<EChartsOption>;

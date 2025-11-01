@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Patient, PatientApiService } from 'src/app/core/patient-api.service';
+import { PatientApiService } from 'src/app/core/patient-api.service';
 import { WoundApiService } from 'src/app/core/wound-api.service';
+import { Patient } from 'src/app/nurse/models/patient.model';
 
 @Component({
   selector: 'app-skin-wound-dashboard',

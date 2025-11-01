@@ -1,4 +1,3 @@
-// src/app/nurse/service/assessments.service.ts
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -7,9 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import firebase from 'firebase/compat/app';
 import { environment } from 'src/environments/environment';
-import {
-  Assessment, AssessmentType, Esign, Braden, SkinWeekly, PressureInjuryWeekly, ProgressNote, CarePlan
-} from '../models/assessment.model';
+
+// Home wound care model
+import { Patient, Rx, NurseTask, Assessment } from '../models/patient.model';
 
 const asObj = (x: any): Record<string, any> => (x && typeof x === 'object') ? x : {};
 
@@ -25,26 +24,15 @@ export class AssessmentsService {
 
   // ---------- pdfmake (global) ----------
   private _pdfMake?: any;
-
-  /** Grabs window.pdfMake and enforces a safe font family that always exists in vfs. */
   private getGlobalPdfMake(): any {
     const pm = (typeof window !== 'undefined' ? (window as any).pdfMake : undefined);
-    if (!pm || !pm.vfs) {
-      // If you land here, the global scripts weren't loaded (see angular.json section below).
-      throw new Error('pdfmake vfs not found');
-    }
+    if (!pm || !pm.vfs) throw new Error('pdfmake vfs not found');
 
-    // One-time font hardening (idempotent)
     if (!pm.fonts || !pm.fonts.Fallback) {
       const keys = Object.keys(pm.vfs || {});
       if (!keys.length) throw new Error('pdfmake vfs is empty');
-
-      // Prefer Roboto-Regular if present; else first available file in vfs
       const base = pm.vfs['Roboto-Regular.ttf'] ? 'Roboto-Regular.ttf' : keys[0];
-      pm.fonts = {
-        // Map all styles to a guaranteed file so we never request Roboto-Medium.ttf
-        Fallback: { normal: base, bold: base, italics: base, bolditalics: base }
-      };
+      pm.fonts = { Fallback: { normal: base, bold: base, italics: base, bolditalics: base } };
     }
     return pm;
   }
@@ -58,74 +46,106 @@ export class AssessmentsService {
     });
   }
 
-  /* ===================== Lists ===================== */
-  list(pid: string, type: AssessmentType) {
+  // ===================== Branding =====================
+  private readonly clinicLogoUrl =
+    'https://res.cloudinary.com/dtdpx59sc/image/upload/v1760108013/ChatGPT_Image_Oct_2_2025_03_19_58_PM_om8pic.png';
+  private _logoDataUrl?: string;
+
+  private async getLogoDataUrl(): Promise<string> {
+    if (this._logoDataUrl) return this._logoDataUrl;
+    const blob = await firstValueFrom(this.http.get(this.clinicLogoUrl, { responseType: 'blob' }));
+    this._logoDataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    return this._logoDataUrl!;
+  }
+
+  /**
+   * Centered, margin-safe header block:
+   * - One-row table, widths [200, 80, 220] -> total 500 < default 515 content width
+   * - alignment: 'center' keeps it centered within the page content
+   * - Right column uses left alignment (inside the centered table) to avoid clipping
+   */
+  private clinicHeaderBlock(): any[] {
+    const leftCol = [
+      { text: '211 RUSTY PLOW LANE PERRY GA', fontSize: 9, margin: [0, 0, 0, 2] },
+      { text: '31069', fontSize: 9, margin: [0, 0, 0, 6] }, 
+      { text: 'Website:', bold: true, fontSize: 9, margin: [0, 0, 0, 0] },
+      {
+            text: 'https://perryhomewoundcare.network',
+            fontSize: 9,
+            link: 'https://perryhomewoundcare.network',
+            color: '#1a0dab'
+          },
+     
+    ];
+
+    const rightCol = [
+      { text: 'Willy A Yougang Tchoutang, AGNP', bold: true, italics: true, alignment: 'right', fontSize: 11, margin: [0, 0, 0, 4] },
+      { text: 'Co-founder chief clinical Director', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
+      { text: 'Nurse Practitioner', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
+      { text: 'Tel: (423)521-2298', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
+      {
+        text: 'Email: support@perryhomewoundcare.network',
+        alignment: 'right',
+        fontSize: 8,
+        link: 'mailto:support@perryhomewoundcare.network',
+        color: '#1a0dab',
+        margin: [0, 0, 0, 4]
+      }
+    ];
+
+    return [
+      {
+        table: {
+          widths: [200, 80, 220], // total 500 (fits inside default 515 content width)
+          body: [[
+            { stack: leftCol, border: [false, false, false, false] },
+            { image: 'clinicLogo', width: 64, alignment: 'center', border: [false, false, false, false] },
+            { stack: rightCol, border: [false, false, false, false] }
+          ]]
+        },
+        layout: 'noBorders',
+        alignment: 'center',   // centers the 500px table within page content
+        margin: [0, 0, 0, 6]
+      },
+      // separator line (full content width is OK and visually clean)
+      { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 }], margin: [0, 4, 0, 10] }
+    ];
+  }
+
+  // ===================== Assessments (CRUD) =====================
+
+  listAssessments(pid: string, program?: Assessment['program']) {
     return this.afs.collection<Assessment>(
       `patients/${pid}/assessments`,
-      ref => ref.where('type', '==', type).orderBy('createdAt', 'desc')
+      ref => program
+        ? ref.where('program', '==', program).orderBy('createdAt', 'desc')
+        : ref.orderBy('createdAt', 'desc')
     ).valueChanges({ idField: 'id' });
   }
 
-  /* ===================== Add ===================== */
-  async add(
+  async addAssessment(
     pid: string,
-    data: Partial<Assessment> & { type: AssessmentType },
-    esign: Omit<Esign, 'signedAt' | 'method'> & { role: Esign['role'] }
+    data: Partial<Assessment> & { program: Assessment['program'] }
   ) {
     const now = firebase.firestore.FieldValue.serverTimestamp();
-    const norm = (d: any) => d instanceof Date ? d : (d ? new Date(d) : null);
-
-    const { type, ...rest } = asObj(data);
-
     const fsPayload: any = {
-      ...asObj(rest),
-      type,
+      ...asObj(data),
       patientId: pid,
       createdBy: this.uid,
       createdAt: now,
       updatedAt: now,
-      eSignature: {
-        ...asObj(esign),
-        method: 'password',
-        signedAt: now
-      }
+      status: data.status || 'submitted'
     };
 
-    // Normalize known date fields for Firestore compat serializer
-    if ('visitDate' in fsPayload) fsPayload.visitDate = norm(fsPayload.visitDate);
-    if ('targetDate' in fsPayload) fsPayload.targetDate = norm(fsPayload.targetDate);
+    const ref = await this.afs.collection(`patients/${pid}/assessments`).add(fsPayload);
+    const id = ref.id;
 
-    // API (optional) - JSON-safe payload
-    const apiPayload: any = {
-      ...fsPayload,
-      createdAt: null, updatedAt: null,
-      eSignature: { ...asObj(fsPayload.eSignature), signedAt: null }
-    };
-    if ('visitDate' in apiPayload && apiPayload.visitDate) {
-      apiPayload.visitDate = new Date(apiPayload.visitDate).toISOString();
-    }
-    if ('targetDate' in apiPayload && apiPayload.targetDate) {
-      apiPayload.targetDate = new Date(apiPayload.targetDate).toISOString();
-    }
-
-    let id: string | undefined;
-    if (this.base.trim()) {
-      try {
-        const res = await firstValueFrom(
-          this.http.post<{ id: string }>(`${this.base}/patients/${pid}/assessments`, apiPayload)
-        );
-        id = res.id;
-      } catch {
-        // Fallback to Firestore
-      }
-    }
-    if (!id) {
-      const ref = await this.afs.collection(`patients/${pid}/assessments`).add(fsPayload);
-      id = ref.id;
-    }
-
-    // PDF creation + upload
-    const pdfBlob = await this.makePdfBlob(pid, { ...asObj(fsPayload), id, type } as Assessment);
+    const pdfBlob = await this.makeAssessmentPdfBlob(pid, { ...fsPayload, id } as Assessment);
     const path = `patients/${pid}/assessments/${id}.pdf`;
     const task = await this.storage.upload(path, pdfBlob, { contentType: 'application/pdf' });
     const pdfUrl = await task.ref.getDownloadURL();
@@ -134,17 +154,26 @@ export class AssessmentsService {
     return id;
   }
 
-  /* ===================== Compilations ===================== */
+  // ===================== Compilations (PDFs) =====================
+
   async compileAdmission(pid: string) {
-    const patSnap = await this.afs.doc(`patients/${pid}`).ref.get();
-    const patient = patSnap.data() || {};
-    const assSnap = await this.afs.collection(`patients/${pid}/assessments`).ref.get();
+    const [patSnap, assSnap, rxSnap, tasksSnap] = await Promise.all([
+      this.afs.doc(`patients/${pid}`).ref.get(),
+      this.afs.collection(`patients/${pid}/assessments`).ref.get(),
+      this.afs.collection(`patients/${pid}/prescriptions`).ref.get(),
+      this.afs.collection(`patients/${pid}/tasks`).ref.get()
+    ]);
+
+    const patient = { id: patSnap.id, ...asObj(patSnap.data()) } as Patient;
     const assessments = assSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Assessment[];
+    const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Rx[];
+    const tasks = tasksSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as NurseTask[];
 
-    const rxSnap = await this.afs.collection(`patients/${pid}/prescriptions`).ref.get();
-    const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) }));
+    const docDef = this.admissionDocDefHome(patient, prescriptions, assessments, tasks);
+    const logo = await this.getLogoDataUrl();
+    (docDef as any).images = { clinicLogo: logo };
+    (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
 
-    const docDef: any = this.admissionDocDef(patient, prescriptions, assessments);
     const blob = await this.createBlob(docDef);
     const path = `patients/${pid}/reports/admission-${Date.now()}.pdf`;
     const task = await this.storage.upload(path, blob, { contentType: 'application/pdf' });
@@ -152,165 +181,224 @@ export class AssessmentsService {
   }
 
   async compileDischarge(pid: string) {
-    const patSnap = await this.afs.doc(`patients/${pid}`).ref.get();
-    const patient = patSnap.data() || {};
-    const assSnap = await this.afs.collection(`patients/${pid}/assessments`).ref.get();
+    const [patSnap, assSnap, rxSnap] = await Promise.all([
+      this.afs.doc(`patients/${pid}`).ref.get(),
+      this.afs.collection(`patients/${pid}/assessments`).ref.get(),
+      this.afs.collection(`patients/${pid}/prescriptions`).ref.get()
+    ]);
+
+    const patient = { id: patSnap.id, ...asObj(patSnap.data()) } as Patient;
     const assessments = assSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Assessment[];
+    const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Rx[];
 
-    const rxSnap = await this.afs.collection(`patients/${pid}/prescriptions`).ref.get();
-    const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) }));
+    const docDef = this.dischargeDocDefHome(patient, prescriptions, assessments);
+    const logo = await this.getLogoDataUrl();
+    (docDef as any).images = { clinicLogo: logo };
+    (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
 
-    const notes = assessments.filter(a => a.type === 'progressNote') as ProgressNote[];
-
-    const docDef: any = this.dischargeDocDef(patient, prescriptions, assessments, notes);
     const blob = await this.createBlob(docDef);
     const path = `patients/${pid}/reports/discharge-${Date.now()}.pdf`;
     const task = await this.storage.upload(path, blob, { contentType: 'application/pdf' });
     return await task.ref.getDownloadURL();
   }
 
-  /* ===================== Rx mini-report ===================== */
-  async prescriptionReport(pid: string, rxId: string) {
-    const rxDoc = await this.afs.doc(`patients/${pid}/prescriptions/${rxId}`).ref.get();
-    const rx = { id: rxDoc.id, ...asObj(rxDoc.data()) } as any;
-    const udaSnap = await this.afs.collection(
-      `patients/${pid}/administrations`, ref => ref.where('rxId', '==', rxId)
-    ).ref.get();
-    const udas = udaSnap.docs.map(d => d.data());
+  // ===================== Assessment PDF =====================
 
-    const docDef: any = {
-      content: [
-        { text: 'Prescription Report', style: 'h1' },
-        { text: rx.name || '—', style: 'h2' },
-        { text: `Dose: ${rx.dose || '—'} • Route: ${rx.route || '—'} • Freq: ${rx.frequency || '—'}` },
-        { text: 'Administrations', style: 'h3', margin: [0, 10, 0, 6] },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['auto','*','*'],
-            body: [
-              ['Date','Status','Dose Given'],
-              ...udas.map((u: any) => [
-                this.fmtDate(u.adminAt), u.status || '—', u.doseGiven || '—'
-              ])
-            ]
-          }
-        }
-      ],
-      styles: { h1:{fontSize:18,bold:true}, h2:{fontSize:14,bold:true}, h3:{fontSize:12,bold:true} }
-    };
-
-    const blob = await this.createBlob(docDef);
-    const path = `patients/${pid}/reports/rx-${rxId}-${Date.now()}.pdf`;
-    const task = await this.storage.upload(path, blob, { contentType: 'application/pdf' });
-    return await task.ref.getDownloadURL();
-  }
-
-  // ----------------- PDF helpers -----------------
-  private async makePdfBlob(_pid: string, a: Assessment): Promise<Blob> {
-    const docDef = this.assessmentDocDef(a);
+  private async makeAssessmentPdfBlob(_pid: string, a: Assessment): Promise<Blob> {
+    const docDef = this.assessmentDocDefHome(a);
+    const logo = await this.getLogoDataUrl();
+    (docDef as any).images = { clinicLogo: logo };
+    (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
     return this.createBlob(docDef);
   }
 
-  private assessmentDocDef(a: Assessment): any {
-    const header = { text: `Assessment: ${a.type}`, style: 'h1' };
-    const meta = { text: `Created: ${this.fmtDate(a.createdAt)} • By: ${a.eSignature?.signerName || a.eSignature?.signerEmail || '—'}`, margin:[0,0,0,8] };
+  // ===================== PDF Document Definitions =====================
+
+  private assessmentDocDefHome(a: Assessment): any {
+    const header = { text: `Assessment: ${a.program}`, style: 'h1', color: 'black', bold: true, textAlign: 'center', textDecoration: 'underline' };
+    const meta = { text: `Assessed: ${this.fmtDate(a.assessedAt)} • Status: ${a.status || '—'}`, margin:[0,0,0,8] };
     const body: any[] = [header, meta];
-  
-    if (a.type === 'braden') {
-      // ... existing ...
-    } else if (a.type === 'skinWeekly') {
-      // ... existing ...
-    } else if (a.type === 'pressureInjuryWeekly') {
-      // ... existing ...
-    } else if (a.type === 'progressNote') {
-      // ... existing ...
-    } else if (a.type === 'carePlan') {
-      // ... existing ...
-    } else if (a.type === 'vitals') {          // ⬅️ NEW
-      const v = a as any;
-      body.push(
-        { text: `Measured: ${this.fmtDate(v.measuredAt)}`, style: 'h2', margin:[0,4,0,8] },
-        {
-          table: {
-            widths: ['*','*','*','*'],
-            body: [
-              ['BP (mmHg)', 'HR (bpm)', 'RR (/min)', 'Temp (°C)'],
-              [
-                (v.systolic && v.diastolic) ? `${v.systolic}/${v.diastolic}` : '—',
-                v.heartRate ?? '—',
-                v.respiratoryRate ?? '—',
-                v.temperatureC ?? '—'
-              ],
-              ['SpO₂ (%)', 'Pain (0-10)', 'Position', 'Device'],
-              [
-                v.spo2 ?? '—',
-                v.painScore ?? '—',
-                v.position || '—',
-                v.device || '—'
-              ]
-            ]
-          }
-        },
-        v.note ? { text: v.note, margin:[0,8,0,0] } : {}
-      );
+
+    if (a.answers && typeof a.answers === 'object') {
+      const rows = Object.entries(a.answers).map(([k, v]) => [
+        { text: String(k), bold: true },
+        (typeof v === 'object' ? JSON.stringify(v, null, 0) : String(v ?? '—'))
+      ]);
+      body.push({
+        table: { widths: ['*','*'], body: rows.length ? rows : [['No data','—']] },
+        layout: 'lightHorizontalLines',
+        margin: [0, 6, 0, 0]
+      });
+    } else {
+      body.push({ text: 'No answers provided.', italics: true, margin:[0,6,0,0] });
     }
-  
-    return { content: body, styles: { h1:{fontSize:16,bold:true}, h2:{fontSize:12,bold:true}, h3:{bold:true} } };
-  }
-  
 
-  private admissionDocDef(patient: any, prescriptions: any[], assessments: Assessment[]) {
+    if (typeof a.score === 'number') {
+      body.push({ text: `Score: ${a.score}`, margin:[0,6,0,0] });
+    }
+
     return {
-      content: [
-        { text: 'Admission Summary', style: 'h1' },
-        { text: `${patient?.name || '—'}  •  DOB: ${this.fmtDate(patient?.dob)}  •  Payor: ${patient?.paiement || '—'}`, margin: [0, 0, 0, 8] },
-        { text: `Providers: ${patient?.docteur || '—'}` },
-        { text: 'Prescriptions', style: 'h2', margin: [0, 10, 0, 4] },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: [
-              ['Medication', 'Dose', 'Route', 'Freq'],
-              ...prescriptions.map(r => [r.name || '—', r.dose || '—', r.route || '—', r.frequency || '—'])
-            ]
-          }
-        },
-        { text: 'Assessments (latest)', style: 'h2', margin: [0, 10, 0, 4] },
-        ...assessments.slice(0, 6).map(a => ({
-          text: `${a.type} • ${this.fmtDate(a.createdAt)} • ${a.eSignature?.signerName || a.eSignature?.signerEmail || '—'}`
-        }))
-      ],
-      styles: { h1: { fontSize: 18, bold: true }, h2: { fontSize: 13, bold: true } }
+      content: body,
+      styles: { h1:{fontSize:16,bold:true}, h2:{fontSize:12,bold:true} },
+      defaultStyle: { font: 'Fallback', fontSize: 10 }
     };
   }
 
-  private dischargeDocDef(patient: any, prescriptions: any[], assessments: Assessment[], notes: ProgressNote[]) {
+  private admissionDocDefHome(
+    patient: Patient,
+    prescriptions: Rx[],
+    assessments: Assessment[],
+    tasks: NurseTask[]
+  ) {
+    const val = (x: any, d: any = '—') => (x ?? d);
+    const dt  = (x: any) => this.fmtDate(x);
+    const section = (t: string) => ({ text: t, style: 'h2', margin: [0, 12, 0, 6] });
+
+    const twoCol = (rows: any[][]) => ({
+      table: { widths: ['*','*'], body: rows },
+      layout: 'lightHorizontalLines'
+    });
+
+    const tableN = (headerRow: any[], rows: any[][], widths?: (string | number)[]) => ({
+      table: {
+        headerRows: 1,
+        widths: widths && widths.length ? widths : Array(headerRow.length).fill('*'),
+        body: [headerRow, ...rows]
+      },
+      layout: 'lightHorizontalLines'
+    });
+
+    const headerBlock = [
+      { text: 'PERRY HOME WOUND CARE • ADMISSION RECORD', style: 'h1', color: 'blue',  bold: true, alignment: 'center',  margin: [0, 0, 0, 4] },
+      { text: `${val(patient.name)} • Created: ${dt(patient.createdAt)} • Phone: ${val(patient.phone)}`, margin:[0,0,0,8] }
+    ];
+
+    const patientInfo = twoCol([
+      [{ text: 'Name', bold: true }, val(patient.name)],
+      [{ text: 'Preferred Name', bold: true }, val(patient.preferredName)],
+      [{ text: 'Gender', bold: true }, val(patient.gender)],
+      [{ text: 'Date of Birth', bold: true }, dt(patient.dob)],
+      [{ text: 'Phone', bold: true }, val(patient.phone)],
+      [{ text: 'Email', bold: true }, val(patient.email)],
+      [{ text: 'Address', bold: true }, [val(patient.address), val(patient.address1), val(patient.address2), val(patient.city), val(patient.state), val(patient.zip)].filter(Boolean).join(', ') || '—'],
+      [{ text: 'Admission Date', bold: true }, dt(patient.admissionDate)],
+      
+    ]);
+
+    const medsRows = (prescriptions || []).map(r => [
+      val(r.name), val(r.dose), val(r.route), val(r.frequency),
+      [val(r.medicationType), val(r.medicationForm)].filter(Boolean).join(' / ') || '—',
+      val(r.prescriber)
+    ]);
+
+    const medsTable = tableN(
+      ['Medication', 'Dose', 'Route', 'Frequency', 'Type/Form', 'Prescriber'],
+      medsRows.length ? medsRows : [['—','—','—','—','—','—']],
+      ['*','auto','auto','auto','auto','auto']
+    );
+
+    const latestAssess = (assessments || [])
+      .sort((a,b) => +new Date(b?.createdAt?.toDate?.() ?? b?.createdAt ?? 0) - +new Date(a?.createdAt?.toDate?.() ?? a?.createdAt ?? 0))
+      .slice(0, 6)
+      .map(a => [val(a.program), val(a.status || '—'), dt(a.assessedAt), (typeof a.score === 'number' ? a.score : '—')]);
+
+    const assessTable = tableN(
+      ['Program', 'Status', 'Assessed At', 'Score'],
+      latestAssess.length ? latestAssess : [['—','—','—','—']]
+    );
+
+    const openTasks = (tasks || [])
+      .filter(t => !t.completed)
+      .sort((a,b) => +new Date(a?.dueAt?.toDate?.() ?? a?.dueAt ?? 0) - +new Date(b?.dueAt?.toDate?.() ?? b?.dueAt ?? 0))
+      .slice(0, 8)
+      .map(t => [val(t.type), val(t.title), dt(t.dueAt), val(t.details)]);
+
+    const taskTable = tableN(
+      ['Type', 'Title', 'Due', 'Details'],
+      openTasks.length ? openTasks : [['—','—','—','—']]
+    );
+
     return {
       content: [
-        { text: 'Discharge Summary', style: 'h1' },
-        { text: `${patient?.name || '—'}  •  DOB: ${this.fmtDate(patient?.dob)}`, margin: [0, 0, 0, 8] },
-        { text: 'Prescriptions at Discharge', style: 'h2', margin: [0, 10, 0, 4] },
-        {
-          table: {
-            headerRows: 1, widths: ['*', 'auto', 'auto', 'auto'],
-            body: [['Medication', 'Dose', 'Route', 'Freq'], ...prescriptions.map(r => [r.name || '—', r.dose || '—', r.route || '—', r.frequency || '—'])]
-          }
-        },
-        { text: 'Progress Notes', style: 'h2', margin: [0, 10, 0, 4] },
-        ...notes.map(n => ({
-          text: `${this.fmtDate(n.visitDate)} • ${n.authorRole} • ${n.eSignature?.signerName || n.eSignature?.signerEmail || '—'}`
-        })),
-        { text: 'Assessments', style: 'h2', margin: [0, 10, 0, 4] },
-        ...assessments.map(a => ({
-          text: `${a.type} • ${this.fmtDate(a.createdAt)} • ${a.eSignature?.signerName || a.eSignature?.signerEmail || '—'}`
-        }))
+        ...headerBlock,
+        section('PATIENT INFORMATION'),
+        patientInfo,
+        section('MEDICATIONS'),
+        medsTable,
+        section('ASSESSMENTS (Latest)'),
+        assessTable,
+        section('OPEN NURSE TASKS'),
+        taskTable
       ],
-      styles: { h1: { fontSize: 18, bold: true }, h2: { fontSize: 13, bold: true } }
+      styles: {
+        h1: { fontSize: 18, bold: true },
+        h2: { fontSize: 12, bold: true }
+      },
+      defaultStyle: { font: 'Fallback', fontSize: 10 },
+      footer: (currentPage: number, pageCount: number) =>
+        ({ text: `Page ${currentPage} of ${pageCount}`, alignment: 'right', margin: [0,10,20,0], fontSize: 9 })
     };
   }
 
+  private dischargeDocDefHome(patient: Patient, prescriptions: Rx[], assessments: Assessment[]) {
+    const val = (x: any, d: any = '—') => (x ?? d);
+    const dt  = (x: any) => this.fmtDate(x);
+    const section = (t: string) => ({ text: t, style: 'h2', margin: [0, 12, 0, 6] });
+
+    const twoCol = (rows: any[][]) => ({
+      table: { widths: ['*','*'], body: rows },
+      layout: 'lightHorizontalLines'
+    });
+
+    const meds = (prescriptions || []).map(r => [
+      val(r.name), val(r.dose), val(r.route), val(r.frequency)
+    ]);
+
+    const assessRows = (assessments || [])
+      .sort((a,b) => +new Date(a?.createdAt?.toDate?.() ?? a?.createdAt ?? 0) - +new Date(b?.createdAt?.toDate?.() ?? b?.createdAt ?? 0))
+      .slice(-10)
+      .map(a => [val(a.program), val(a.status || '—'), dt(a.assessedAt), (typeof a.score === 'number' ? a.score : '—')]);
+
+    return {
+      content: [
+        { text: 'PERRY HOME WOUND CARE • DISCHARGE SUMMARY', style: 'h1', color: 'blue',  bold: true, textAlign: 'center', },
+        twoCol([
+          [{ text: 'Patient', bold: true }, val(patient.name)],
+          [{ text: 'DOB', bold: true }, dt(patient.dob)],
+          [{ text: 'Phone', bold: true }, val(patient.phone)],
+          [{ text: 'Address', bold: true }, [val(patient.address), val(patient.city), val(patient.state), val(patient.zip)].filter(Boolean).join(', ') || '—'],
+          [{ text: 'Emergency Contact', bold: true }, val(patient.emergencyContact?.name || patient.emergencyContactName)],
+          [{ text: 'Admission Date', bold: true }, dt(patient.admissionDate)],
+        ]),
+
+        section('PRESCRIPTIONS AT DISCHARGE'),
+        {
+          table: {
+            headerRows: 1, widths: ['*','auto','auto','auto'],
+            body: [['Medication', 'Dose', 'Route', 'Frequency'],
+              ...(meds.length ? meds : [['—','—','—','—']])]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        section('ASSESSMENT HISTORY (Recent)'),
+        {
+          table: {
+            headerRows: 1, widths: ['*','auto','auto','auto'],
+            body: [['Program','Status','Assessed At','Score'],
+              ...(assessRows.length ? assessRows : [['—','—','—','—']])]
+          },
+          layout: 'lightHorizontalLines'
+        }
+      ],
+      styles: { h1: { fontSize: 18, bold: true }, h2: { fontSize: 13, bold: true } },
+      defaultStyle: { font: 'Fallback', fontSize: 10 },
+      footer: (currentPage: number, pageCount: number) =>
+        ({ text: `Page ${currentPage} of ${pageCount}`, alignment: 'right', margin: [0,10,20,0], fontSize: 9 })
+    };
+  }
+
+  // ===================== Utilities =====================
   private fmtDate(v: any): string {
     if (!v) return '—';
     const toDate = (x: any) =>
@@ -320,6 +408,46 @@ export class AssessmentsService {
     return isNaN(+d) ? '—' : d.toLocaleString();
   }
 
+  // ===================== Back-compat for old components =====================
 
-  
+  private toProgramFromType(kind: string): 'Braden' | 'FallRisk' | 'Nutrition' | 'Wound' {
+    return kind === 'braden' ? 'Braden' : 'Wound';
+  }
+
+  public list(pid: string, kind: string) {
+    return this.afs.collection(
+      `patients/${pid}/assessments`,
+      ref => ref.where('kind', '==', kind).orderBy('createdAt', 'desc')
+    ).valueChanges({ idField: 'id' }) as unknown as import('rxjs').Observable<any[]>;
+  }
+
+  public async add(
+    pid: string,
+    data: any,
+    esign: { signerUid?: string; signerEmail?: string|null; signerName?: string|null; role?: string } | null
+  ) {
+    const kind = String(data?.type ?? 'unknown');
+    const program = this.toProgramFromType(kind);
+
+    const assessedAt =
+      data?.assessedAt ??
+      data?.bradenDate ??
+      data?.visitDate ??
+      data?.measuredAt ??
+      new Date();
+
+    const { type: _drop, ...answers } = (data ?? {});
+    if (esign) (answers as any).eSignature = esign;
+
+    const shaped = {
+      program,
+      assessedAt,
+      status: (typeof data?.status === 'string' ? data.status : 'submitted'),
+      score: (typeof data?.score === 'number' ? data.score : undefined),
+      kind,
+      answers
+    } as Partial<Assessment> & { program: 'Braden'|'FallRisk'|'Nutrition'|'Wound' };
+
+    return this.addAssessment(pid, shaped);
+  }
 }

@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Patient } from 'src/app/patient.model';
 import { PatientApiService } from 'src/app/core/patient-api.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { Location } from '@angular/common'; // ⬅️ add
+import { Patient } from 'src/app/nurse/models/patient.model';
 
 
 @Component({

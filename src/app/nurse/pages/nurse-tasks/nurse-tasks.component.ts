@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Patient } from 'src/app/patient.model';
+
 import { PatientApiService } from 'src/app/core/patient-api.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { Location } from '@angular/common'; // ⬅️ add
 import { NurseDataService } from '../../service/nurse-data.service';
-import { Rx } from '../../models/patient.model';
+import { Patient, Rx } from '../../models/patient.model';
 import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';

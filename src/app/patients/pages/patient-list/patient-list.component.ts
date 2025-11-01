@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Patient, PatientApiService } from 'src/app/core/patient-api.service';
+import { PatientApiService } from 'src/app/core/patient-api.service';
+import { Patient } from 'src/app/nurse/models/patient.model';
 import { PatientService } from 'src/app/service/patient.service';
 import { environment } from 'src/environments/environment';
 
