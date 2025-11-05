@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
 import { AuthService } from 'src/app/service/auth.service';
-
-
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-login',
@@ -41,14 +39,14 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     try {
-      // ⚠️ Assure-toi que AuthService expose bien cette méthode et qu’elle retourne un UserCredential (Firebase)
       const cred = await this.auth.signInWithEmailAndPassword(this.email, this.password);
       if (!cred?.user?.uid) throw new Error('Utilisateur introuvable après connexion');
 
-      // Récupère le profil pour lire les rôles
+      // Récupère le profil pour lire les rôles (roles[] ou role)
       const doc = await firstValueFrom(this.afs.doc(`users/${cred.user.uid}`).valueChanges());
-      const roles: string[] =
-        (doc as any)?.roles || ((doc as any)?.role ? [(doc as any).role] : []);
+      const data = (doc as any) || {};
+      const role = data?.role;
+      const roles: string[] = Array.isArray(data?.roles) ? data.roles : (role ? [role] : []);
 
       // Redirection selon rôle
       if (roles.includes('admin')) {
@@ -60,20 +58,19 @@ export class LoginComponent implements OnInit {
       } else if (roles.includes('user')) {
         await this.router.navigateByUrl('/home');
       } else {
-        this.router.navigate(['/login']); // fallback
+        // Aucun rôle reconnu -> écran d’accueil
+        await this.router.navigateByUrl('/home');
       }
 
-      // Met à jour la dernière connexion
+      // Met à jour la dernière connexion (merge)
       await this.afs.doc(`users/${cred.user.uid}`).set({
         lastLogin: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
 
-      // Optionnel: nettoyer le formulaire
       this.email = '';
       this.password = '';
     } catch (err: any) {
       console.error('Login error:', err);
-      // Message utilisateur simplifié (tu peux mapper les codes Firebase si tu veux)
       this.errorMsg = err?.message || 'Connexion impossible. Vérifiez vos identifiants.';
     } finally {
       this.loading = false;

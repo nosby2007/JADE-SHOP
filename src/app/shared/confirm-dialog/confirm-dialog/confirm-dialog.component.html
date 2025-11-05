@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>
+  <mat-icon *ngIf="data?.warning" color="warn" style="vertical-align: -6px;">report</mat-icon>
+  {{ data?.title || 'Are you sure?' }}
+</h2>
+
+<mat-dialog-content class="content">
+  <p>{{ data?.message || 'This action cannot be undone.' }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="onCancel()">
+    {{ data?.cancelText || 'Cancel' }}
+  </button>
+  <button mat-raised-button [color]="data?.warning ? 'warn' : 'primary'" (click)="onConfirm()">
+    {{ data?.confirmText || 'Confirm' }}
+  </button>
+</mat-dialog-actions>

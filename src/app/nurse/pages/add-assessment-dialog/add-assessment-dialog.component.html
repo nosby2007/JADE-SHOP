@@ -3,49 +3,49 @@
 <mat-dialog-content>
   <ng-container [ngSwitch]="$any(type)">
 
-    <!-- Vital Signs (unchanged) -->
+    <!-- Vital Signs -->
     <form *ngSwitchCase="'vitalSigns'" [formGroup]="vitalsFG" class="grid full">
       <mat-form-field>
         <mat-label>Measured at</mat-label>
-        <input matInput [matDatepicker]="dt" formControlName="measuredAt" required>
+        <input matInput [matDatepicker]="dt" formControlName="measuredAt" required />
         <mat-datepicker-toggle matSuffix [for]="dt"></mat-datepicker-toggle>
         <mat-datepicker #dt></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field><mat-label>Systolic</mat-label>
-        <input matInput type="number" formControlName="systolic">
+        <input matInput type="number" formControlName="systolic" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Diastolic</mat-label>
-        <input matInput type="number" formControlName="diastolic">
+        <input matInput type="number" formControlName="diastolic" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Heart rate (bpm)</mat-label>
-        <input matInput type="number" formControlName="heartRate">
+        <input matInput type="number" formControlName="heartRate" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Resp. rate (/min)</mat-label>
-        <input matInput type="number" formControlName="respiratoryRate">
+        <input matInput type="number" formControlName="respiratoryRate" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Temperature (°C)</mat-label>
-        <input matInput type="number" step="0.1" formControlName="temperatureC">
+        <input matInput type="number" step="0.1" formControlName="temperatureC" />
       </mat-form-field>
 
       <mat-form-field><mat-label>SpO₂ (%)</mat-label>
-        <input matInput type="number" formControlName="spo2">
+        <input matInput type="number" formControlName="spo2" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Pain (0–10)</mat-label>
-        <input matInput type="number" min="0" max="10" formControlName="painScore">
+        <input matInput type="number" min="0" max="10" formControlName="painScore" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Position</mat-label>
-        <input matInput formControlName="position">
+        <input matInput formControlName="position" />
       </mat-form-field>
 
       <mat-form-field><mat-label>Device</mat-label>
-        <input matInput formControlName="device">
+        <input matInput formControlName="device" />
       </mat-form-field>
 
       <mat-form-field class="full">
@@ -263,46 +263,126 @@
       </div>
     </form>
 
-    <!-- Skin (Weekly) -->
-    <form *ngSwitchCase="'skinWeekly'" [formGroup]="form" class="grid full">
+    <!-- Skin (Weekly) — FIXED FormArray binding -->
+    <form *ngSwitchCase="'skinWeekly'" [formGroup]="skinWeeklyFG" class="grid full">
+      <h3 class="full">Weekly Skin Assessment</h3>
+
+      <mat-form-field>
+        <mat-label>Effective date</mat-label>
+        <input matInput [matDatepicker]="skdt" formControlName="effectiveDate" />
+        <mat-datepicker-toggle matSuffix [for]="skdt"></mat-datepicker-toggle>
+        <mat-datepicker #skdt></mat-datepicker>
+      </mat-form-field>
+
+      <div class="full">
+        <h4>Skin condition (check all that apply)</h4>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:8px;">
+          <mat-checkbox formControlName="cond_intact">Skin Intact</mat-checkbox>
+          <mat-checkbox formControlName="cond_dry">Dry</mat-checkbox>
+          <mat-checkbox formControlName="cond_rash">Rash</mat-checkbox>
+          <mat-checkbox formControlName="cond_plaques">Plaques</mat-checkbox>
+          <mat-checkbox formControlName="cond_callouses">Callouses</mat-checkbox>
+          <mat-checkbox formControlName="cond_redness">Redness</mat-checkbox>
+          <mat-checkbox formControlName="cond_skinTears">Skin Tears</mat-checkbox>
+          <mat-checkbox formControlName="cond_blisters">Blisters</mat-checkbox>
+          <mat-checkbox formControlName="cond_openAreas">Open areas, not skin tears</mat-checkbox>
+          <div class="flex items-center gap-2">
+            <mat-checkbox formControlName="cond_other">Other</mat-checkbox>
+            <mat-form-field style="width:280px; margin-left:8px;">
+              <mat-label>Specify other</mat-label>
+              <input matInput formControlName="cond_otherText" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="full">
+        <h4>Open areas new since last evaluation?</h4>
+        <mat-radio-group formControlName="openAreasNew" class="flex gap-6">
+          <mat-radio-button value="no">No</mat-radio-button>
+          <mat-radio-button value="yes">Yes</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <!-- Sites table/list -->
+      <div class="full">
+        <div class="flex-between items-center">
+          <h4 class="m-0">Sites & Descriptions</h4>
+          <button mat-stroked-button color="primary" type="button" (click)="addSiteRow()">
+            <mat-icon>add</mat-icon>&nbsp;Add site
+          </button>
+        </div>
+
+        <!-- CRITICAL: formArrayName wrapper + [formGroupName]="i" per row -->
+        <div formArrayName="sites" class="grid full" style="gap:10px; margin-top:8px;">
+          <div class="site-row grid" style="grid-template-columns: 320px 1fr auto; gap:8px;"
+               *ngFor="let grp of sitesFA.controls; let i = index" [formGroupName]="i">
+
+            <mat-form-field>
+              <mat-label>Body site</mat-label>
+              <mat-select formControlName="site">
+                <mat-option *ngFor="let site of bodySites" [value]="site">{{ site }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" placeholder="ex: erythema, blanching, intact skin" />
+            </mat-form-field>
+
+            <button mat-icon-button color="warn" type="button" (click)="removeSiteRow(i)" [disabled]="sitesFA.length === 1" matTooltip="Remove row">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="full">
+        <h4>Edema present?</h4>
+        <mat-radio-group formControlName="edema" class="flex gap-6">
+          <mat-radio-button value="no">No</mat-radio-button>
+          <mat-radio-button value="yes">Yes</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
       <mat-form-field class="full">
-        <mat-label>Findings</mat-label>
-        <textarea matInput rows="4" formControlName="findings"></textarea>
+        <mat-label>General comments</mat-label>
+        <textarea matInput rows="3" formControlName="comments"></textarea>
       </mat-form-field>
     </form>
 
     <!-- Pressure Injury (Weekly) -->
     <form *ngSwitchCase="'pressureInjuryWeekly'" [formGroup]="form" class="grid full">
       <mat-form-field><mat-label>Stage</mat-label>
-        <input matInput formControlName="stage">
+        <input matInput formControlName="stage" />
       </mat-form-field>
       <mat-form-field><mat-label>Location</mat-label>
-        <input matInput formControlName="location">
+        <input matInput formControlName="location" />
       </mat-form-field>
       <mat-form-field><mat-label>Length (cm)</mat-label>
-        <input matInput type="number" formControlName="lengthCm">
+        <input matInput type="number" formControlName="lengthCm" />
       </mat-form-field>
       <mat-form-field><mat-label>Width (cm)</mat-label>
-        <input matInput type="number" formControlName="widthCm">
+        <input matInput type="number" formControlName="widthCm" />
       </mat-form-field>
       <mat-form-field><mat-label>Depth (cm)</mat-label>
-        <input matInput type="number" formControlName="depthCm">
+        <input matInput type="number" formControlName="depthCm" />
       </mat-form-field>
       <mat-form-field><mat-label>Exudate</mat-label>
-        <input matInput formControlName="exudate">
+        <input matInput formControlName="exudate" />
       </mat-form-field>
       <mat-form-field><mat-label>Odor</mat-label>
-        <input matInput formControlName="odor">
+        <input matInput formControlName="odor" />
       </mat-form-field>
       <mat-form-field><mat-label>Dressing</mat-label>
-        <input matInput formControlName="dressing">
+        <input matInput formControlName="dressing" />
       </mat-form-field>
       <mat-form-field class="full"><mat-label>Notes</mat-label>
         <textarea matInput rows="3" formControlName="piNotes"></textarea>
       </mat-form-field>
     </form>
 
-    <!-- Braden (EN) -->
+    <!-- Braden -->
     <div *ngSwitchCase="'braden'" class="braden-form-container" [formGroup]="form">
       <h3 style="color:#1565c0; font-weight:700;">Braden Scale: Pressure Injury Risk Assessment</h3>
 
@@ -383,10 +463,10 @@
     <!-- Progress Note -->
     <form *ngSwitchCase="'progressNote'" [formGroup]="form" class="grid full">
       <mat-form-field><mat-label>Author role</mat-label>
-        <input matInput formControlName="authorRole">
+        <input matInput formControlName="authorRole" />
       </mat-form-field>
       <mat-form-field><mat-label>Visit date</mat-label>
-        <input matInput [matDatepicker]="vd" formControlName="visitDate">
+        <input matInput [matDatepicker]="vd" formControlName="visitDate" />
         <mat-datepicker-toggle matSuffix [for]="vd"></mat-datepicker-toggle>
         <mat-datepicker #vd></mat-datepicker>
       </mat-form-field>
@@ -407,10 +487,15 @@
         <textarea matInput rows="3" formControlName="interventions"></textarea>
       </mat-form-field>
       <mat-form-field><mat-label>Target date</mat-label>
-        <input matInput [matDatepicker]="td" formControlName="targetDate">
+        <input matInput [matDatepicker]="td" formControlName="targetDate" />
         <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
         <mat-datepicker #td></mat-datepicker>
       </mat-form-field>
+    </form>
+
+    <!-- Nurse Admission (unchanged from your last version) -->
+    <form *ngSwitchCase="'nurseAdmission'" [formGroup]="nurseAdmissionFG" class="grid full">
+      <!-- (… keep your nurse admission fields here …) -->
     </form>
 
   </ng-container>
@@ -424,17 +509,17 @@
 
     <mat-form-field>
       <mat-label>Signer name</mat-label>
-      <input matInput formControlName="signerName">
+      <input matInput formControlName="signerName" />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput formControlName="signerEmail">
+      <input matInput formControlName="signerEmail" />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input matInput [type]="hidePw ? 'password' : 'text'" formControlName="signerPassword">
+      <input matInput [type]="hidePw ? 'password' : 'text'" formControlName="signerPassword" />
     </mat-form-field>
   </form>
 </mat-dialog-content>
@@ -449,7 +534,8 @@
       saving ||
       esignFG.invalid ||
       (($any(type) === 'vitalSigns') && vitalsFG.invalid) ||
-      (($any(type) === 'braden') && form.invalid)
+      (($any(type) === 'braden') && form.invalid) ||
+      (($any(type) === 'skinWeekly') && skinWeeklyFG.invalid)
     "
   >
     Save

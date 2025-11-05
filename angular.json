@@ -23,6 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": ["pdfmake"],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -33,10 +34,6 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
            "scripts": [
-              "node_modules/pdfmake/build/pdfmake.js",
-              "node_modules/pdfmake/build/vfs_fonts.js",
-              "src/assets/pdfmake/pdfmake.min.js",
-              "src/assets/pdfmake/vfs_fonts.js"
             ]
           },
           "configurations": {

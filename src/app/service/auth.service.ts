@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-// 👉 (optionnel) si tu veux écrire lastLogin après auth
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 
@@ -14,7 +12,6 @@ export class AuthService {
   private userName = new BehaviorSubject<string | null>(null);
   userName$: Observable<string | null> = this.userName.asObservable();
 
-  // ⚠️ ajoute AngularFirestore si tu veux appeler updateLastLogin()
   constructor(private fireAuth: AngularFireAuth, private router: Router, private afs: AngularFirestore) {}
 
   async signInAnonymously() {
@@ -27,31 +24,27 @@ export class AuthService {
     return user ? user.getIdToken(forceRefresh) : null;
   }
 
-  // ✅ NOUVEAU: méthode “pure” qui retourne le UserCredential (utilisée par LoginComponent)
+  /** Returns the Firebase UserCredential */
   async signInWithEmailAndPassword(email: string, password: string) {
     const cred = await this.fireAuth.signInWithEmailAndPassword(email, password);
-    // état local
     this.loggedIn.next(true);
     localStorage.setItem('token', 'true');
 
-    // username local
     const displayName = cred.user?.displayName || email.split('@')[0];
     this.userName.next(displayName);
     localStorage.setItem('userName', displayName);
 
-    // (optionnel) trace le lastLogin dans users/{uid}
     if (cred.user?.uid) {
       await this.updateLastLogin(cred.user.uid);
     }
 
-    return cred; // <-- important: on retourne le UserCredential
+    return cred;
   }
 
-  // Ta méthode existante (garde-la si d’autres écrans l’utilisent)
-  // Elle navigue directement vers /home. Pour l’écran “rôles”, préfère la méthode ci-dessus.
+  /** Legacy method kept for compatibility */
   login(email: string, password: string) {
     this.fireAuth.signInWithEmailAndPassword(email, password).then(
-      (userCredential) => {
+      async (userCredential) => {
         this.loggedIn.next(true);
         localStorage.setItem('token', 'true');
 
@@ -60,12 +53,9 @@ export class AuthService {
           const displayName = user.displayName || email.split('@')[0];
           this.userName.next(displayName);
           localStorage.setItem('userName', displayName);
-          // (optionnel) trace lastLogin
-          this.updateLastLogin(user.uid);
+          await this.updateLastLogin(user.uid);
         }
 
-        // ⚠️ Cette navigation est “statique”. Pour la redirection par rôles,
-        // utilise plutôt signInWithEmailAndPassword() depuis le LoginComponent.
         this.router.navigate(['/home', { username: 'JohnDoe' }]);
       },
       (err: any) => {
@@ -119,7 +109,6 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  // ✅ (optionnel) trace du dernier login
   private async updateLastLogin(uid: string) {
     try {
       await this.afs.doc(`users/${uid}`).set(

@@ -48,6 +48,7 @@ import { PharmacyRxDialogComponent } from './pages/nurse-prescriptions/prescript
 import { LaboratoryRxDialogComponent } from './pages/nurse-prescriptions/prescription-dialog/laboratory-rx-dialog/laboratory-rx-dialog.component';
 import { NutritionRxDialogComponent } from './pages/nurse-prescriptions/prescription-dialog/nutrition-rx-dialog/nutrition-rx-dialog.component';
 import { OrderRxDialogComponent } from './pages/nurse-prescriptions/prescription-dialog/order-rx-dialog/order-rx-dialog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [NurseShellComponent, NurseDashboardComponent, NursePatientListComponent, NursePatientDetailComponent, NursePrescriptionsComponent, NurseTasksComponent, SafeDatePipe, AddAssessmentDialogComponent, NurseAssessmentsComponent, VitalsTrendDialogComponent, AddPrescriptionDialogComponent, PharmacyRxDialogComponent, LaboratoryRxDialogComponent, NutritionRxDialogComponent, OrderRxDialogComponent],
@@ -61,7 +62,7 @@ import { OrderRxDialogComponent } from './pages/nurse-prescriptions/prescription
     MatButtonModule,
     MatCardModule, FormsModule, ReactiveFormsModule,
     MatDividerModule, MatFormFieldModule, MatInputModule, MatTableModule, MatProgressSpinnerModule,
-    MatRadioModule, MatMenuModule,
+    MatRadioModule, MatMenuModule, MatProgressBarModule,
 
     // UI
     MatSnackBarModule, MatCheckboxModule, MatNativeDateModule, MatDatepickerModule, MatSelectModule, MatTabsModule, MatDialogModule, 

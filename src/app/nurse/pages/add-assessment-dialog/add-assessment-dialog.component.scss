@@ -1,252 +1,437 @@
 /* ====== AddAssessmentDialog styles (applies to Antibiotic modal too) ====== */
 
+/* Theme tokens for easy tuning */
+:root {
+  --ui-bg: #270101;
+  --surface: #fbfdff;
+  --muted: #6b7280;
+  --primary: #1976d2;
+  --primary-700: #1565c0;
+  --accent: #0d47a1;
+  --success: #1b5e20;
+  --danger: #b71c1c;
+  --glass: rgba(15, 23, 42, 0.04);
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --card-shadow: 0 6px 18px rgba(14, 30, 37, 0.06);
+}
+
+/* Global host tweaks */
 :host {
-    display: block;
+  display: block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #0f1724;
+  font-size: 14px;
+  line-height: 1.4;
+  background: linear-gradient(180deg, rgba(245,247,250,0.6), rgba(250,252,255,0.6));
+  padding: 8px;
+}
+
+/* Dialog body */
+mat-dialog-content {
+  padding: 16px 12px 8px;
+}
+
+/* Grid utilities */
+.grid {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.full {
+  grid-column: 1 / -1;
+}
+
+/* Card containers */
+.evaluation-form-container,
+.braden-form-container {
+  padding: 20px;
+  border: 1px solid rgba(11, 22, 38, 0.06);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--ui-bg), var(--surface));
+  box-shadow: var(--card-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.evaluation-form-container:hover,
+.braden-form-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(14,30,37,0.08);
+}
+
+/* Section blocks */
+.form-section {
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(7,16,25,0.05);
+  margin-top: 12px;
+  position: relative;
+  transition: box-shadow 150ms ease, transform 150ms ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 12px 0 0 12px;
+    background: var(--primary);
+    opacity: 0.12;
   }
-  
-  /* Dialog body */
-  mat-dialog-content {
-    padding: 12px 8px 4px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(17, 24, 39, 0.04);
   }
-  
-  /* Utility grid + span */
-  .grid {
-    display: grid;
-    gap: 12px;
-    align-items: start;
+
+  h3, h4 {
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    color: var(--primary-700);
+    letter-spacing: 0.2px;
+    font-size: 15px;
   }
-  .full {
-    grid-column: 1 / -1;
+
+  h5 {
+    margin: 4px 0 8px;
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 13px;
   }
-  
-  /* Base card container for Antibiotic + Braden sections */
-  .evaluation-form-container,
-  .braden-form-container {
-    padding: 20px;
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 14px;
-    background: linear-gradient(180deg, #ffffff, #fafafa);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-  
-  /* Section blocks */
-  .form-section {
-    padding: 12px;
-    border-radius: 12px;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0.06);
-    margin-top: 12px;
-    position: relative;
-  
-    /* subtle colored accent bar */
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 4px;
-      border-radius: 12px 0 0 12px;
-      background: #1976d2;
-      opacity: 0.15;
-    }
-  
-    h3, h4 {
-      margin: 0 0 8px 0;
-      font-weight: 700;
-      color: #0d47a1;
-      letter-spacing: 0.2px;
-    }
-  
-    h5 {
-      margin: 4px 0 8px;
-      font-weight: 600;
-      color: #1a237e;
-    }
-  }
-  
-  /* Sub-sections in the Transition-to-PO area */
-  .sub-section {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #fafcff;
-    border: 1px dashed rgba(25, 118, 210, 0.25);
-  }
-  
-  /* Checkbox grids (Antibiotic symptoms + diagnostics) */
-  .checkbox-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 8px;
-  
-    /* prettier checkboxes */
-    ::ng-deep .mat-mdc-checkbox {
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.06);
-      transition: box-shadow 160ms ease, transform 120ms ease, border-color 160ms ease;
-    }
-    ::ng-deep .mat-mdc-checkbox:hover {
-      box-shadow: 0 2px 8px rgba(25,118,210,0.12);
-      border-color: rgba(25,118,210,0.25);
-      transform: translateY(-1px);
-    }
-  }
-  
-  /* Radio rows for Braden choices */
-  .radio-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+}
+
+/* Sub-section */
+.sub-section {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fbfeff, #f5fbff);
+  border: 1px dashed rgba(25, 118, 210, 0.12);
+}
+
+/* Checkbox group */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+
+  ::ng-deep .mat-mdc-checkbox {
     padding: 8px 10px;
     border-radius: 10px;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0.06);
-    margin-bottom: 8px;
-    transition: box-shadow 160ms ease, border-color 160ms ease;
-  
-    &:hover {
-      box-shadow: 0 2px 8px rgba(25,118,210,0.12);
-      border-color: rgba(25,118,210,0.25);
-    }
-  
-    input[type="radio"] {
-      transform: scale(1.05);
-      accent-color: #1976d2;
-    }
+    background: var(--ui-bg);
+    border: 1px solid rgba(6, 15, 25, 0.04);
+    transition: box-shadow 160ms ease, transform 120ms ease, border-color 160ms ease, background 160ms;
   }
-  
-  /* Date row (plain input type=date inside Braden/Antibiotic sections) */
-  .date-row {
-    display: inline-flex;
+  ::ng-deep .mat-mdc-checkbox:hover {
+    box-shadow: 0 6px 18px rgba(25,118,210,0.08);
+    border-color: rgba(25,118,210,0.18);
+    transform: translateY(-2px);
+  }
+  ::ng-deep .mat-mdc-checkbox .mat-mdc-form-field-label {
+    color: var(--muted);
+  }
+}
+
+/* Radio rows */
+.radio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f3baba;
+  border: 1px solid rgba(6, 15, 25, 0.04);
+  margin-bottom: 8px;
+  transition: box-shadow 160ms ease, border-color 160ms ease, transform 150ms;
+
+  &:hover {
+    box-shadow: 0 10px 24px rgba(25,118,210,0.06);
+    border-color: rgba(25,118,210,0.18);
+    transform: translateY(-2px);
+  }
+
+  input[type="radio"] {
+    transform: scale(1.05);
+    accent-color: var(--primary);
+  }
+
+  label {
+    color: #0f1724;
+    font-weight: 600;
+  }
+}
+
+/* Date row */
+.date-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f3b072;
+  border: 1px solid rgba(6, 15, 25, 0.04);
+
+  input[type="date"] {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(6, 15, 25, 0.06);
+    fill: none;
+    background: transparent;
+    transition: box-shadow 140ms ease, border-color 140ms ease;
+  }
+  input[type="date"]:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 6px rgba(25,118,210,0.06);
+  }
+}
+
+/* Score + risk chips */
+.score-section {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fbff, #eef8ff);
+  border: 1px solid rgba(25,118,210,0.14);
+
+  .risk-line {
+    margin-top: 6px;
+    font-weight: 600;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: #fff;
-    border: 1px solid rgba(0,0,0,0.08);
-  
-    input[type="date"] {
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(0,0,0,0.12);
-      outline: none;
-    }
-    input[type="date"]:focus-visible {
-      border-color: #1976d2;
-      box-shadow: 0 0 0 3px rgba(25,118,210,0.15);
-    }
+    gap: 12px;
   }
-  
-  /* Score + risk chips (reused by Braden; handy if you later add risk to Antibiotics) */
-  .score-section {
-    margin-top: 8px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: #f7fbff;
-    border: 1px solid rgba(25,118,210,0.18);
-  
-    .risk-line {
-      margin-top: 6px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-  
-    .risk-chip {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-    }
-  
-    /* Braden risk theme */
-    .risk-vh { background: #ffebee; color: #b71c1c; }   /* Very high */
-    .risk-h  { background: #fff3e0; color: #e65100; }   /* High */
-    .risk-m  { background: #fffde7; color: #827717; }   /* Moderate */
-    .risk-r  { background: #e3f2fd; color: #0d47a1; }   /* At risk */
-    .risk-n  { background: #e8f5e9; color: #1b5e20; }   /* Minimal/none */
-  }
-  
-  /* Material form fields in grids */
-  mat-form-field {
-    width: 100%;
-  }
-  
-  /* Inline vitals chart container (from Vital Signs tab) */
-  .vitals-inline-chart {
-    margin: 6px 0 12px;
-    padding: 8px;
-    background: #ffffff;
-    border: 1px solid rgba(0,0,0,0.05);
-    border-radius: 12px;
-  }
-  
-  /* Dialog footer */
-  mat-dialog-actions {
-    padding: 12px 8px 16px;
-  
-    button[color="primary"] {
-      border-radius: 999px;
-      padding: 8px 18px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-  }
-  
-  /* Headings inside the Antibiotic container */
-  .evaluation-form-container > h3 {
-    margin: 0 0 8px;
-    color: #1565c0;
+
+  .risk-chip {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
     font-weight: 800;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(13,71,161,0.04);
   }
-  
-  /* Accessibility: visible focus for interactive elements */
-  button:focus-visible,
-  [mat-raised-button]:focus-visible,
-  .mat-mdc-checkbox:focus-within,
-  input:focus-visible,
-  textarea:focus-visible,
-  .mat-mdc-radio-button:focus-within {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(25,118,210,0.25) !important;
-    border-radius: 8px;
+
+  .risk-vh { background: #ffebee; color: var(--danger); }   /* Very high */
+  .risk-h  { background: #fff3e0; color: #e65100; }   /* High */
+  .risk-m  { background: #fffde7; color: #827717; }   /* Moderate */
+  .risk-r  { background: #eaf4ff; color: var(--accent); }   /* At risk */
+  .risk-n  { background: #e8f5e9; color: var(--success); }   /* Minimal/none */
+}
+
+.dialog-body { min-width: 680px; max-width: 92vw; }
+.grid-one { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+.esign { margin-top: 10px; }
+.esign h3 { margin: 6px 0 2px; font-weight: 600; }
+@media (max-width: 700px) {
+  .dialog-body { min-width: 0; }
+  .grid-two, .grid-three { grid-template-columns: 1fr; }
+}
+
+
+/* Material form fields */
+mat-form-field {
+  width: 100%;
+  background: transparent;
+
+  ::ng-deep .mat-mdc-text-field {
+    border-radius: 10px;
+    background: #f08a8a;
+    border: 1px solid rgba(6, 15, 25, 0.04);
+    padding: 4px;
   }
-  
-  /* Responsive tweaks */
-  @media (min-width: 680px) {
-    /* 2-column feel inside antibiotic sections where .grid.full is used */
-    .evaluation-form-container .grid.full {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .evaluation-form-container,
-    .braden-form-container {
-      padding: 12px;
-    }
-    .form-section {
-      padding: 10px;
-    }
-  }
-  
-  /* Optional: slim legend styling (Braden) */
-  .legend {
-    background: #ffffff;
-    border: 1px dashed rgba(0,0,0,0.12);
-    border-radius: 12px;
+
+  ::ng-deep .mat-mdc-text-field-input {
     padding: 10px 12px;
-  
-    div {
-      font-size: 12px;
-      color: #37474f;
-      line-height: 1.35;
-    }
   }
-  
+
+  ::ng-deep .mat-mdc-form-field-wrapper .mat-mdc-form-field-hint {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  ::ng-deep .mat-mdc-form-field-focus-outline {
+    box-shadow: none;
+  }
+
+  ::ng-deep .mat-mdc-text-field:focus-within {
+    box-shadow: 0 0 0 6px rgba(25,118,210,0.06);
+    border-color: var(--primary);
+  }
+
+  /* validation quick ties */
+  &.ng-invalid ::ng-deep .mat-mdc-text-field {
+    border-color: rgba(183, 28, 28, 0.12) !important;
+    box-shadow: 0 0 0 5px rgba(183,28,28,0.04);
+  }
+}
+
+/* Inline vitals chart */
+.vitals-inline-chart {
+  margin: 8px 0 14px;
+  padding: 10px;
+  background: var(--ui-bg);
+  border: 1px solid rgba(6, 15, 25, 0.04);
+  border-radius: 12px;
+}
+
+/* Dialog footer */
+mat-dialog-actions {
+  padding: 14px 12px 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+
+  button[color="primary"] {
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-700));
+    color: #6b01f5;
+    border: none;
+    box-shadow: 0 8px 22px rgba(25,118,210,0.12);
+    transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+  }
+  button[color="primary"]:hover { transform: translateY(-2px); opacity: 0.98; }
+
+  button[mat-button], button.mat-button {
+    background: transparent;
+    color: var(--muted);
+    font-weight: 700;
+  }
+}
+
+/* Headings inside evaluation container */
+.evaluation-form-container > h3 {
+  margin: 0 0 10px;
+  color: var(--primary-700);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* Accessibility focus */
+button:focus-visible,
+[mat-raised-button]:focus-visible,
+.mat-mdc-checkbox:focus-within,
+input:focus-visible,
+textarea:focus-visible,
+.mat-mdc-radio-button:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(25,118,210,0.08) !important;
+  border-radius: 8px;
+}
+
+/* Responsive tweaks */
+@media (min-width: 680px) {
+  .evaluation-form-container .grid.full {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid.three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  :host { padding: 6px; }
+  .evaluation-form-container,
+  .braden-form-container {
+    padding: 12px;
+  }
+  .form-section {
+    padding: 10px;
+  }
+}
+
+/* Legend */
+.legend {
+  background: #fff;
+  border: 1px dashed rgba(6, 15, 25, 0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+
+  div {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+}
+
+/* Utility helpers */
+.muted {
+  color: var(--muted);
+}
+.kicker {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Small improvements for compact lists and spacing */
+.compact {
+  gap: 8px;
+  padding: 8px;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+.grid.full {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.w-full { width: 100%; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+
+.skin-table {
+  display: grid;
+  gap: 8px;
+}
+.skin-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+.skin-row.skin-head {
+  font-weight: 600;
+}
+@media (max-width: 640px) {
+  .skin-row, .skin-row.skin-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Braden styling */
+.braden-title { color:#1565c0; font-weight:700; }
+.braden-sub { color:#1565c0; font-weight:700; }
+.radio-row { display:flex; align-items:center; gap:8px; margin:4px 0; }
+.date-row { display:flex; align-items:center; gap:8px; }
+.score-section { margin-top: 8px; font-weight:600; }
+.risk-line { display:flex; align-items:center; gap:8px; }
+.risk-chip { padding:2px 8px; border-radius:999px; background:#eee; }
+.risk-vh { background:#ffebee; }
+.risk-h  { background:#ffe0b2; }
+.risk-m  { background:#fff9c4; }
+.risk-r  { background:#e1f5fe; }
+.risk-n  { background:#e8f5e9; }
+.button-primary {
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    background: linear-gradient(180deg, var(--primary), var(--primary-700));
+    color: #6b01f5;
+    border: none;
+    box-shadow: 0 8px 22px rgba(25,118,210,0.12);
+    transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}

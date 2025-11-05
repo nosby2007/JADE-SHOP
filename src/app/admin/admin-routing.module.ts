@@ -9,16 +9,17 @@ import { AdminDashbordComponent } from './pages/admin-dashboard/admin-dashbord/a
 
 const routes: Routes = [
   {
-    path: '',                                // ⬅️ vide (car lazy-loaded sur /admin)
+    path: '',
     component: AdminShellComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AdminGuard],  // <-- class token (no parentheses)
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-      { path: 'dashboard', component: AdminDashbordComponent }, // ⬅️ nom aligné
+      { path: 'dashboard', component: AdminDashbordComponent },
       { path: 'users', component: AdminUserListComponent },
     ],
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
