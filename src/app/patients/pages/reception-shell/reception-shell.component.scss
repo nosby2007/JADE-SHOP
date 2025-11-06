@@ -1,0 +1,10 @@
+/* src/app/nurse/shell/nurse-shell/nurse-shell.component.scss */
+.nurse-shell, .nurse-shell .mat-sidenav-container {
+    height: calc(100vh - 0px);
+  }
+  .nurse-sidenav { width: 240px; }
+  .page { padding: 16px; }
+  .spacer { flex: 1 1 auto; }
+  .ml-2 { margin-left: .5rem; }
+  a.active { background: rgba(0,0,0,.06); }
+  

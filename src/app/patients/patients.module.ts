@@ -22,6 +22,30 @@ import {MatListModule} from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReceptionDashboardComponent } from './pages/reception-dashboard/reception-dashboard.component';
+import { ReceptionShellComponent } from './pages/reception-shell/reception-shell.component';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth } from '@angular/fire/auth';
+import { provideFirestore } from '@angular/fire/firestore';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { environment } from 'src/environments/environment';
+import { NurseRoutingModule } from '../nurse/nurse-routing.module';
+import * as echarts from 'echarts';
 
 
 
@@ -31,6 +55,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     PatientDetailComponent,
     PatientWoundsComponent,
     PatientFormComponent,
+    ReceptionDashboardComponent,
+    ReceptionShellComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +77,25 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatListModule,
     MatDatepickerModule,
     MatCheckboxModule,
+
+     CommonModule,
+        NurseRoutingModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCardModule, FormsModule, ReactiveFormsModule,
+        MatDividerModule, MatFormFieldModule, MatInputModule, MatTableModule, MatProgressSpinnerModule,
+        MatRadioModule, MatMenuModule, MatProgressBarModule,
+    
+        // UI
+        MatSnackBarModule, MatCheckboxModule, MatNativeDateModule, MatDatepickerModule, MatSelectModule, MatTabsModule, MatDialogModule, 
+        NgxEchartsModule.forRoot({ echarts }),
+        MatInputModule,
+        MatChipsModule, provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideAuth(() => getAuth()),
+        provideFirestore(() => getFirestore()),
     
     
   ],

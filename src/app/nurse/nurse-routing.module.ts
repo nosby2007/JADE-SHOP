@@ -8,6 +8,8 @@ import { NursePatientListComponent } from './pages/nurse-patient-list/nurse-pati
 import { NursePrescriptionsComponent } from './pages/nurse-prescriptions/nurse-prescriptions.component';
 import { NurseTasksComponent } from './pages/nurse-tasks/nurse-tasks.component';
 import { NurseAssessmentsComponent } from './pages/nurse-assessment/nurse-assessment.component';
+import { AssessmentDetailComponent } from '../features/skin-wound/pages/assessment-detail/assessment-detail.component';
+import { PatientWoundsComponent } from '../patients/pages/patient-wounds/patient-wounds.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,9 @@ const routes: Routes = [
        { path: 'tasks', component: NurseTasksComponent },
        { path: 'nurse/:pid/tasks', component: NurseTasksComponent },
        { path: 'patients/:id/assessments', component: NurseAssessmentsComponent },
+       { path: ':id/wounds', component: PatientWoundsComponent },
+       { path: ':id/wounds/:assessmentId', component: AssessmentDetailComponent },
+       { path: 'patients/:id/assessments/:assessmentId', component: AssessmentDetailComponent }
     ]
   }
 ];

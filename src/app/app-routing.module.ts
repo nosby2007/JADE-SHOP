@@ -9,9 +9,6 @@ import { LoginComponent } from './authetification/login/login.component';
 
 const routes: Routes = [
   {path:'login', component:LoginComponent,},
- 
-  { path: 'patients/:id/wounds/new', component: AssessmentFormComponent },
-  { path: 'patients/:id/wounds/:assessmentId', component: PatientDetailComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
 
@@ -23,7 +20,7 @@ const routes: Routes = [
   { path: 'nurse', loadChildren: () => import('./nurse/nurse.module').then(m => m.NurseModule) },
   
 
-  { path: '**', redirectTo: 'hone' },
+  { path: '**', redirectTo: 'home' },
 
   
 ]; 

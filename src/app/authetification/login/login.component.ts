@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
       if (roles.includes('admin')) {
         await this.router.navigateByUrl('/admin');
       } else if (roles.includes('employer')) {
-        await this.router.navigateByUrl('/employer');
+        await this.router.navigateByUrl('/patients');
       } else if (roles.includes('nurse')) {
         await this.router.navigateByUrl('/nurse');
       } else if (roles.includes('user')) {

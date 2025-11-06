@@ -1,0 +1,41 @@
+<!-- src/app/nurse/pages/nurse-dashboard/nurse-dashboard.component.html -->
+<mat-card>
+    <h2>Reception Dashboard</h2>
+    <p>Welcome 👋 Please select a section from the menu on the left.</p>
+  </mat-card>
+  <mat-card>
+  
+  
+    <div class="stats-grid">
+      <mat-card class="kpi">
+        <h3>Total patients</h3>
+        <p>{{ totalPatients$ | async }}</p>
+      </mat-card>
+  
+      <mat-card class="kpi">
+        <h3>Pending tasks</h3>
+        <p>{{ openTasks$ | async }}</p>
+      </mat-card>
+    </div>
+  
+    <mat-card class="recent" *ngIf="recentTasks$ | async as recentTasks">
+      <h3>Recent tasks</h3>
+      <table mat-table [dataSource]="recentTasks" class="full-table">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Task </th>
+          <td mat-cell *matCellDef="let t">{{ t.title }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="dueAt">
+          <th mat-header-cell *matHeaderCellDef> Due Date </th>
+          <td mat-cell *matCellDef="let t">
+            {{ t.dueAt?.toDate() | date:'short' }}
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="['title','dueAt']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['title','dueAt']"></tr>
+      </table>
+    </mat-card>
+  </mat-card>
+  
