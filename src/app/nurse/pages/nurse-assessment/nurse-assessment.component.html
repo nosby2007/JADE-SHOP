@@ -99,7 +99,7 @@
                 </span>
 
                 <span *ngSwitchDefault>
-                  {{ $any(a)?.program || rowKind(a) || '—' }}
+                  {{ $any(a)?.answers.nurseAdmission.narrative || rowKind(a) || '—' }}
                   <ng-container *ngIf="$any(a)?.status"> • {{ $any(a)?.status }}</ng-container>
                 </span>
               </ng-container>

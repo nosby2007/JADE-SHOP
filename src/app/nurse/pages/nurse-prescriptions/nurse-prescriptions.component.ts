@@ -40,8 +40,8 @@ export class NursePrescriptionsComponent implements OnInit {
   patientId!: string;
   items$!: Observable<Rx[]>;
   displayed = [
-    'category','name','dose','route','frequency',
-    'prescriber','startDate','endDate','notes','esign','actions'
+    'category','name','dose','route','frequency', 'notes',
+    'prescriber','startDate','endDate', 'actions'
   ];
 
   constructor(

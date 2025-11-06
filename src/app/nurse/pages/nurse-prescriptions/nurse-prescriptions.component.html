@@ -79,21 +79,11 @@
 
       <ng-container matColumnDef="notes">
         <th mat-header-cell *matHeaderCellDef>Notes / Summary</th>
-        <td mat-cell *matCellDef="let r" class="truncate" [title]="r.notes || r.summary">
-          {{ r.notes || r.summary || '—' }}
+        <td mat-cell *matCellDef="let r" class="truncate" [title]="r.details.instructions || r.summary">
+          {{ r.details.instructions || r.summary || '—' }}
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="esign">
-        <th mat-header-cell *matHeaderCellDef>Signature</th>
-        <td mat-cell *matCellDef="let r">
-          <ng-container *ngIf="toJsDate(r?.eSignature?.signedAt) as sAt; else noSig">
-            Signed by {{ r.eSignature?.signerName || r.eSignature?.signerEmail }}
-            on {{ sAt | date:'short' }}
-          </ng-container>
-          <ng-template #noSig>—</ng-template>
-        </td>
-      </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
