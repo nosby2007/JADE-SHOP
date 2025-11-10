@@ -49,9 +49,30 @@ import { LaboratoryRxDialogComponent } from './pages/nurse-prescriptions/prescri
 import { NutritionRxDialogComponent } from './pages/nurse-prescriptions/prescription-dialog/nutrition-rx-dialog/nutrition-rx-dialog.component';
 import { OrderRxDialogComponent } from './pages/nurse-prescriptions/prescription-dialog/order-rx-dialog/order-rx-dialog.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ViewOrderDialogComponent } from './pages/view-order-dialog/view-order-dialog.component';
+import { NurseLabListComponent } from './pages/nurse-lab-list/nurse-lab-list.component';
+
+
 
 @NgModule({
-  declarations: [NurseShellComponent, NurseDashboardComponent, NursePatientListComponent, NursePatientDetailComponent, NursePrescriptionsComponent, NurseTasksComponent, SafeDatePipe, AddAssessmentDialogComponent, NurseAssessmentsComponent, VitalsTrendDialogComponent, AddPrescriptionDialogComponent, PharmacyRxDialogComponent, LaboratoryRxDialogComponent, NutritionRxDialogComponent, OrderRxDialogComponent],
+  declarations: [NurseShellComponent, NurseDashboardComponent, 
+    NursePatientListComponent, 
+    NursePatientDetailComponent, 
+    NursePrescriptionsComponent, 
+    NurseTasksComponent, 
+    SafeDatePipe, 
+    AddAssessmentDialogComponent, 
+    NurseAssessmentsComponent, 
+    VitalsTrendDialogComponent, 
+    AddPrescriptionDialogComponent, 
+    PharmacyRxDialogComponent, 
+    LaboratoryRxDialogComponent, 
+    NutritionRxDialogComponent, 
+    OrderRxDialogComponent, ViewOrderDialogComponent, 
+    NurseLabListComponent
+  ],
+    
   imports: [
     CommonModule,
     NurseRoutingModule,
@@ -62,10 +83,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatButtonModule,
     MatCardModule, FormsModule, ReactiveFormsModule,
     MatDividerModule, MatFormFieldModule, MatInputModule, MatTableModule, MatProgressSpinnerModule,
-    MatRadioModule, MatMenuModule, MatProgressBarModule,
+    MatRadioModule, MatMenuModule, MatProgressBarModule, MatTooltipModule, MatTooltipModule, MatCardModule, MatIconModule,
 
     // UI
-    MatSnackBarModule, MatCheckboxModule, MatNativeDateModule, MatDatepickerModule, MatSelectModule, MatTabsModule, MatDialogModule, 
+    MatSnackBarModule, MatCheckboxModule, MatNativeDateModule, MatDatepickerModule, MatSelectModule, MatTabsModule, MatDialogModule,
     NgxEchartsModule.forRoot({ echarts }),
     MatInputModule,
     MatChipsModule, provideFirebaseApp(() => initializeApp(environment.firebase)),

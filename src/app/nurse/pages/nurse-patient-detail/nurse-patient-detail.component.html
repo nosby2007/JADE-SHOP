@@ -74,6 +74,14 @@
       </div>
     </mat-tab>
 
+    <!--lab result-->
+    <mat-tab label="lab result">
+      <div class="pad">
+        <app-nurse-lab-list></app-nurse-lab-list>
+      </div>
+    </mat-tab>
+
+
     <!-- Onglet 4 : SKIN AND WOUND (placeholder) -->
     <mat-tab label="skin and Wound" *ngIf="patient$ | async as p; else loadingTpl">
       <div class="pad">

@@ -1,0 +1,51 @@
+<div class="toolbar flex-between">
+  <h3 class="m0">Provider Notes</h3>
+  <button class="actions" mat-flat-button color="primary" (click)="openCreate()">
+    <mat-icon>note_add</mat-icon>&nbsp;New Note
+  </button>
+</div>
+
+<div class="table-wrap">
+  <table mat-table [dataSource]="(items$ | async) ?? []" class="mat-elevation-z2 full-table">
+
+    <ng-container matColumnDef="effectiveAt">
+      <th mat-header-cell *matHeaderCellDef>Effective</th>
+      <td mat-cell *matCellDef="let n">{{ toDate(n.effectiveAt) | date:'yyyy-MM-dd HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let n">{{ n.type }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="visitType">
+      <th mat-header-cell *matHeaderCellDef>Visit</th>
+      <td mat-cell *matCellDef="let n">{{ n.visitType || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="providerName">
+      <th mat-header-cell *matHeaderCellDef>Provider</th>
+      <td mat-cell *matCellDef="let n">{{ n.providerName || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="right">Actions</th>
+      <td mat-cell *matCellDef="let n" class="right">
+        <!-- Optional: add a view/edit dialog later -->
+        <button mat-icon-button color="primary" (click)="openView(n)" matTooltip="View">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="remove(n)" matTooltip="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
+
+    <tr class="empty" *ngIf="(items$ | async)?.length === 0">
+      <td colspan="99">No notes yet</td>
+    </tr>
+  </table>
+</div>

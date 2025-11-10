@@ -1,4 +1,39 @@
-/* src/app/nurse/shell/nurse-shell/nurse-shell.component.scss */
+.nurse-shell { height: 100vh; }
+.nurse-sidenav { width: 260px; }
+
+.ml-2 { margin-left: 8px; }
+.topbar .title { font-weight: 600; }
+.spacer { flex: 1; }
+
+.pill {
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.2);
+  font-size: 12px;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 36px; height: 36px; min-width: 36px;
+  border-radius: 50%;
+  background: #eef1f5; color: #334;
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.05);
+}
+.avatar.has-img { background: transparent; border-color: transparent; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.meta .name { font-weight: 600; line-height: 1.1; }
+.meta .sub { font-size: 12px; opacity: .7; line-height: 1.1; }
+
+a.disabled { pointer-events: none; opacity: .5; }
+.page { padding: 16px; }
 .nurse-shell, .nurse-shell .mat-sidenav-container {
     height: calc(100vh - 0px);
   }
@@ -6,5 +41,5 @@
   .page { padding: 16px; }
   .spacer { flex: 1 1 auto; }
   .ml-2 { margin-left: .5rem; }
-  a.active { background: rgba(0,0,0,.06); }
-  
+  a.active { background: rgba(0,0,0,.06); 
+  }

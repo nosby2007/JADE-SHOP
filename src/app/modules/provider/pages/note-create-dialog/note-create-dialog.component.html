@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>New Provider Note</h2>
+<mat-dialog-content [formGroup]="form" class="form-col">
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Effective Date/Time</mat-label>
+      <input matInput [matDatepicker]="dp1" formControlName="effectiveAt">
+      <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+      <mat-datepicker #dp1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date of Service</mat-label>
+      <input matInput [matDatepicker]="dp2" formControlName="dateOfService">
+      <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+      <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Visit Type</mat-label>
+      <input matInput formControlName="visitType" placeholder="Follow Up / Initial / PRN">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Provider</mat-label>
+      <input matInput formControlName="providerName" placeholder="e.g., Alexandria Wright, PA">
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Details</mat-label>
+    <textarea matInput rows="16" formControlName="details"
+      placeholder="CHIEF COMPLAINT&#10;================&#10;..."></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="saving || form.invalid">
+    {{ saving ? 'Saving…' : 'Save' }}
+  </button>
+</mat-dialog-actions>

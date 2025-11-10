@@ -13,10 +13,14 @@ import { MediaGalleryComponent } from './pages/media-gallery/media-gallery.compo
 const routes: Routes = [
   { path: '', component: SkinWoundDashboardComponent },               // /skin-wound
   { path: 'dashboard', component: DashboardComponent, title: 'Skin & Wound Dashboard' },
-  { path: 'new/:id', component: AssessmentFormComponent },            // /skin-wound/new/:patientId
+  { path: 'new', component: AssessmentFormComponent },            // /skin-wound/new/:patientId
+  { path: ':id', component: WoundDetailComponent },               // /skin-wound/:patientId
   { path: ':id/media', component: MediaGalleryComponent },            // /skin-wound/:patientId/media  ✅
   { path: ':id/assessments', component: AssessmentListComponent },    // /skin-wound/:patientId/assessments
+  { path: ':id/assessments/new', component: AssessmentFormComponent }, // /skin-wound/:patientId/assessments/new
+  { path: ':id/assessments/:assessmentId/edit', component: AssessmentFormComponent }, // /skin-wound/:patientId/assessments/:assessmentId/edit
   { path: ':id/assessments/:assessmentId', component: AssessmentDetailComponent },
+
 ];
 
 

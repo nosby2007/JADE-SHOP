@@ -1,0 +1,110 @@
+<mat-card class="card">
+    <div class="flex-between">
+      <h2>Patients</h2>
+      <div class="actions">
+        <mat-form-field appearance="outline" class="search">
+          <mat-label>Search</mat-label>
+          <input matInput [(ngModel)]="q" placeholder="Name, telephone, email..." />
+          <button *ngIf="q" mat-icon-button matSuffix (click)="q=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <ng-container *ngIf="items$ | async as items; else loading">
+      <div class="table-wrap">
+        <table mat-table [dataSource]="items" class="mat-elevation-z2 full-table">
+          <!-- Nom -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let p">{{ p.name }}</td>
+          </ng-container>
+  
+          <!-- Genre -->
+          <ng-container matColumnDef="gender">
+            <th mat-header-cell *matHeaderCellDef>Gender</th>
+            <td mat-cell *matCellDef="let p">{{ p.gender || '—' }}</td>
+          </ng-container>
+  
+          <!-- Naissance -->
+          <ng-container matColumnDef="dob">
+            <th mat-header-cell *matHeaderCellDef>DOB</th>
+            <td mat-cell *matCellDef="let p">
+              <ng-container *ngIf="isFsTimestamp(p.dob); else dobPlain">
+                {{ toJsDate(p.dob) | date:'yyyy-MM-dd' }}
+              </ng-container>
+              <ng-template #dobPlain>
+                {{ toJsDate(p.dob) || p.dob ? (toJsDate(p.dob) | date:'yyyy-MM-dd') : '—' }}
+              </ng-template>
+            </td>
+          </ng-container>
+  
+          <!-- Téléphone -->
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>Phone</th>
+            <td mat-cell *matCellDef="let p">{{ p.phone || '—' }}</td>
+          </ng-container>
+  
+          <!-- Email -->
+          <ng-container matColumnDef="raison">
+            <th mat-header-cell *matHeaderCellDef>Complaint</th>
+            <td mat-cell *matCellDef="let p">{{ p.raison}}</td>
+          </ng-container>
+  
+          <!-- Adresse -->
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>Adress</th>
+            <td mat-cell *matCellDef="let p" class="truncate" title="{{ p.address }}">
+              {{ p.address || '—' }}
+            </td>
+          </ng-container>
+          <!-- Paiment -->
+          <ng-container matColumnDef="paiement">
+            <th mat-header-cell *matHeaderCellDef>Payor</th>
+            <td mat-cell *matCellDef="let p" class="truncate" title="{{ p.paiement }}">
+              {{ p.paiement}}
+            </td>
+          </ng-container>
+  
+          <!-- Créé le -->
+          <ng-container matColumnDef="admissionDate">
+            <th mat-header-cell *matHeaderCellDef>Admission Date</th>
+            <td mat-cell *matCellDef="let p">
+              <ng-container *ngIf="isFsTimestamp(p.admissionDate); else createdPlain">
+                {{ toJsDate(p.admissionDate) | date:'yyyy-MM-dd' }}
+              </ng-container>
+              <ng-template #createdPlain>
+                {{ toJsDate(p.admissionDate) || p.admissionDate ? (toJsDate(p.admissionDate) | date:'yyyy-MM-dd') : '—' }}
+              </ng-template>
+            </td>
+          </ng-container>
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let p">
+              <a mat-button color="primary" [routerLink]="['/provider','list', p.id]">
+                <mat-icon>open_in_new</mat-icon>&nbsp;Open
+              </a>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayed"
+              [class.hidden]="q && !(
+                (row.name || '').toLowerCase().includes(q.toLowerCase()) ||
+                (row.phone || '').toLowerCase().includes(q.toLowerCase()) ||
+                (row.email || '').toLowerCase().includes(q.toLowerCase())
+              )">
+          </tr>
+        </table>
+      </div>
+  
+      <div class="muted" *ngIf="!items.length">Aucun patient.</div>
+    </ng-container>
+  
+    <ng-template #loading>
+      <div class="p-6 flex center"><mat-spinner diameter="36"></mat-spinner></div>
+    </ng-template>
+  </mat-card>
+  

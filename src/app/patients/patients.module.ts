@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PatientsRoutingModule } from './patients-routing.module';
 import { PatientListComponent } from './pages/patient-list/patient-list.component';
 import { PatientDetailComponent } from './pages/patient-detail/patient-detail.component';
-import { PatientWoundsComponent } from './pages/patient-wounds/patient-wounds.component';
+
 import { PatientFormComponent } from './pages/patient-form/patient-form.component';
 import {MatListModule} from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -53,7 +53,6 @@ import * as echarts from 'echarts';
   declarations: [
     PatientListComponent,
     PatientDetailComponent,
-    PatientWoundsComponent,
     PatientFormComponent,
     ReceptionDashboardComponent,
     ReceptionShellComponent,

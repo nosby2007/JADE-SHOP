@@ -12,10 +12,12 @@ const routes: Routes = [
     path: '',
     component: AdminShellComponent,
     canActivate: [AdminGuard],  // <-- class token (no parentheses)
+    data: { roles: ['admin'] },  // <-- seulement les admins sont autorisés
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: AdminDashbordComponent },
       { path: 'users', component: AdminUserListComponent },
+      
     ],
   },
 ];

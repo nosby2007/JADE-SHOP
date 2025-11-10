@@ -1,0 +1,9 @@
+/* src/app/nurse/pages/nurse-prescriptions/nurse-prescriptions.component.scss */
+.card { padding: 16px; }
+.flex-between { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.grid { display:grid; grid-template-columns: repeat(6, minmax(160px,1fr)); gap:12px; margin-top:12px; }
+.wide { grid-column: 1 / -1; }
+.row-actions { display:flex; align-items:center; gap:12px; }
+.table-wrap { margin-top: 16px; overflow:auto; }
+.full-table { width:100%; min-width: 900px; }
+.truncate { max-width: 320px; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; }

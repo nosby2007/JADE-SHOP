@@ -1,0 +1,103 @@
+<mat-card class="card">
+  <div class="flex-between">
+    <h2>Prescriptions</h2>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" [matMenuTriggerFor]="addMenu">
+        <mat-icon>add</mat-icon>&nbsp;Add prescription
+      </button>
+      <mat-menu #addMenu="matMenu">
+        <button mat-menu-item (click)="openAdd('pharmacy')">
+          <mat-icon>local_pharmacy</mat-icon>
+          <span>Pharmacy</span>
+        </button>
+        <button mat-menu-item (click)="openAdd('laboratory')">
+          <mat-icon>biotech</mat-icon>
+          <span>Laboratory</span>
+        </button>
+        <button mat-menu-item (click)="openAdd('nutrition')">
+          <mat-icon>local_dining</mat-icon>
+          <span>Nutrition</span>
+        </button>
+        <button mat-menu-item (click)="openAdd('order')">
+          <mat-icon>assignment</mat-icon>
+          <span>Order</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table mat-table [dataSource]="(items$ | async) ?? []" class="mat-elevation-z2 full-table">
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let r">
+          <mat-chip appearance="outlined">{{ r.category || '—' }}</mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let r">{{ r.name || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dose">
+        <th mat-header-cell *matHeaderCellDef>Dosage</th>
+        <td mat-cell *matCellDef="let r">{{ r.dose || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="route">
+        <th mat-header-cell *matHeaderCellDef>Route</th>
+        <td mat-cell *matCellDef="let r">{{ r.route || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="frequency">
+        <th mat-header-cell *matHeaderCellDef>Frequency</th>
+        <td mat-cell *matCellDef="let r">{{ r.frequency || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="prescriber">
+        <th mat-header-cell *matHeaderCellDef>Prescriber</th>
+        <td mat-cell *matCellDef="let r">{{ r.prescriber || '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef>Start</th>
+        <td mat-cell *matCellDef="let p">
+          {{ toJsDate(getStart(p)) ? (toJsDate(getStart(p)) | date:'yyyy-MM-dd') : '—' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef>End</th>
+        <td mat-cell *matCellDef="let p">
+          {{ toJsDate(getEnd(p)) ? (toJsDate(getEnd(p)) | date:'yyyy-MM-dd') : '—' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="notes">
+        <th mat-header-cell *matHeaderCellDef>Notes / Summary</th>
+        <td mat-cell *matCellDef="let r" class="truncate" [title]="r.details.instructions || r.summary">
+          {{ r.details.instructions || r.summary || '—' }}
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let r">
+          <button mat-icon-button color="primary" (click)="openView(r)" matTooltip="View">
+          <mat-icon>visibility</mat-icon>
+        </button>
+          <button mat-button color="primary" (click)="edit(r)"><mat-icon>edit</mat-icon>&nbsp;Edit</button>
+          <button mat-button color="warn" (click)="remove(r)"><mat-icon>delete</mat-icon>&nbsp;Delete</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayed"></tr>
+    </table>
+  </div>
+</mat-card>

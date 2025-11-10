@@ -1,0 +1,172 @@
+<mat-card class="card">
+  <div class="flex-between">
+    <h2>Assessments</h2>
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="compileAdmission()" matTooltip="Compile admission PDF">
+        <mat-icon>picture_as_pdf</mat-icon>&nbsp;PDF Admission
+      </button>
+      <button mat-stroked-button color="accent" (click)="compileDischarge()" matTooltip="Compile discharge PDF">
+        <mat-icon>picture_as_pdf</mat-icon>&nbsp;PDF Discharge
+      </button>
+    </div>
+  </div>
+
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab *ngFor="let t of tabs" [label]="t.label">
+      <div class="tab-actions">
+        <button mat-raised-button color="primary" (click)="openAdd(t.key)">
+          <mat-icon>add</mat-icon>&nbsp;Add
+        </button>
+
+        <button *ngIf="$any(t.key) === 'vitalSigns'"
+                mat-stroked-button color="primary"
+                (click)="openVitalsTrend()" matTooltip="Open full-size trend">
+          <mat-icon>show_chart</mat-icon>&nbsp;Trend
+        </button>
+      </div>
+
+      <!-- Chart : seulement quand l’onglet Vitals est actif ET quand on a des options -->
+      <ng-container *ngIf="$any(t.key) === 'vitalSigns' && activeTabKey === 'vitalSigns'">
+        <ng-container *ngIf="vitalsOptions$ | async as vitalsOpt">
+          <div class="vitals-inline-chart">
+            <div
+              echarts
+              class="chart-host"
+              [options]="vitalsOpt"
+              [autoResize]="true"
+              [initOpts]="{ renderer: 'canvas' }"
+              (chartInit)="onChartInit($event)">
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <div class="table-wrap">
+        <table mat-table [dataSource]="(streams[t.key] | async) || []"
+               class="mat-elevation-z2 full-table dense-table">
+
+          <!-- Date -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let a">
+              {{ displayDateOf(a) | date:'short' }}
+            </td>
+          </ng-container>
+
+          <!-- Summary -->
+          <ng-container matColumnDef="summary">
+            <th mat-header-cell *matHeaderCellDef>Summary</th>
+            <td mat-cell *matCellDef="let a">
+              <ng-container [ngSwitch]="rowKind(a)">
+                <span *ngSwitchCase="'braden'">
+                  Braden: {{ vs(a,'score') ?? $any(a)?.score ?? '—' }}
+                  <ng-container *ngIf="vs(a,'risk') as riskVal">({{ riskVal }})</ng-container>
+                </span>
+
+                <span *ngSwitchCase="'skinWeekly'">
+                  {{ (vs(a,'findings') || '') | slice:0:80 }}{{ (vs(a,'findings') || '')?.length > 80 ? '…' : '' }}
+                </span>
+
+                <span *ngSwitchCase="'pressureInjuryWeekly'">
+                  Stage {{ vs(a,'stage') ?? '—' }} • {{ vs(a,'location') ?? '—' }}
+                </span>
+
+                <span *ngSwitchCase="'progressNote'">
+                  {{ vs(a,'authorRole') || 'RN' }} •
+                  {{ (vs(a,'note') || '') | slice:0:80 }}{{ (vs(a,'note') || '')?.length > 80 ? '…' : '' }}
+                </span>
+
+                <span *ngSwitchCase="'carePlan'">
+                  Dx: {{ (vs(a,'diagnoses')?.length || 0) }} •
+                  Goals: {{ (vs(a,'goals')?.length || 0) }}
+                </span>
+
+                <span *ngSwitchCase="'vitalSigns'">
+                  BP {{ vs(a,'systolic') ?? '—' }}/{{ vs(a,'diastolic') ?? '—' }}
+                  • HR {{ vs(a,'heartRate') ?? '—' }}
+                  • RR {{ vs(a,'respiratoryRate') ?? '—' }}
+                  • Temp {{ (vs(a,'temperatureC') ?? '—') }}°C
+                  • SpO₂ {{ (vs(a,'spo2') ?? '—') }}%
+                  <ng-container *ngIf="vs(a,'painScore') != null"> • Pain {{ vs(a,'painScore') }}</ng-container>
+                </span>
+
+                <span *ngSwitchCase="'antibiotic'">
+                  Med: {{ vs(a,'medication') || $any(a)?.antibiotic?.core?.medication || '—' }}
+                  • Prescriber: {{ vs(a,'prescriber') || $any(a)?.antibiotic?.core?.prescriber || '—' }}
+                  <ng-container *ngIf="vs(a,'indication') || $any(a)?.antibiotic?.core?.indication">
+                    • Indication: {{ vs(a,'indication') || $any(a)?.antibiotic?.core?.indication }}
+                  </ng-container>
+                </span>
+
+                <span *ngSwitchDefault>
+                  {{ $any(a)?.answers.nurseAdmission.narrative || rowKind(a) || '—' }}
+                  <ng-container *ngIf="$any(a)?.status"> • {{ $any(a)?.status }}</ng-container>
+                </span>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <!-- Signed -->
+          <ng-container matColumnDef="signed">
+            <th mat-header-cell *matHeaderCellDef>Signed by</th>
+            <td mat-cell *matCellDef="let a">
+              {{ a.eSignature?.signerName || a.eSignature?.signerEmail || vs(a,'eSignature')?.signerName || '—' }}
+            </td>
+          </ng-container>
+
+          <!-- PDF -->
+          <ng-container matColumnDef="pdf">
+            <th mat-header-cell *matHeaderCellDef>PDF</th>
+            <td mat-cell *matCellDef="let a">
+              <a *ngIf="a.pdfUrl" [href]="a.pdfUrl" target="_blank" rel="noopener" matTooltip="Open PDF">
+                open
+              </a>
+              <span *ngIf="!a.pdfUrl">—</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let a">
+              <button *ngIf="rowKind(a) === 'vitalSigns'"
+                      mat-icon-button
+                      aria-label="Open vitals trend"
+                      (click)="openVitalsTrend(); $event.stopPropagation()"
+                      matTooltip="Show trend">
+                <mat-icon>show_chart</mat-icon>
+              </button>
+              <button mat-icon-button
+                      aria-label="View assessment"
+                      (click)="viewAssessment(a); $event.stopPropagation()"
+                      matTooltip="View">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button
+                      aria-label="Update assessment"
+                      (click)="updateAssessment(a); $event.stopPropagation()"
+                      matTooltip="Update">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button
+                      aria-label="Delete assessment"
+                      (click)="discontinueAssessment(a); $event.stopPropagation()"
+                      matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['createdAt','summary','signed','pdf','actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['createdAt','summary','signed','pdf','actions']"></tr>
+        </table>
+
+        <!-- Empty state -->
+        <div class="empty-state" *ngIf="((streams[t.key] | async) || []).length === 0">
+          <mat-icon>inventory_2</mat-icon>
+          <p>No items yet. Click <b>Add</b> to create one.</p>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Administer Medication</h2>
+<div mat-dialog-content [formGroup]="form">
+  <div class="grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Date/Time</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dateTime">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Dose Given</mat-label>
+      <input matInput formControlName="doseGiven">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Route</mat-label>
+      <mat-select formControlName="route">
+        <mat-option *ngFor="let r of routes" [value]="r">{{ r }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Site</mat-label>
+      <input matInput formControlName="site">
+    </mat-form-field>
+
+    <mat-form-field class="full" appearance="outline">
+      <mat-label>Result/Notes</mat-label>
+      <textarea matInput rows="3" formControlName="result"></textarea>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="held">Held (not administered)</mat-checkbox>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Reason if Held</mat-label>
+      <input matInput formControlName="reasonHeld">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nurse Signature</mat-label>
+      <input matInput formControlName="nurseSignature">
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="loading || form.invalid">
+    <mat-icon>check</mat-icon> Record
+  </button>
+</div>
+
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>

@@ -1,4 +1,3 @@
-// src/app/SERVICE/wound-assessment.service.ts
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -20,30 +19,37 @@ type WoundAssessmentView = WoundAssessment & {
   assessedAt?: any;
   updatedAt?: any;
 };
+
 @Injectable({ providedIn: 'root' })
 export class WoundAssessmentService {
   private afs  = inject(AngularFirestore);
   private http = inject(HttpClient);
   private base = environment.apiBase; // ex: https://us-central1-.../api
 
-  constructor(private afAuth: AngularFireAuth, private storage: AngularFireStorage,) {}
+  constructor(
+    private afAuth: AngularFireAuth,
+    private storage: AngularFireStorage,
+  ) {}
 
   item$!: Observable<WoundAssessmentView | undefined>;
 
-  
-  // ✅ upload d’une photo et retour de l’URL publique
+  /** Upload d’une photo et retour de l’URL publique.
+   *  Option B: autorisé par les rules sous patients/{pid}/wounds/{wid}/{file}
+   *  Ici on met le fichier directement sous wounds/{Date.now()}_{safeName}.
+   */
   async uploadPhoto(patientId: string, file: File): Promise<string> {
     const safeName = file.name.replace(/\s+/g, '_');
     const path = `patients/${patientId}/wounds/${Date.now()}_${safeName}`;
-    const task = await this.storage.upload(path, file);
+    const task = await this.storage.upload(path, file, { contentType: file.type });
     return await task.ref.getDownloadURL();
   }
+
   /* ---------------- READS (live) ---------------- */
 
   list(patientId: string) {
     return this.afs
       .collection<WoundAssessment>(
-        `patients/${patientId}/woundAssessments`,   // ✅ chemin corrigé
+        `patients/${patientId}/woundAssessments`,
         ref => ref.orderBy('createdAt', 'desc')
       )
       .snapshotChanges()
@@ -56,84 +62,109 @@ export class WoundAssessmentService {
         )
       );
   }
-  
+
   get(patientId: string, assessmentId: string) {
     return this.afs
-      .doc<WoundAssessment>(`patients/${patientId}/woundAssessments/${assessmentId}`) // ✅
+      .doc<WoundAssessment>(`patients/${patientId}/woundAssessments/${assessmentId}`)
       .valueChanges();
   }
-  
-  async createMedia(patientId: string, data: any) {
-    return this.afs.collection(`patients/${patientId}/media`).add(data);
+
+  /** 🔒 Respecte canCreateSub() pour /patients/{pid}/media :
+   *  - patientId == path pid
+   *  - createdBy == auth.uid
+   *  - createdAt = serverTimestamp
+   *  - url is string
+   */
+  async createMedia(patientId: string, url: string) {
+    const user = await this.afAuth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+
+    const now = firebase.firestore.FieldValue.serverTimestamp();
+    return this.afs.collection(`patients/${patientId}/media`).add({
+      patientId,
+      createdBy: user.uid,
+      createdAt: now,
+      updatedAt: now,
+      url,
+      kind: 'wound-photo'
+    });
   }
-  
+
+  /* -------------- WRITES: API-first / FS fallback -------------- */
+
   async create(patientId: string, data: WoundAssessmentCreate): Promise<string> {
     const user = await this.afAuth.currentUser;
     if (!user) throw new Error('Not authenticated');
-  
+
+    // refresh claims au besoin (roles)
+    await user.getIdToken(true).catch(() => { /* noop */ });
+
     const now = firebase.firestore.FieldValue.serverTimestamp();
     const clean = this.stripUndefined<WoundAssessmentCreate>(data);
-  
+
     const payload = {
       ...clean,
       patientId,
       createdBy: user.uid,
       createdAt: now,
       updatedAt: now,
+      // woundAssessments exigent assessedAt timestamp (tes rules)
       assessedAt: (clean as any)?.assessedAt ?? now,
     };
-  
+
     try {
-      const res = await firstValueFrom(
-        this.http.post<{ id: string }>(`${this.base}/woundAssessments`, { patientId, data: payload })
-      );
-      return res.id;
-    } catch {
-      const ref = await this.afs.collection(`patients/${patientId}/woundAssessments`).add(payload); // ✅
-      return ref.id;
-    }
+      if (this.base) {
+        const res = await firstValueFrom(
+          this.http.post<{ id: string }>(`${this.base}/woundAssessments`, { patientId, data: payload })
+        );
+        return res.id;
+      }
+    } catch {/* fallback firestore below */}
+
+    const ref = await this.afs.collection(`patients/${patientId}/woundAssessments`).add(payload);
+    return ref.id;
   }
-  
+
   async update(patientId: string, assessmentId: string, patch: WoundAssessmentPatch): Promise<void> {
+    const user = await this.afAuth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+
     const now = firebase.firestore.FieldValue.serverTimestamp();
     const clean = this.stripUndefined<WoundAssessmentPatch>(patch);
-  
+
     try {
-      await firstValueFrom(
-        this.http.patch<{ ok: true }>(
-          `${this.base}/woundAssessments/${patientId}/${assessmentId}`,
-          { ...clean, updatedAt: now }
-        )
-      );
-    } catch {
-      await this.afs
-        .doc(`patients/${patientId}/woundAssessments/${assessmentId}`) // ✅
-        .set({ ...clean, updatedAt: now } as any, { merge: true });
-    }
+      if (this.base) {
+        await firstValueFrom(
+          this.http.patch<{ ok: true }>(
+            `${this.base}/woundAssessments/${patientId}/${assessmentId}`,
+            { ...clean, updatedAt: now }
+          )
+        );
+        return;
+      }
+    } catch {/* fallback firestore below */}
+
+    await this.afs
+      .doc(`patients/${patientId}/woundAssessments/${assessmentId}`)
+      .set({ ...clean, updatedAt: now } as any, { merge: true });
   }
-  
-
-  /* -------------- WRITES: API-first / FS fallback -------------- */
-
- 
 
   /** Supprime un assessment */
   async remove(patientId: string, assessmentId: string): Promise<void> {
-    // 1) API
     try {
-      await firstValueFrom(
-        this.http.delete<{ ok: true }>(`${this.base}/assessments/${patientId}/${assessmentId}`)
-      );
-      return;
-    } catch {
-      // 2) Fallback Firestore
-      await this.afs.doc(`patients/${patientId}/assessments/${assessmentId}`).delete();
-    }
+      if (this.base) {
+        await firstValueFrom(
+          this.http.delete<{ ok: true }>(`${this.base}/assessments/${patientId}/${assessmentId}`)
+        );
+        return;
+      }
+    } catch {/* fallback firestore below */}
+
+    await this.afs.doc(`patients/${patientId}/assessments/${assessmentId}`).delete();
   }
 
-  /* -------------- (Optionnel) Wounds CRUD si tu en as besoin -------------- */
+  /* -------------- (Optionnel) Wounds CRUD -------------- */
 
-  /** Crée une *wound* sous patients/{patientId}/wounds (règles déjà couvertes) */
   async createWound(patientId: string, data: any): Promise<string> {
     const user = await this.afAuth.currentUser;
     if (!user) throw new Error('Not authenticated');
@@ -150,29 +181,27 @@ export class WoundAssessmentService {
     };
 
     try {
-      const res = await firstValueFrom(
-        this.http.post<{ id: string }>(`${this.base}/wounds`, { patientId, data: payload })
-      );
-      return res.id;
-    } catch {
-      const ref = await this.afs.collection(`patients/${patientId}/wounds`).add(payload);
-      return ref.id;
-    }
+      if (this.base) {
+        const res = await firstValueFrom(
+          this.http.post<{ id: string }>(`${this.base}/wounds`, { patientId, data: payload })
+        );
+        return res.id;
+      }
+    } catch {/* fallback firestore below */}
+
+    const ref = await this.afs.collection(`patients/${patientId}/wounds`).add(payload);
+    return ref.id;
   }
 
   /* ---------------- Utils ---------------- */
 
-  /** supprime récursivement les `undefined` (Firestore n’en veut pas) */
   private stripUndefined<T>(val: T): T {
     return this._strip(val) as T;
   }
   private _strip(val: unknown): unknown {
-    if (Array.isArray(val)) {
-      return (val as unknown[]).map(v => this._strip(v));
-    }
+    if (Array.isArray(val)) return (val as unknown[]).map(v => this._strip(v));
     if (val && typeof val === 'object') {
       const anyVal = val as Record<string, unknown>;
-      // préserve Firestore Timestamps/FieldValues
       if (typeof (anyVal as any).toDate === 'function' || typeof (anyVal as any).isEqual === 'function') {
         return val;
       }

@@ -1,38 +1,49 @@
+// src/app/authentification/role-redirect.guard.ts
 import { Injectable } from '@angular/core';
+import { CanActivate, Router, UrlTree, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RoleRedirectGuard implements CanActivate {
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {}
+  constructor(private afAuth: AngularFireAuth, private router: Router) {}
 
-  async canActivate(): Promise<boolean> {
+  async canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
     const user = await this.afAuth.currentUser;
     if (!user) {
-      this.router.navigate(['/login']);
-      return false;
+      return this.router.parseUrl('/login');
     }
 
-    const snap = await this.afs.doc(`users/${user.uid}`).get().toPromise();
-    const role = (snap?.data() as any)?.role;
+    // force fresh claims
+    const token = await user.getIdTokenResult(true);
+    const roles: string[] = Array.isArray((token.claims as any).roles) ? (token.claims as any).roles : [];
+    const primary = roles[0] || (token.claims as any).role || 'user';
 
-    if (role === 'nurse') {
-      this.router.navigate(['/nurse/dashboard']);
-    } else if (role === 'admin') {
-      this.router.navigate(['/admin/dashboard']);
-    } else if (role === 'employer') {
-      this.router.navigate(['/patients/dashboard']);
-    } else if (role === 'provider') {
-      this.router.navigate(['/provider/dashboard']);
-    } else {
-      this.router.navigate(['/home']);
+    // map role → target url
+    const target = this.targetForRole(primary);
+
+    // if already under the right area, allow
+    if (this.isAlreadyUnderArea(state.url, target)) {
+      return true;
     }
-    return false; // on bloque la route initiale et redirige
+
+    // otherwise, redirect
+    return this.router.parseUrl(target);
   }
 
-  
+  private targetForRole(role: string): string {
+    switch (role) {
+      case 'nurse':    return '/nurse/dashboard';
+      case 'admin':    return '/admin/dashboard';
+      case 'employer': return '/patients/dashboard';
+      case 'provider': return '/provider/dashboard';
+      default:         return '/home';
+    }
+  }
+
+  private isAlreadyUnderArea(currentUrl: string, target: string): boolean {
+    // e.g. current “/patients/…” and target “/patients/dashboard”
+    const currentRoot = '/' + currentUrl.split('/').filter(Boolean)[0];     // "/patients"
+    const targetRoot  = '/' + target.split('/').filter(Boolean)[0];         // "/patients"
+    return currentRoot === targetRoot;
+  }
 }

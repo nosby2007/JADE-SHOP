@@ -26,6 +26,8 @@ import {
   PharmacyRxResult,
   PharmacyRxDialogComponent
 } from './prescription-dialog/pharmacy-rx-dialog/pharmacy-rx-dialog.component';
+import { AddPrescriptionDialogResult } from '../add-prescription-dialog/add-prescription-dialog.component';
+import { ViewOrderDialogComponent } from '../view-order-dialog/view-order-dialog.component';
 
 type RxKind = 'pharmacy' | 'laboratory' | 'nutrition' | 'order';
 type AnyDialogResult = PharmacyRxResult | LaboratoryRxResult | NutritionRxResult | OrderRxResult;
@@ -39,9 +41,10 @@ type DialogData = { patientId: string; prefillEmail: string };
 export class NursePrescriptionsComponent implements OnInit {
   patientId!: string;
   items$!: Observable<Rx[]>;
+  patientName?: string;
   displayed = [
-    'category','name','dose','route','frequency', 'notes',
-    'prescriber','startDate','endDate', 'actions'
+    'category', 'name', 'dose', 'route', 'frequency', 'notes',
+    'prescriber', 'startDate', 'endDate', 'actions'
   ];
 
   constructor(
@@ -50,7 +53,7 @@ export class NursePrescriptionsComponent implements OnInit {
     private snack: MatSnackBar,
     private auth: Auth,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.patientId = this.ar.snapshot.paramMap.get('id')!;
@@ -152,9 +155,9 @@ export class NursePrescriptionsComponent implements OnInit {
       // Normalize payload to your Rx shape; keep a rich "details" blob
       const base: any = {
         category:
-          kind === 'pharmacy'   ? 'Pharmacy'   :
-          kind === 'laboratory' ? 'Laboratory' :
-          kind === 'nutrition'  ? 'Nutrition'  : 'Order',
+          kind === 'pharmacy' ? 'Pharmacy' :
+            kind === 'laboratory' ? 'Laboratory' :
+              kind === 'nutrition' ? 'Nutrition' : 'Order',
         prescriber: v.prescriber?.trim() || null,
         startDate,
         endDate,
@@ -214,7 +217,7 @@ export class NursePrescriptionsComponent implements OnInit {
 
   toJsDate(v: any): Date | null {
     if (v == null) return null;
-    if (typeof v?.toDate === 'function') { try { return v.toDate(); } catch {} }
+    if (typeof v?.toDate === 'function') { try { return v.toDate(); } catch { } }
     if (typeof v?.seconds === 'number' && typeof v?.nanoseconds === 'number') {
       return new Date(v.seconds * 1000 + Math.floor(v.nanoseconds / 1e6));
     }
@@ -224,5 +227,27 @@ export class NursePrescriptionsComponent implements OnInit {
       return isNaN(+d) ? null : d;
     }
     return null;
+  }
+
+  openView(note: AddPrescriptionDialogResult & { id?: string }) {
+    this.dialog.open(ViewOrderDialogComponent, {
+      width: '980px',
+      autoFocus: false,
+      data: {
+        patientId: this.patientId,
+        patientName: this.patientName,
+        note
+      }
+    });
+  }
+
+   edit(r: any) {
+    // TODO: open edit dialog
+    // this.openOrderDialog(r);
+  }
+
+  remove(r: any) {
+    // TODO: call service to delete
+    // if (confirm('Delete this order?')) { ... }
   }
 }

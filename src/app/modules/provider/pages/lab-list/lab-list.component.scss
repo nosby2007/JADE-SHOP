@@ -1,0 +1,29 @@
+.full { width: 100%; }
+.toolbar { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.toolbar .title { font-size: 18px; font-weight: 600; }
+.spacer { flex: 1; }
+.report .name { font-weight: 600; }
+.report .sub { font-size: 12px; }
+.actions { text-align: right; }
+.muted { color: #6b7280; }
+
+
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.lab-card {
+  margin-bottom: 12px;
+}
+
+.attachments ul {
+  padding-left: 16px;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+}

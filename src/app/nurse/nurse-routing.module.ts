@@ -9,12 +9,17 @@ import { NursePrescriptionsComponent } from './pages/nurse-prescriptions/nurse-p
 import { NurseTasksComponent } from './pages/nurse-tasks/nurse-tasks.component';
 import { NurseAssessmentsComponent } from './pages/nurse-assessment/nurse-assessment.component';
 import { AssessmentDetailComponent } from '../features/skin-wound/pages/assessment-detail/assessment-detail.component';
-import { PatientWoundsComponent } from '../patients/pages/patient-wounds/patient-wounds.component';
+import { SkinWoundComponent } from '../features/skin-wound/skin-wound.component';
+import { NurseGuard } from '../guards/nurse.guard';
+
+
 
 const routes: Routes = [
   {
     path: '',
     component: NurseShellComponent,
+      canActivate: [NurseGuard],
+    data: { roles: ['nurse', 'admin', 'provider'] },   // ← employer n’est PAS autorisé
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: NurseDashboardComponent },
@@ -26,7 +31,7 @@ const routes: Routes = [
        { path: 'tasks', component: NurseTasksComponent },
        { path: 'nurse/:pid/tasks', component: NurseTasksComponent },
        { path: 'patients/:id/assessments', component: NurseAssessmentsComponent },
-       { path: ':id/wounds', component: PatientWoundsComponent },
+       { path: ':id/wounds', component: SkinWoundComponent },
        { path: ':id/wounds/:assessmentId', component: AssessmentDetailComponent },
        { path: 'patients/:id/assessments/:assessmentId', component: AssessmentDetailComponent }
     ]

@@ -1,7 +1,7 @@
 <!-- src/app/nurse/pages/nurse-dashboard/nurse-dashboard.component.html -->
 <mat-card>
-    <h2>Dashboard Infirmier</h2>
-    <p>Bienvenue 👋 Sélectionnez une section dans le menu à gauche.</p>
+    <h2>Nurse Dashboard</h2>
+    <p>Welcome 👋 Please select a section from the menu on the left.</p>
   </mat-card>
   <mat-card>
   
@@ -13,21 +13,21 @@
       </mat-card>
   
       <mat-card class="kpi">
-        <h3>Tâches en attente</h3>
+        <h3>overdue tasks</h3>
         <p>{{ openTasks$ | async }}</p>
       </mat-card>
     </div>
   
     <mat-card class="recent" *ngIf="recentTasks$ | async as recentTasks">
-      <h3>Dernières tâches</h3>
+      <h3>Recent Tasks</h3>
       <table mat-table [dataSource]="recentTasks" class="full-table">
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef> Tâche </th>
+          <th mat-header-cell *matHeaderCellDef> Task </th>
           <td mat-cell *matCellDef="let t">{{ t.title }}</td>
         </ng-container>
   
         <ng-container matColumnDef="dueAt">
-          <th mat-header-cell *matHeaderCellDef> Échéance </th>
+          <th mat-header-cell *matHeaderCellDef> Due Date </th>
           <td mat-cell *matCellDef="let t">
             {{ t.dueAt?.toDate() | date:'short' }}
           </td>

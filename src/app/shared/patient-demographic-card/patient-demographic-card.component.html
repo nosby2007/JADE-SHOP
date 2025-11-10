@@ -1,0 +1,55 @@
+<div class="card" *ngIf="vm$ | async as vm">
+  <div class="header">
+    <h2 class="name">
+      {{ vm.name }}
+      <small *ngIf="vm.preferredName && vm.preferredName !== vm.name">({{ vm.preferredName }})</small>
+    </h2>
+    <span class="chip" *ngIf="vm.codeStatus">{{ vm.codeStatus }}</span>
+  </div>
+
+  <div class="grid">
+    <div><strong>Gender:</strong> {{ vm.gender || '—' }}</div>
+    <div><strong>DOB:</strong>
+      <ng-container *ngIf="vm.dob as d">
+        {{ d?.toDate ? (d.toDate() | date:'MMM d, y') : (d | date:'MMM d, y') }}
+      </ng-container>
+      <ng-container *ngIf="!vm.dob">—</ng-container>
+    </div>
+    <div><strong>Admission:</strong>
+      <ng-container *ngIf="vm.admissionDate as a">
+        {{ a?.toDate ? (a.toDate() | date:'MMM d, y') : (a | date:'MMM d, y') }}
+      </ng-container>
+      <ng-container *ngIf="!vm.admissionDate">—</ng-container>
+    </div>
+    <div><strong>Language:</strong> {{ vm.language || '—' }}</div>
+    <div><strong>Marital:</strong> {{ vm.maritalStatus || '—' }}</div>
+    <div><strong>Phone:</strong> {{ vm.phone || '—' }}</div>
+    <div><strong>Email:</strong> {{ vm.email || '—' }}</div>
+    <div class="full"><strong>Address:</strong> {{ vm.addressLine || '—' }}</div>
+
+    <div><strong>Primary Care:</strong> {{ vm.primaryCareProvider || '—' }}</div>
+    <div><strong>Referring:</strong> {{ vm.referringProvider || '—' }}</div>
+    <div><strong>Pharmacy:</strong> {{ vm.preferredPharmacy || '—' }}</div>
+    <div><strong>Height (cm):</strong> {{ vm.heightCm || '—' }}</div>
+    <div><strong>Weight (kg):</strong> {{ vm.weightKg || '—' }}</div>
+
+    <div class="full" *ngIf="vm.allergies?.length">
+      <strong>Allergies:</strong>
+      <span class="pill" *ngFor="let a of vm.allergies">{{ a }}</span>
+    </div>
+    <div class="full" *ngIf="vm.diagnoses?.length">
+      <strong>Diagnoses:</strong>
+      <span class="pill blue" *ngFor="let d of vm.diagnoses">{{ d }}</span>
+    </div>
+
+    <div class="full">
+      <strong>Emergency:</strong>
+      <ng-container *ngIf="vm.emergencyName || vm.emergencyPhone || vm.emergencyRelation; else dash">
+        {{ vm.emergencyName || '—' }}
+        <span *ngIf="vm.emergencyRelation"> — {{ vm.emergencyRelation }}</span>
+        <span *ngIf="vm.emergencyPhone"> ({{ vm.emergencyPhone }})</span>
+      </ng-container>
+      <ng-template #dash>—</ng-template>
+    </div>
+  </div>
+</div>

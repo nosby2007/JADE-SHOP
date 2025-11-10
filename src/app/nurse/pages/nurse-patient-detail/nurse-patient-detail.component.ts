@@ -7,6 +7,8 @@ import { Patient } from '../../models/patient.model';
 
 
 
+
+
 @Component({
   selector: 'app-nurse-patient-detail',
   templateUrl: './nurse-patient-detail.component.html',

@@ -1,0 +1,70 @@
+<!-- src/app/modules/provider/pages/lab-list/lab-list.component.html -->
+<div class="toolbar">
+  <div class="title">Lab Reports</div>
+  <span class="spacer"></span>
+  <button mat-stroked-button color="primary" (click)="new()">
+    <mat-icon>add</mat-icon>&nbsp;New Report
+  </button>
+</div>
+
+<table mat-table [dataSource]="(items$ | async) || []" class="mat-elevation-z2 full">
+  <!-- Reported -->
+  <ng-container matColumnDef="reportedDate">
+    <th mat-header-cell *matHeaderCellDef>Reported</th>
+    <td mat-cell *matCellDef="let row">
+      {{ toDate(row.reportedDate || row.updatedAt || row.createdAt) | date:'short' }}
+    </td>
+  </ng-container>
+
+  <!-- Report name -->
+  <ng-container matColumnDef="reportName">
+    <th mat-header-cell *matHeaderCellDef>Report</th>
+    <td mat-cell *matCellDef="let row">{{ row.reportName || '—' }}</td>
+  </ng-container>
+
+  <!-- Ordering provider -->
+  <ng-container matColumnDef="orderingProvider">
+    <th mat-header-cell *matHeaderCellDef>Ordering Provider</th>
+    <td mat-cell *matCellDef="let row">{{ row.orderingProvider || '—' }}</td>
+  </ng-container>
+
+  <!-- Flag -->
+  <ng-container matColumnDef="flag">
+    <th mat-header-cell *matHeaderCellDef>Flag</th>
+    <td mat-cell *matCellDef="let row">
+      <mat-chip-list>
+        <mat-chip [ngClass]="{
+          'flag-unknown': (row.flag || 'Unknown') === 'Unknown',
+          'flag-normal': row.flag === 'Normal',
+          'flag-high': row.flag === 'High' || row.flag === 'Critical',
+          'flag-low': row.flag === 'Low'
+        }">{{ row.flag || 'Unknown' }}</mat-chip>
+      </mat-chip-list>
+    </td>
+  </ng-container>
+
+  <!-- Status -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let row">{{ row.status || 'New' }}</td>
+  </ng-container>
+
+  <!-- Actions -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-button color="primary" (click)="openView(row)">
+        <mat-icon>visibility</mat-icon>&nbsp;View
+      </button>
+      <button mat-button (click)="edit(row)">
+        <mat-icon>edit</mat-icon>&nbsp;Edit
+      </button>
+      <button mat-button color="warn" (click)="remove(row)">
+        <mat-icon>delete</mat-icon>&nbsp;Delete
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

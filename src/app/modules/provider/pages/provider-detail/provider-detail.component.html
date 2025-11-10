@@ -1,0 +1,95 @@
+<mat-card class="shell" *ngIf="patient$ | async as p; else loadingTpl">
+  <div class="head flex-between">
+    <div class="title">
+      <h2 class="m0">You working on</h2>
+      <div class="muted">
+        <h1 style="margin-top:0;font-size:1.5rem;color:blue;font-weight:bold;">
+          Patient: {{ p?.name || '—' }}
+        </h1>
+      </div>
+    </div>
+
+    <a mat-stroked-button [routerLink]="['/provider','list']">
+      <mat-icon>arrow_back</mat-icon>&nbsp;Retour liste
+    </a>
+  </div>
+
+  <mat-tab-group>
+    <!-- Infos -->
+    <mat-tab label="Infos">
+      <div class="pad">
+        <div class="grid">
+          <div>
+            <div class="label">Nom</div>
+            <div class="val">{{ p?.name || '—' }}</div>
+          </div>
+          <div>
+            <div class="label">Genre</div>
+            <div class="val">{{ p?.gender || '—' }}</div>
+          </div>
+          <div>
+            <div class="label">Date de naissance</div>
+            <div class="val">{{ toDate(p?.dob) | date:'yyyy-MM-dd' }}</div>
+          </div>
+          <div>
+            <div class="label">Téléphone</div>
+            <div class="val">{{ p?.phone || '—' }}</div>
+          </div>
+          <div class="span-3">
+            <div class="label">Adresse</div>
+            <div class="val">{{ p?.address || '—' }}</div>
+          </div>
+          <div class="span-3">
+            <div class="label">Payor</div>
+            <div class="val">{{ p?.paiement || p?.payment || '—' }}</div>
+          </div>
+          <div class="span-2">
+            <div class="label">Complaint</div>
+            <div class="val">{{ p?.raison || p?.reason || '—' }}</div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Orders -->
+    <mat-tab label="Order">
+      <div class="pad">
+        <app-order-list></app-order-list>
+      </div>
+    </mat-tab>
+    <!-- Onglet 4 : Assessments (placeholder) -->
+    <mat-tab label="Assessments">
+      <div class="pad">
+        <app-encounter-list></app-encounter-list>
+      </div>
+    </mat-tab>
+
+    <!-- Notes -->
+    <mat-tab label="Notes">
+      <div class="pad">
+        <app-note-list></app-note-list>
+      </div>
+    </mat-tab>
+    <!-- Labs -->
+    <mat-tab label="Labs">
+      <div class="pad">
+        <app-lab-list></app-lab-list>
+      </div>
+    </mat-tab>
+
+    <!-- Skin & Wound -->
+    <mat-tab label="Skin and Wound">
+      <div class="pad">
+        <button mat-stroked-button (click)="gotoWounds(p)">
+          <mat-icon>healing</mat-icon>&nbsp;Wounds
+        </button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+
+<ng-template #loadingTpl>
+  <div class="center pad">
+    <mat-spinner diameter="36"></mat-spinner>
+  </div>
+</ng-template>

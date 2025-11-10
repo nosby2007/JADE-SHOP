@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PatientApiService } from 'src/app/core/patient-api.service';
 import { PatientService } from 'src/app/service/patient.service';
 
 @Component({

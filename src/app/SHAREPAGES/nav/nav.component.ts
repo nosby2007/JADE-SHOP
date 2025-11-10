@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
-import { AuthService } from 'src/app/SERVICE/auth.service';
+import { AuthService } from 'src/app/service/auth.service';
+
 
 
 @Component({

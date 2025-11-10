@@ -1,0 +1,32 @@
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0,0,0,.06);
+}
+
+.header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.name { margin: 0; font-size: 1.25rem; }
+.chip {
+  padding: 2px 8px; border-radius: 999px; font-size: 12px;
+  background: #f1f3f5; color: #333; border: 1px solid #e6e8eb;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 8px 16px;
+}
+.full { grid-column: 1 / -1; }
+
+.pill {
+  display: inline-block;
+  margin-right: 8px; margin-top: 6px;
+  padding: 2px 8px; border-radius: 999px; font-size: 12px;
+  background: #fff5f5; color: #d9480f; border: 1px solid #ffe3e3;
+}
+.pill.blue {
+  background: #e7f5ff; color: #1c7ed6; border: 1px solid #d0ebff;
+}

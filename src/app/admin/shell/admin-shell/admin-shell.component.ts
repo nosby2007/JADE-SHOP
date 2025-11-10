@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AccountDialogComponent } from 'src/app/COMPONENT/account-dialog/account-dialog.component';
 import { AuthService } from 'src/app/service/auth.service';
 
 
@@ -13,7 +15,7 @@ export class AdminShellComponent {
   isMobile = false;
   userName = this.auth.getUserName() ?? 'Admin';
 
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(private auth: AuthService, private router: Router, private dialog: MatDialog) {
     this.isMobile = window.innerWidth < 1024;
     this.opened = !this.isMobile;
   }
@@ -36,4 +38,14 @@ export class AdminShellComponent {
     this.router.navigateByUrl(path);
     if (this.isMobile) this.opened = false;
   }
+
+   openAccount() {
+    this.dialog.open(AccountDialogComponent, {
+      width: '720px',
+      maxWidth: '96vw',
+      autoFocus: false,
+      restoreFocus: false,
+      data: {}
+    });
+}
 }

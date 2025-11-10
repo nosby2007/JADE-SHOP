@@ -32,6 +32,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MediaGalleryComponent } from './pages/media-gallery/media-gallery.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -71,7 +80,23 @@ import { MediaGalleryComponent } from './pages/media-gallery/media-gallery.compo
     SharedModule,
     AngularFireStorageModule,
     MatProgressBarModule,
-    MatDividerModule
+    MatDividerModule,
+    MatChipsModule,
+    MatCardModule,
+    MatIconModule,
+      CommonModule,
+    
+            MatSidenavModule,
+            MatToolbarModule,
+            MatListModule,
+            MatIconModule,
+            MatButtonModule,
+            MatCardModule, FormsModule, ReactiveFormsModule,
+            MatDividerModule, MatFormFieldModule, MatInputModule, MatTableModule, MatProgressSpinnerModule,
+            MatRadioModule, MatMenuModule, MatProgressBarModule,
+        
+            // UI
+            MatSnackBarModule, MatCheckboxModule,  MatTabsModule, MatDialogModule,
   ]
 })
 export class SkinWoundModule {}

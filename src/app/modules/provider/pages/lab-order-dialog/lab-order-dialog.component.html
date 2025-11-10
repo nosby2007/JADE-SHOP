@@ -1,0 +1,242 @@
+<h2 mat-dialog-title>Lab Order / Report</h2>
+
+<mat-dialog-content class="lab-form" [formGroup]="form">
+
+  <!-- Top line -->
+  <div class="grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Report name</mat-label>
+      <input matInput formControlName="reportName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ordering provider</mat-label>
+      <input matInput formControlName="orderingProvider" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Reporting lab</mat-label>
+      <input matInput formControlName="reportingLab" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Attending provider</mat-label>
+      <input matInput formControlName="attendingProvider" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Admitting provider</mat-label>
+      <input matInput formControlName="admittingProvider" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>CC list</mat-label>
+      <input matInput formControlName="ccList" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Performing lab</mat-label>
+      <input matInput formControlName="performingLab" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Order #</mat-label>
+      <input matInput formControlName="orderNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <input matInput formControlName="category" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Flag</mat-label>
+      <mat-select formControlName="flag">
+        <mat-option value="Unknown">Unknown</mat-option>
+        <mat-option value="Normal">Normal</mat-option>
+        <mat-option value="High">High</mat-option>
+        <mat-option value="Low">Low</mat-option>
+        <mat-option value="Critical">Critical</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="New">New</mat-option>
+        <mat-option value="In Progress">In Progress</mat-option>
+        <mat-option value="Final">Final</mat-option>
+        <mat-option value="Corrected">Corrected</mat-option>
+        <mat-option value="Canceled">Canceled</mat-option>
+        <mat-option value="Completed">Completed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Dates -->
+    <mat-form-field appearance="outline">
+      <mat-label>Collection date</mat-label>
+      <input matInput [matDatepicker]="dp1" formControlName="collectionDate" />
+      <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+      <mat-datepicker #dp1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Received date</mat-label>
+      <input matInput [matDatepicker]="dp2" formControlName="receivedDate" />
+      <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+      <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Reported date</mat-label>
+      <input matInput [matDatepicker]="dp3" formControlName="reportedDate" />
+      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+      <mat-datepicker #dp3></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Order notes</mat-label>
+      <textarea matInput rows="2" formControlName="orderNotes"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>General notes</mat-label>
+      <textarea matInput rows="3" formControlName="notes"></textarea>
+    </mat-form-field>
+  </div>
+
+  <mat-divider class="my-3"></mat-divider>
+
+  <!-- Preferred: Results table (results[]) -->
+  <h3>Results (structured)</h3>
+
+  <div formArrayName="results" class="results">
+    <div class="results-header">
+      <div>Panel</div>
+      <div>Test</div>
+      <div>Result</div>
+      <div>Units</div>
+      <div>Ref. Range</div>
+      <div>Flag</div>
+      <div>Status</div>
+      <div class="actions"></div>
+    </div>
+
+    <div class="results-row" *ngFor="let grp of resultsFA.controls; let i = index" [formGroupName]="i">
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="panel" placeholder="Panel" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="testName" placeholder="Test name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="result" placeholder="Result" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="units" placeholder="Units" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <input matInput formControlName="refRange" placeholder="Ref range" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="flag">
+          <mat-option value="Unknown">Unknown</mat-option>
+          <mat-option value="Normal">Normal</mat-option>
+          <mat-option value="High">High</mat-option>
+          <mat-option value="Low">Low</mat-option>
+          <mat-option value="Critical">Critical</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="status">
+          <mat-option value="New">New</mat-option>
+          <mat-option value="Final">Final</mat-option>
+          <mat-option value="Corrected">Corrected</mat-option>
+          <mat-option value="Amended">Amended</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-icon-button color="warn" (click)="removeResultRow(i)" aria-label="Remove row">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <button mat-stroked-button (click)="addResultRow()">
+        <mat-icon>add</mat-icon>&nbsp;Add result
+      </button>
+    </div>
+  </div>
+
+  <mat-divider class="my-3"></mat-divider>
+
+  <!-- Legacy arrays (testName[] / result[]) -->
+  <h3>Results (simple pairs)</h3>
+  <div class="pairs">
+    <div class="row" *ngFor="let _ of testNameFA.controls; let i = index">
+      <mat-form-field appearance="fill">
+        <mat-label>Test name</mat-label>
+        <input matInput [formControl]="testNameAt(i)" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Result</mat-label>
+        <input matInput matInput [formControl]="resultAt(i)" />
+      </mat-form-field>
+
+      <button mat-icon-button color="warn" (click)="removeTestRow(i)" aria-label="Remove row">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <button mat-stroked-button (click)="addTestRow()">
+      <mat-icon>add</mat-icon>&nbsp;Add test row
+    </button>
+  </div>
+
+  <mat-divider class="my-3"></mat-divider>
+
+  <!-- File & attachments -->
+  <h3>Attachment</h3>
+  <div class="row gap">
+    <button mat-stroked-button color="primary" (click)="file.click()">
+      <mat-icon>attach_file</mat-icon>&nbsp;Attach PDF/Image
+    </button>
+    <input #file type="file" class="hidden" (change)="onFileSelected($event)" />
+    <span *ngIf="form.value.fileName">{{ form.value.fileName }}</span>
+  </div>
+
+  <div formArrayName="attachments" class="mt-2" *ngIf="attachmentsFA.length">
+    <div class="row" *ngFor="let _ of attachmentsFA.controls; let i = index" [formGroupName]="i">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="span-2">
+        <mat-label>URL</mat-label>
+        <input matInput formControlName="url" />
+      </mat-form-field>
+
+      <button mat-icon-button color="warn" (click)="removeAttachment(i)" aria-label="Remove attachment">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="loading">
+    {{ loading ? 'Saving…' : 'Save' }}
+  </button>
+</mat-dialog-actions>

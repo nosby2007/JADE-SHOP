@@ -1,26 +1,4 @@
-<nav class="navbar" *ngIf="authService.isLoggedIn()">
-  <a class="navbar-brand badge fs-4 text-wrap" routerLink="/home"><img src="https://res.cloudinary.com/dtdpx59sc/image/upload/v1760108013/ChatGPT_Image_Oct_2_2025_03_19_58_PM_om8pic.png" alt="" style="width: 50px; height: auto;">IHHM</a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  <ul class="nav-list fs-">
-    
-    <span style="float:left">
-      <a routerLink="reception">Contact Support</a>
-      <a *ngIf = "!loggedInUser" routerLink="login">Sign In</a>
-       </span>
-       <span style="float:right;">
-     | <a href="javascript:void(0);"> {{jstoday}}</a>
-       </span>
-        <li class="nav-item user-info nav-item-right">
-          <span>Bienvenue, {{ userName }}</span>
-        </li>
-        <li class="nav-item nav-item-right">
-          <button mat-icon-button  color="yellow" (click)="authService.logout()"><i style="color: rgb(2, 255, 56); font-weight: bolder; font-size: 30px;" class="material-icons">logout</i></button>
-        </li>
-  </ul>
-</nav>
-  
+
    
   <div class="container-responsive-xl">
     <router-outlet inert></router-outlet>

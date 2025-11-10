@@ -1,0 +1,79 @@
+<mat-sidenav-container class="nurse-shell">
+  <mat-sidenav mode="side" opened class="nurse-sidenav" [mode]="isMobile ? 'over' : 'side'" [(opened)]="opened"
+    class="sidenav" disableClose="!isMobile">
+    <mat-toolbar color="primary">INNOVACARE Provider</mat-toolbar>
+
+    <mat-nav-list>
+      <a mat-list-item routerLink="dashboard" routerLinkActive="active">
+        <mat-icon color="accent">dashboard</mat-icon>
+        <span class="ml-2">Dashboard</span>
+      </a>
+
+      <a mat-list-item routerLink="list" routerLinkActive="active">
+        <mat-icon color="primary">people</mat-icon>
+        <span class="ml-2">Patients List</span>
+      </a>
+
+      <a mat-list-item routerLink="labs" routerLinkActive="active">
+        <mat-icon color="accent">bloodtype</mat-icon>
+        <span class="ml-2">Labs</span>
+      </a>
+
+      <a mat-list-item routerLink="notes" routerLinkActive="active">
+        <mat-icon color="warn">note</mat-icon>
+        <span class="ml-2" class="text-danger">Notes</span>
+      </a>
+
+      <a mat-list-item routerLink="reports" routerLinkActive="active">
+        <mat-icon class="yellow-icon">bar_chart</mat-icon>
+        <span class="ml-2" class="green-icon">Reports</span>
+      </a>
+      <a mat-list-item (click)="gotoemar()">
+        <mat-icon class="green-icon">local_pharmacy</mat-icon>
+        <span class="ml-2"  class="green-icon bold">eMAR</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="topbar">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">{{ title }}</span>
+      <span class="spacer"></span>
+
+      <!-- petites infos -->
+      <span class="pill" *ngIf="userName">👋 {{ userName }}</span>
+      <span class="pill">{{ jstoday }}</span>
+
+      <span class="spacer"></span>
+
+      <!-- chip utilisateur -->
+      <div class="user-chip" *ngIf="user$ | async as u">
+        <div class="avatar" [class.has-img]="!!u.photoURL">
+          <img *ngIf="u.photoURL" [src]="u.photoURL" referrerpolicy="no-referrer" alt="avatar">
+          <span *ngIf="!u.photoURL">{{ initials(u.displayName, u.email) }}</span>
+        </div>
+        <div class="meta">
+          <div class="name">{{ u.displayName || u.email || 'User' }}</div>
+          <div class="sub" *ngIf="nurseDetails?.createdAt">
+            Start Date {{ nurseDetails.createdAt | date:'mediumDate' }}
+          </div>
+        </div>
+
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="user">
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="openAccount()">My Account</button>
+          <button mat-menu-item (click)="signOut()">Sign Out</button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+
+    <div class="page">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

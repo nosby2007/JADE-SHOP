@@ -57,6 +57,18 @@ export class LoginComponent implements OnInit {
         await this.router.navigateByUrl('/nurse');
       } else if (roles.includes('user')) {
         await this.router.navigateByUrl('/home');
+      } else if (roles.includes('provider')) {
+        await this.router.navigateByUrl('/provider'); 
+      } else if (roles.includes('housekeeping')) {
+        await this.router.navigateByUrl('/housekeeping');
+      } else if (roles.includes('laundry')) {  
+        await this.router.navigateByUrl('/laundry');
+      } else if (roles.includes('lab')) {
+        await this.router.navigateByUrl('/lab');
+      } else if (roles.includes('social-worker')) {
+        await this.router.navigateByUrl('/social-worker');
+      } else if (roles.includes('finance')) {
+        await this.router.navigateByUrl('/finance');
       } else {
         // Aucun rôle reconnu -> écran d’accueil
         await this.router.navigateByUrl('/home');
@@ -71,7 +83,7 @@ export class LoginComponent implements OnInit {
       this.password = '';
     } catch (err: any) {
       console.error('Login error:', err);
-      this.errorMsg = err?.message || 'Connexion impossible. Vérifiez vos identifiants.';
+      this.errorMsg = err?.message || 'unable to login with provided credentials please check and try again';
     } finally {
       this.loading = false;
     }

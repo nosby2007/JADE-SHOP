@@ -1,0 +1,48 @@
+:host { display: block; }
+mat-dialog-content.sheet {
+  min-width: 820px;
+  max-width: 980px;
+  padding: 0;
+
+  .sheet-head {
+    background: #e6ecd9;          /* light olive like PCC header */
+    border-bottom: 1px solid #c9d2b4;
+    padding: .6rem .9rem;
+    display: flex; justify-content: space-between; align-items: center;
+    .title { font-weight: 700; }
+    .resident { color: #2e3a18; }
+  }
+
+  .grid {
+    padding: .9rem;
+    .row {
+      display: grid;
+      grid-template-columns: 120px 1fr 140px 1fr;
+      gap: .5rem .75rem;
+      margin-bottom: .5rem;
+      .label { color:#556; font-weight: 600; align-self: center; }
+      .value { align-self: center; }
+    }
+
+    .block {
+      margin: .5rem 0;
+      .label { color:#556; font-weight: 600; margin-bottom: .25rem; }
+      .field {
+        width: 100%;
+        border: 1px solid #d7dbe3;
+        border-radius: 6px;
+        padding: .55rem .6rem;
+        background: #fbfcff;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        resize: none;
+        &.tall { min-height: 280px; }
+      }
+    }
+  }
+}
+.actions { padding: .6rem .9rem; border-top: 1px solid #eee; gap: .5rem; }
+
+@media (max-width: 860px) {
+  mat-dialog-content.sheet { min-width: auto; }
+  .grid .row { grid-template-columns: 110px 1fr; }
+}

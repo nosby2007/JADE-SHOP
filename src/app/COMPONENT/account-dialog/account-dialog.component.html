@@ -1,0 +1,150 @@
+<h2 mat-dialog-title>My Account</h2>
+
+<mat-dialog-content *ngIf="!loading; else loadingTpl" class="content">
+<div class="profile-header">
+  <div class="avatar-wrap">
+    <img
+      class="avatar"
+      [src]="form.value.photoURL || ('https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=' + (form.value.displayName || 'U'))"
+      alt="avatar"
+    />
+    <button mat-mini-fab color="primary" class="avatar-edit" (click)="fileInput.click()" matTooltip="Change photo">
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+    <input #fileInput type="file" accept="image/*" hidden (change)="onFilePicked($event)" />
+  </div>
+
+  <div class="meta">
+    <div class="name-row">
+      <h2 class="name">{{ form.value.displayName || 'Your name' }}</h2>
+
+      <!-- Use mat-chip-list for compatibility -->
+      <mat-chip-list *ngIf="(form.value.roles?.length || 0) > 0" class="roles">
+        <mat-chip *ngFor="let r of form.value.roles" color="primary" selected>{{ r }}</mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div class="info">
+      <div class="info-item" align="center">
+        <mat-icon>mail</mat-icon>
+        <span class="label">Email</span>
+        <span class="value">{{ email }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>phone</mat-icon>
+        <span class="label">Phone</span>
+        <span class="value">{{ form.value.phoneNumber || 'Your phone number' }}</span>
+      </div>
+      <div class="info-item" *ngIf="form.value.roles">
+        <mat-icon>badge</mat-icon>
+        <span class="label">Role</span>
+        <span class="value">{{ form.value.roles }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid || saving">
+        <mat-icon>save</mat-icon>&nbsp;Save changes
+      </button>
+      <button mat-stroked-button color="primary" (click)="fileInput.click()" [disabled]="uploading">
+        <mat-icon>image</mat-icon>&nbsp;Upload avatar
+      </button>
+      <button mat-button color="warn" (click)="logout()">
+        <mat-icon>logout</mat-icon>&nbsp;Logout
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Optional: quick stats row, guarded -->
+<div class="quick-stats" *ngIf="stats">
+  <div class="stat">
+    <div class="stat-value">{{ stats?.patients || 0 }}</div>
+    <div class="stat-label">Patients</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats?.tasksOpen || 0 }}</div>
+    <div class="stat-label">Open Tasks</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats?.docs || 0 }}</div>
+    <div class="stat-label">Documents</div>
+  </div>
+</div>
+
+
+<!-- Optional: quick stats row -->
+<div class="quick-stats" *ngIf="stats">
+  <div class="stat">
+    <div class="stat-value">{{ stats.patients || 0 }}</div>
+    <div class="stat-label">Patients</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats.tasksOpen || 0 }}</div>
+    <div class="stat-label">Open Tasks</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats.docs || 0 }}</div>
+    <div class="stat-label">Documents</div>
+  </div>
+</div>
+
+  <div class="grid">
+    <mat-form-field appearance="fill">
+      <mat-label>Display name</mat-label>
+      <input matInput formControlName="displayName" required />
+      <mat-error *ngIf="form.controls.displayName.invalid">Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone number</mat-label>
+      <input matInput formControlName="phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Photo URL</mat-label>
+      <input matInput formControlName="photoURL" />
+    </mat-form-field>
+
+    <div class="row">
+  <input
+    #fileInput
+    type="file"
+    accept="image/*"
+    (change)="onFilePicked($event)"
+    hidden
+  />
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="fileInput.click()"
+    [disabled]="uploading"
+  >
+    <mat-icon>image</mat-icon>&nbsp;Upload avatar
+  </button>
+  <mat-progress-bar
+    *ngIf="uploading"
+    mode="determinate"
+    [value]="uploadProgress"
+  ></mat-progress-bar>
+</div>
+
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>New password (optional)</mat-label>
+      <input matInput type="password" formControlName="newPassword" />
+      <mat-hint>Min 6 characters</mat-hint>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="saving || form.invalid">
+    <mat-icon>save</mat-icon>&nbsp;Save
+  </button>
+</mat-dialog-actions>
+
+<ng-template #loadingTpl>
+  <div class="p-3"><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+</ng-template>

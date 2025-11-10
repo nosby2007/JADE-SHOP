@@ -1,14 +1,25 @@
+<app-patient-demographic-card [patientId]="patientId"></app-patient-demographic-card>
+
+<!-- Titre + actions -->
+<div class="toolbar">
+ <br>
+</div>
+
 <mat-card>
   <div class="header flex-between">
-    <h2>Évaluations – Patient {{ patientId}}</h2>
+    <h2 class="text-warning">Wound Assessment List </h2>
     <div>
-      <button mat-stroked-button color="primary" (click)="newAssessment()">
-        <mat-icon>add</mat-icon>&nbsp;Nouvelle évaluation
+      <button mat-stroked-button color="warning" class="btn-primary" (click)="newAssessment()">
+        <mat-icon>add</mat-icon>&nbsp;New Assessment
       </button>
 
-      <a mat-stroked-button [routerLink]="['/nurse','patients']">
-        <mat-icon>arrow_back</mat-icon>&nbsp;Retour liste
+      <a mat-stroked-button class="btn btn-primary" [routerLink]="['/nurse','patients']">
+        <mat-icon color="warn">arrow_back</mat-icon>&nbsp;back to Patients List
       </a>
+      <a mat-stroked-button class="btn btn-warning" [routerLink]="['/skin-wound','dashboard']">
+        <mat-icon>arrow_back</mat-icon>&nbsp;Wound dashboard
+      </a>
+
     </div>
   </div>
 
@@ -26,7 +37,8 @@
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Type</th>
           <td mat-cell *matCellDef="let it">
-            {{ it.describe.type}}
+           Patient present with a  {{ it.describe.type}} wound, located at his {{ it.describe.location}}, stage: {{ it.describe.stage}}. <br> Measurements: Length {{ it.describe.length}} cm, Width {{ it.describe.width}} cm, Depth {{ it.describe.depth}} cm. <br> Exudate: {{ it.describe.exudate}}. Pain level: {{ it.describe.pain}}/10. <br> Additional notes: {{ it.describe.notes}}.
+
           </td>
         </ng-container>
 
@@ -36,12 +48,21 @@
           <td mat-cell *matCellDef="let it" class="actions">
             <a mat-stroked-button color="primary"
                [routerLink]="['/skin-wound', patientId, 'assessments', it.id]">
-              <mat-icon>visibility</mat-icon>&nbsp;Ouvrir
+              <mat-icon>visibility</mat-icon>&nbsp;Open
+            </a>
+            
+
+            <a mat-stroked-button color="accent"
+               [routerLink]="['/skin-wound', patientId, 'assessments', it.id, 'edit']">
+              <mat-icon>edit</mat-icon>&nbsp;Edit
             </a>
             <button mat-stroked-button color="warn" (click)="remove(it)">
-              <mat-icon>delete</mat-icon>&nbsp;Supprimer
+              <mat-icon>delete</mat-icon>&nbsp;Delete
             </button>
           </td>
+        </ng-container> 
+        <ng-container matColumnDef="spacer">
+          <td mat-cell *matCellDef="let it" class="spacer-cell"></td> 
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['id','date','actions']"></tr>
@@ -49,7 +70,7 @@
       </table>
     </div>
 
-    <div *ngIf="!items.length" class="muted mt-3">Aucune évaluation.</div>
+    <div *ngIf="!items.length" class="muted mt-3">No assessment.</div>
   </ng-container>
 
   <ng-template #loading>

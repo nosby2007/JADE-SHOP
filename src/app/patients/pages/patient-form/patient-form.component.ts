@@ -121,10 +121,38 @@ export class PatientFormComponent implements OnInit {
         // identity / clinical (back-compat)
         patch['identity'] = patch['identity'] || {};
         patch['identity']['payor'] = pv['paiement'] ?? pv['payor'] ?? '';
+        patch['identity']['ssn']                 = pv['ssn'] ?? '';
+        patch['identity']['idType']              = pv['idType'] ?? '';
+        patch['identity']['idNumber']            = pv['idNumber'] ?? '';
+        patch['identity']['insuranceProvider']   = pv['insuranceProvider'] ?? '';
+        patch['identity']['insuranceId']         = pv['insuranceId'] ?? '';
+        patch['identity']['groupNumber']         = pv['groupNumber'] ?? '';
+        patch['identity']['policyHolder']        = pv['policyHolder'] ?? '';
+        patch['identity']['emergencyContactName']  = pv['emergencyContact']?.name ?? pv['emergencyContactName'] ?? '';
+        patch['identity']['emergencyContactPhone'] = pv['emergencyContact']?.phone ?? pv['emergencyContactPhone'] ?? '';
+        patch['identity']['emergencyRelation']     = pv['emergencyContact']?.relation ?? pv['emergencyRelation'] ?? '';
+        // clinical
+        
 
         patch['clinical'] = patch['clinical'] || {};
+        patch['clinical']['allergies'] = Array.isArray(pv['allergies']) ? pv['allergies'] : [];
+        patch['clinical']['diagnoses'] = Array.isArray(pv['diagnoses']) ? pv['diagnoses'] : [];
+        patch['clinical']['medications'] = Array.isArray(pv['medications']) ? pv['medications'] : [];
         patch['clinical']['reasonForAdmission']  = pv['raison'] ?? pv['reasonForAdmission'] ?? '';
         patch['clinical']['primaryCareProvider'] = pv['docteur'] ?? pv['primaryCareProvider'] ?? '';
+        patch['clinical']['referringProvider']  = pv['referringProvider'] ?? '';
+        patch['clinical']['codeStatus']         = pv['codeStatus'] ?? '';
+        patch['clinical']['preferredPharmacy']  = pv['preferredPharmacy'] ?? '';
+        patch['clinical']['heightCm']           = pv['heightCm'] ?? '';
+        patch['clinical']['weightKg']           = pv['weightKg'] ?? '';
+        patch['clinical']['bmi']                = pv['bmi'] ?? '';
+
+        // ...other flat fields can be added here as needed
+        // consent
+        patch['consent'] = patch['consent'] || {};
+        patch['consent']['hipaaAck']             = !!pv['hipaaAck'];
+        patch['consent']['privacyNoticeAck']     = !!pv['privacyNoticeAck'];
+        patch['consent']['financialAgreementAck'] = !!pv['financialAgreementAck'];
 
         // arrays
         const dx  = Array.isArray(pv['diagnoses']) ? pv['diagnoses'] : [];
@@ -227,6 +255,7 @@ codeStatus: clin['codeStatus'] || '',
 preferredPharmacy: clin['preferredPharmacy'] || '',
 heightCm: clin['heightCm'] || '',
 weightKg: clin['weightKg'] || '',
+
 
 // Consent (flat)
 hipaaAck: !!cons['hipaaAck'],

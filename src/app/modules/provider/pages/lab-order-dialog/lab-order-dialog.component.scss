@@ -1,0 +1,39 @@
+.lab-form {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .row.gap {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .tests {
+    .tests-header,
+    .tests-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 80px;
+      align-items: center;
+      gap: 12px;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .my-3 {
+    margin: 16px 0;
+  }
+}

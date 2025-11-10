@@ -1,0 +1,10 @@
+/* nurse-patient-list.component.scss */
+.card { padding: 16px; }
+.flex-between { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.actions { display:flex; align-items:center; gap:12px; }
+.search { width: 300px; }
+.table-wrap { overflow:auto; }
+.full-table { width: 100%; min-width: 1000px; }
+.muted { color:#666; margin-top:12px; }
+.hidden { display:none; }
+.truncate { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

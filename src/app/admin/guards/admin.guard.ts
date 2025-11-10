@@ -19,6 +19,7 @@ export class AdminGuard implements CanActivate {
         if (!uid) return of(false);
         return this.afs.doc(`users/${uid}`).valueChanges().pipe(
           map((doc: any) => Array.isArray(doc?.roles) && doc.roles.includes('admin'))
+          
         );
       }),
       map(isAdmin => {

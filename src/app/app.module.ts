@@ -51,6 +51,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AuthTokenInterceptor } from './core/token.interceptor';
 import { REGION } from '@angular/fire/compat/functions';
 import { LoginComponent } from './authetification/login/login.component';
+import { AccountDialogComponent } from './COMPONENT/account-dialog/account-dialog.component';
+
 
 
 
@@ -66,6 +68,8 @@ const routes: Routes = [
     AppComponent,
     TimestampToDatePipe,
     LoginComponent,
+    AccountDialogComponent,
+    
     
     
    
@@ -110,7 +114,7 @@ const routes: Routes = [
     MatTooltipModule, MatInputModule, MatSelectModule, MatRadioModule, MatCheckboxModule,
     MatDatepickerModule, MatNativeDateModule,
     MatTableModule, MatIconModule, MatButtonModule,
-    MatCardModule, MatPaginatorModule, MatSortModule, MatChipsModule
+    MatCardModule, MatPaginatorModule, MatSortModule, MatChipsModule, CommonModule,
 
     
     

@@ -1,0 +1,123 @@
+<!-- src/app/modules/provider/pages/view-labs-dialog/view-labs-dialog.component.html -->
+<h2 mat-dialog-title style="background-color: rgb(205, 255, 129);">{{ r.reportName || 'Lab Report' }}</h2>
+
+<mat-dialog-content class="view-wrap">
+
+  <div class="top-cards">
+    <!-- Resident info -->
+    <mat-card>
+      <mat-card-title style="background-color: rgb(214, 80, 248);">Patient Information</mat-card-title>
+      <mat-card-content>
+        <div class="pair">
+          <span>Patient Name:</span>
+          <strong>{{ r.reportName  || '—' }}</strong>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Report info -->
+   <mat-card>
+  <mat-card-title style="background-color: rgb(193, 60, 245);">Report information</mat-card-title>
+  <mat-card-content>
+    <div class="pair">
+      <span>Collection Date:</span>
+      <strong>{{ collectionDate ? (collectionDate | date:'short') : '—' }}</strong>
+    </div>
+
+    <div class="pair">
+      <span>Received Date:</span>
+      <strong>{{ receivedDate   ? (receivedDate   | date:'short') : '—' }}</strong>
+    </div>
+
+    <div class="pair">
+      <span>Reported Date:</span>
+      <strong>{{ reportedDate   ? (reportedDate   | date:'short') : '—' }}</strong>
+    </div>
+    <div class="pair">
+      <span>Ord. Provider:</span>
+      <strong>{{ r?.orderingProvider || '—' }}</strong>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+    <!-- Lab info -->
+    <mat-card>
+      <mat-card-title style="background-color: rgb(204, 72, 245);">Lab information</mat-card-title>
+      <mat-card-content>
+        <div class="chips">
+          <mat-chip-list>
+            <mat-chip [color]="chipColor('status')" selected>{{ r.status || 'New' }}</mat-chip>
+            <mat-chip [color]="chipColor('flag')" selected>{{ r.flag || 'Unknown' }}</mat-chip>
+          </mat-chip-list>
+        </div>
+        <div class="pair">Reporting Lab:<strong>{{ r.reportingLab || '—' }}</strong></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Results section -->
+  <h3 class="section-title" style="background-color: rgb(205, 255, 129);">Results</h3>
+  <table mat-table [dataSource]="rows" class="mat-elevation-z2 results-table">
+    <ng-container matColumnDef="panel">
+      <th mat-header-cell *matHeaderCellDef>Panel</th>
+      <td mat-cell *matCellDef="let row">{{ row.panel || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="testName">
+      <th mat-header-cell *matHeaderCellDef>Test</th>
+      <td mat-cell *matCellDef="let row">{{ row.testName || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="result">
+      <th mat-header-cell *matHeaderCellDef>Result</th>
+      <td mat-cell *matCellDef="let row">{{ row.result || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="units">
+      <th mat-header-cell *matHeaderCellDef>Units</th>
+      <td mat-cell *matCellDef="let row">{{ row.units || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="refRange">
+      <th mat-header-cell *matHeaderCellDef>Ref. Range</th>
+      <td mat-cell *matCellDef="let row">{{ row.refRange || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="flag">
+      <th mat-header-cell *matHeaderCellDef>Flag</th>
+      <td mat-cell *matCellDef="let row">{{ row.flag || '—' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">{{ row.status || '—' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['panel','testName','result','units','refRange','flag','status']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['panel','testName','result','units','refRange','flag','status']"></tr>
+  </table>
+
+  <!-- Legend like your screenshot -->
+  <div class="legend">
+    <span class="dot critical"></span> Report contains critical results
+    <span class="spacer"></span>
+    <span class="dot abnormal"></span> Report contains abnormal results
+  </div>
+
+  <!-- Attachments -->
+  <div *ngIf="hasAnyAttachments()" class="attachments">
+    <h3 class="section-title">Attachments</h3>
+    <div class="attachment-list">
+      <button mat-stroked-button color="primary" *ngFor="let f of attachmentList()" (click)="open(f.url)">
+        <mat-icon>attach_file</mat-icon>&nbsp;{{ f.name }}
+      </button>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" >
+  <button mat-button color="warn" (click)="dialogRef.close()">Close</button>
+</mat-dialog-actions>

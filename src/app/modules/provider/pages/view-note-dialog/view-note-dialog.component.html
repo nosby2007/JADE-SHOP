@@ -1,0 +1,52 @@
+<mat-dialog-content class="sheet">
+  <div class="sheet-head">
+    <div class="title">View Progress Note</div>
+    <div class="resident">
+      Resident:&nbsp;
+      <strong>{{ (patientName$ | async) || '—' }}</strong>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="row">
+      <div class="label">Type:</div>
+      <div class="value">{{ data.note.type }}</div>
+      <div class="label">Effective Date:</div>
+      <div class="value">
+        {{ asDate(data.note.effectiveAt) | date:'M/d/y HH:mm' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label">Created Date:</div>
+      <div class="value">
+        {{ asDate(data.note.createdAt) | date:'M/d/y HH:mm' }}
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="label">Date of Service:</div>
+      <textarea class="field" readonly>{{ asDate(data.note.dateOfService) | date:'M/d/y' }}</textarea>
+    </div>
+
+    <div class="block">
+      <div class="label">Visit Type:</div>
+      <textarea class="field" readonly>{{ data.note.visitType || '—' }}</textarea>
+    </div>
+
+    <div class="block">
+      <div class="label">Details:</div>
+      <textarea class="field tall" readonly>{{ data.note.details }}</textarea>
+    </div>
+
+    <div class="block">
+      <div class="label">Provider:</div>
+      <textarea class="field" readonly>{{ data.note.providerName || '—' }}</textarea>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="actions">
+  <button mat-stroked-button (click)="print()"><mat-icon>print</mat-icon>&nbsp;Print</button>
+  <button mat-flat-button color="primary" (click)="close()"><mat-icon>close</mat-icon>&nbsp;Close</button>
+</mat-dialog-actions>
