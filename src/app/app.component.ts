@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { InactivityService } from './service/inactivity.service';
 
 
 
@@ -10,7 +11,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor(
-    
-  ) {}
+   constructor(private _inactivity: InactivityService) {}
  }

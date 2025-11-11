@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmarListComponent } from './pages/emar-list/emar-list.component';
-import { DashboardComponent } from 'src/app/features/skin-wound/pages/dashboard/dashboard.component';
+import { EmarDetailsComponent } from './pages/emar-details/emar-details.component';
 
 const routes: Routes = [
   // Define eMAR related routes here
-  { path: 'dashboard', component: EmarListComponent },
+  { path: 'emar', component: EmarListComponent },
   { path: '', component: EmarListComponent }, // default when lazy-loaded
+
   // other routes can be added here
+
   
    // example detail route
+   {path: 'emar/:id', component: EmarDetailsComponent}
 
 
 ];

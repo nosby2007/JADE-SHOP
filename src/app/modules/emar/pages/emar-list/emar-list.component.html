@@ -1,39 +1,68 @@
-<div class="toolbar">
-  <h2>eMAR — Medications</h2>
-  <span class="spacer"></span>
-  <button mat-raised-button color="primary" (click)="openCreateMed()">
-    <mat-icon>add</mat-icon> New Med
+
+  <div align="right">
+  <button  mat-stroked-button class="btn btn-primary" [routerLink]="['/nurse','patients']">
+    <mat-icon color="warn">arrow_back</mat-icon>&nbsp;back to Patients List
   </button>
+ </div>
+ <div align="right">
+<div class="emar-search" >
+  <mat-form-field appearance="outline" class="w-100 w-md-50">
+    <mat-label>Rechercher un patient</mat-label>
+    <input matInput (input)="onSearch($event)" placeholder="Nom, chambre, localisation…" />
+    <button mat-icon-button matSuffix *ngIf="search" (click)="clearSearch()" aria-label="Effacer">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  
+</div>
+ </div >
+
+
+ 
+
+
+
+<div class="patients-grid">
+  <mat-card class="patient-card"
+            *ngFor="let p of pageSlice"
+            [ngClass]="getCardClass(p)"
+            (click)="viewTasks(p.id)">
+    <div class="row-1">
+      <div class="avatar">{{ initials(p.name) }}</div>
+      <div class="iden">
+        <mat-card-title>{{ p.name }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ p.location || '—' }} · {{ p.room || '—' }}
+        </mat-card-subtitle>
+      </div>
+      <span class="spacer"></span>
+      <div class="counts">
+        <mat-chip-list>
+  <mat-chip color="primary" selected>
+    <mat-icon>medication</mat-icon>&nbsp;{{ p.prescriptionsCount || 0 }}
+  </mat-chip>
+  <mat-chip [selected]="p.hasOverdue" [color]="p.hasOverdue ? 'warn' : undefined">
+    <mat-icon>schedule</mat-icon>&nbsp;{{ p.overdueCount || 0 }}
+  </mat-chip>
+</mat-chip-list>
+
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="tags">
+        <mat-chip *ngIf="p.allergies?.length" color="warn" selected>
+          Allergies
+        </mat-chip>
+        <mat-chip *ngIf="p.codeStatus" selected>{{ p.codeStatus }}</mat-chip>
+      </div>
+      <button mat-stroked-button color="primary" (click)="$event.stopPropagation(); viewTasks(p.id)">
+        Voir les tâches
+      </button>
+    </div>
+  </mat-card>
 </div>
 
-<table mat-table mat-table [dataSource]="(meds$ | async) ?? []" class="mat-elevation-z2 full">
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Medication</th>
-    <td mat-cell *matCellDef="let r">{{ r?.name || '—' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="dose">
-    <th mat-header-cell *matHeaderCellDef>Dose</th>
-    <td mat-cell *matCellDef="let r">{{ r?.dose || '—' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="route">
-    <th mat-header-cell *matHeaderCellDef>Route</th>
-    <td mat-cell *matCellDef="let r">{{ r?.route || '—' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="freq">
-    <th mat-header-cell *matHeaderCellDef>Freq</th>
-    <td mat-cell *matCellDef="let r">{{ r?.frequency || '—' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef class="right">Actions</th>
-    <td mat-cell *matCellDef="let r" class="right">
-      <button mat-button (click)="openAdminDialog(r)">Administer</button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayed"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayed"></tr>
-</table>
+<mat-paginator [pageSizeOptions]="[6, 12, 24]" [pageSize]="12" showFirstLastButtons
+               (page)="onPage($event)">
+</mat-paginator>

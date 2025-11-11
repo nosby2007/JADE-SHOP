@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-
+import { map, take } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class RoleRedirectGuard implements CanActivate {
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, private router: Router) {}
@@ -28,5 +28,10 @@ export class RoleRedirectGuard implements CanActivate {
 
     // fallback
     return this.router.createUrlTree(['/home']);
+
+    
   }
+  
+  
+  
 }

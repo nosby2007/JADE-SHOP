@@ -1,0 +1,33 @@
+<!-- src/app/COMPONENT/count-down/count-down.component.html -->
+<h2 mat-dialog-title>
+  <mat-icon color="warn" aria-hidden="true">timer</mat-icon>
+  Session Timeout
+</h2>
+
+<mat-dialog-content class="cd-content">
+  <div class="ring-wrap" role="img" aria-label="Time remaining">
+    <div class="ring" [style.--pct]="percentLeft"></div>
+    <div class="ring-center">
+      <div class="seconds">{{ data.countdown }}</div>
+      <div class="label">seconds left</div>
+    </div>
+  </div>
+
+  <p class="message">
+    Your session will automatically log out when the timer hits zero.
+    Would you like to stay signed in?
+  </p>
+
+  <mat-progress-bar mode="determinate" [value]="percentLeft" aria-label="Countdown progress"></mat-progress-bar>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" (click)="stayLoggedIn()">
+    <mat-icon>refresh</mat-icon>
+    Stay Signed In
+  </button>
+  <button mat-flat-button color="warn" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Sign Out Now
+  </button>
+</mat-dialog-actions>

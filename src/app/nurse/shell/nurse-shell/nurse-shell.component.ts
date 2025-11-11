@@ -144,6 +144,7 @@ export class NurseShellComponent {
 }
 
 gotoemar() {
-       this.router.navigate(['/emar', 'dashboard']);
-     }
+       const url = this.router.serializeUrl(this.router.createUrlTree(['/emar', 'emar']));
+  window.open(url, '_blank'); // new tab
+}
 }

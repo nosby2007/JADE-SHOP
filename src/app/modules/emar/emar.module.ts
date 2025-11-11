@@ -19,6 +19,19 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { EmarDetailsComponent } from './pages/emar-details/emar-details.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'src/app/shared/shared.module'; // <-- adjust path
+
 
 
 @NgModule({
@@ -26,7 +39,9 @@ import { MatTableModule } from '@angular/material/table';
     EmarListComponent,
     EmarCreateDialogComponent,
     EmarAdminDialogComponent,
-    EmarShellComponent
+    EmarShellComponent,
+    EmarDetailsComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -35,7 +50,33 @@ import { MatTableModule } from '@angular/material/table';
   MatDialogModule, MatFormFieldModule, MatInputModule,
   MatSelectModule, MatDatepickerModule, MatNativeDateModule,
   MatCheckboxModule, MatSnackBarModule, MatProgressBarModule,
-    EmarRoutingModule
+    EmarRoutingModule,
+     MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatProgressBarModule,
+    MatStepperModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatCardModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatMenuModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatTooltipModule, MatInputModule, MatSelectModule, MatRadioModule, MatCheckboxModule,
+    MatDatepickerModule, MatNativeDateModule,
+    MatTableModule, MatIconModule, MatButtonModule,
+    MatCardModule, MatPaginatorModule, MatSortModule, MatChipsModule,
+    SharedModule
   ]
 })
 export class EmarModule { }

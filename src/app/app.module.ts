@@ -52,6 +52,7 @@ import { AuthTokenInterceptor } from './core/token.interceptor';
 import { REGION } from '@angular/fire/compat/functions';
 import { LoginComponent } from './authetification/login/login.component';
 import { AccountDialogComponent } from './COMPONENT/account-dialog/account-dialog.component';
+import { CountDownComponent } from './COMPONENT/count-down/count-down.component';
 
 
 
@@ -69,6 +70,7 @@ const routes: Routes = [
     TimestampToDatePipe,
     LoginComponent,
     AccountDialogComponent,
+    CountDownComponent,
     
     
     

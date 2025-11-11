@@ -1,0 +1,60 @@
+<div class="topbar">
+  <button mat-raised-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>&nbsp;Retour
+  </button>
+
+  <span class="spacer"></span>
+
+  <mat-form-field appearance="outline" class="date-filter">
+    <mat-label>Sélectionnez une date</mat-label>
+    <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateChange($event)" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <div class="filters">
+    <button mat-stroked-button color="warn" (click)="filterTasks('overdue')">
+      Tâches en Retard
+    </button>
+    <button mat-stroked-button (click)="resetFilter()">Toutes</button>
+  </div>
+</div>
+
+<div >
+    <app-patient-demographic-card [patientId]="patientId"></app-patient-demographic-card>
+</div>
+<br><br>
+
+<form [formGroup]="taskForm" (ngSubmit)="submitTaskUpdates()">
+  <div class="task-grid">
+    <mat-card class="task-card" *ngFor="let t of filteredTasks" [ngClass]="getTaskClass(t)">
+      <div class="task-head">
+        <div class="med">
+          <div class="pill"><mat-icon>pill</mat-icon></div>
+          <div>
+            <div class="med-name">{{ t.medication || t.drugName }}</div>
+            <div class="med-sub">
+              {{ t.dose || t.strength || '—' }} · {{ t.route || '—' }} · {{ t.frequency || '—' }}
+            </div>
+          </div>
+        </div>
+        <div class="when">
+          {{ toDate(t.dueAt || t.date) | date:'EEE, MMM d · HH:mm' }}
+        </div>
+      </div>
+
+      <div class="task-body">
+        <div class="note">{{ t.instructions || t.description || '—' }}</div>
+        <mat-radio-group [formControlName]="t.id" class="state">
+          <mat-radio-button value="done">Terminé</mat-radio-button>
+          <mat-radio-button value="not-done">Non Terminé</mat-radio-button>
+          <mat-radio-button value="held">Hold</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+  </div>
+</form>
