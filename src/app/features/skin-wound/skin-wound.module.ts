@@ -97,6 +97,9 @@ import { MatTabsModule } from '@angular/material/tabs';
         
             // UI
             MatSnackBarModule, MatCheckboxModule,  MatTabsModule, MatDialogModule,
+  ],
+   exports: [
+    AssessmentListComponent   // <-- export so other modules can use it
   ]
 })
 export class SkinWoundModule {}

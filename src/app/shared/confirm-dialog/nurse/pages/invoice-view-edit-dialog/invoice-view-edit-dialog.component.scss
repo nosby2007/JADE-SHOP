@@ -1,0 +1,8 @@
+.dialog-body { min-width: 720px; }
+.row { display:flex; gap:12px; }
+.items-head {
+  display:flex; align-items:center; justify-content:space-between; margin: 12px 0 4px;
+}
+.items { display:flex; flex-direction:column; gap:8px; }
+.item-row { display:grid; grid-template-columns: 120px 1fr 140px 100px 140px 40px; gap:8px; align-items:center; }
+.grow { flex:1; }

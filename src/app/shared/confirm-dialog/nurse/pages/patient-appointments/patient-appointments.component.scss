@@ -1,0 +1,30 @@
+.appt-card { padding: 12px; border: 1px solid #eee; border-radius: 12px; background: #fff; }
+.appt-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.muted { color:#6b7280; }
+.error { color:#b91c1c; margin-bottom:8px; }
+
+.grid {
+  display:grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 1.5fr auto;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+input { padding:8px 10px; border:1px solid #e5e7eb; border-radius:8px; }
+button.primary { padding:8px 14px; border-radius:8px; border:0; background:#2563eb; color:#fff; }
+button.danger { color:#b91c1c; }
+
+table.simple { width:100%; border-collapse: collapse; }
+table.simple th, table.simple td { padding:8px 10px; border-top:1px solid #f1f5f9; }
+table.simple thead th { text-align:left; font-weight:600; color:#64748b; }
+.right { text-align:right; }
+
+.chip { padding:2px 8px; border-radius:999px; font-size:12px; background:#e5e7eb; color:#374151; text-transform:capitalize; }
+.chip.scheduled { background:#dbeafe; color:#1e40af; }
+.chip.checked-in { background:#dcfce7; color:#166534; }
+.chip.completed  { background:#e2e8f0; color:#0f172a; }
+.chip.cancelled  { background:#fee2e2; color:#7f1d1d; }
+
+
+.actions { display:flex; gap:6px; justify-content:flex-end; }
+.actions button { padding:4px 8px; border:1px solid #e5e7eb; background:#fff; border-radius:8px; }
+.actions button:hover { background:#f8fafc; }

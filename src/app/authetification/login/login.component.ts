@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       } else if (roles.includes('nurse')) {
         await this.router.navigateByUrl('/nurse');
       } else if (roles.includes('user')) {
-        await this.router.navigateByUrl('/home');
+        await this.router.navigateByUrl('/user');
       } else if (roles.includes('provider')) {
         await this.router.navigateByUrl('/provider'); 
       } else if (roles.includes('housekeeping')) {

@@ -85,6 +85,23 @@
         </button>
       </div>
     </mat-tab>
+     <!--Document-->
+    <mat-tab label="Documents">
+      <div class="pad">
+        <app-document></app-document>
+      </div>
+    </mat-tab>
+
+     <!--Appointment-->
+    <mat-tab label="--Appointment--">
+      <div class="pad" *ngIf="patient$ | async as p; else loadingTpl">
+      <patient-appointments
+  [patientId]="p?.id ?? ''"
+  [patientName]="p?.name ?? null">
+</patient-appointments>
+</div>
+    </mat-tab>
+    
   </mat-tab-group>
 </mat-card>
 

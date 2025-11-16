@@ -1,0 +1,285 @@
+<div class="page">
+    <!-- Build Invoice -->
+    <form class="card" [formGroup]="addItemForm" (ngSubmit)="addFromCode()">
+        <h3>Build Invoice</h3>
+
+        <div class="grid grid-4">
+            <label>Encounter code *
+                <select formControlName="code">
+                    <option [ngValue]="''" disabled>Select code</option>
+                    <option *ngFor="let c of catalog" [value]="c.code">
+                        {{ c.code }} — {{ c.label }} (${{ c.unitPrice }})
+                    </option>
+                </select>
+            </label>
+
+            <label>Qty *
+                <input type="number" min="1" formControlName="qty" />
+            </label>
+
+            <div class="grid-span-2 align-end">
+                <button type="submit" class="btn primary" [disabled]="addItemForm.invalid">
+                    Add item
+                </button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Custom line -->
+        <div class="grid grid-4" [formGroup]="customItemForm">
+            <label>Label
+                <input type="text" formControlName="label" placeholder="e.g., Dressing supplies" />
+            </label>
+
+            <label>Department
+                <select formControlName="department">
+                    <option value="provider">Provider</option>
+                    <option value="nurse">Nurse</option>
+                    <option value="pharmacy">Pharmacy</option>
+                    <option value="lab">Lab</option>
+                    <option value="social_service">Social Service</option>
+                </select>
+            </label>
+
+            <label>Unit price
+                <input type="number" step="0.01" min="0" formControlName="unitPrice" />
+            </label>
+
+            <label>Qty
+                <input type="number" step="1" min="1" formControlName="qty" />
+            </label>
+        </div>
+
+        <div class="align-end">
+            <button type="button" class="btn" (click)="addCustom()">+ Add custom</button>
+        </div>
+
+        <!-- Cart -->
+        <div class="cart" *ngIf="items.length">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Label</th>
+                        <th>Dept</th>
+                        <th class="ta-right">Unit</th>
+                        <th class="ta-right">Qty</th>
+                        <th class="ta-right">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let it of items; let i = index">
+                        <td>{{ it.code }}</td>
+                        <td>{{ it.label }}</td>
+                        <td>{{ it.department }}</td>
+                        <td class="ta-right">${{ it.unitPrice | number:'1.2-2' }}</td>
+                        <td class="ta-right">{{ it.qty }}</td>
+                        <td class="ta-right">${{ it.lineTotal | number:'1.2-2' }}</td>
+                        <td class="ta-right">
+                            <button type="button" class="icon" (click)="removeItem(i)" title="Remove">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="ta-right tfoot-label">Subtotal</td>
+                        <td class="ta-right tfoot-number">
+                            ${{ subtotal | number:'1.2-2' }}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="actions align-end">
+                <button type="button" class="btn ghost" (click)="clearItems()">Clear</button>
+                <button type="button" class="btn primary" (click)="createInvoice()"
+                    [disabled]="!items.length || loading">
+                    Create Invoice
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Record a Payment -->
+    <form class="card" [formGroup]="paymentForm" (ngSubmit)="savePayment()">
+        <h3>Record a Payment</h3>
+
+        <div class="grid grid-3">
+            <label>Attach to invoice
+                <select formControlName="invoiceId">
+                    <option value="">— None —</option>
+                    <option *ngFor="let inv of invoices" [value]="inv.id">
+                        {{ inv.invoiceNo }} — {{ inv.status }} — ${{ inv.total | number:'1.2-2' }}
+                    </option>
+                </select>
+            </label>
+
+            <label>Method *
+                <select formControlName="method">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="check">Check</option>
+                    <option value="online">Online</option>
+                </select>
+            </label>
+
+            <label>Amount *
+                <input type="number" min="0.01" step="0.01" formControlName="amount" />
+            </label>
+
+            <label>Reference (txn / check #)
+                <input type="text" formControlName="reference" />
+            </label>
+
+            <label class="grid-span-2">Note
+                <input type="text" formControlName="note" />
+            </label>
+        </div>
+
+        <div class="align-end">
+            <button type="submit" class="btn primary" [disabled]="paymentForm.invalid || loading">
+                Save Payment
+            </button>
+        </div>
+    </form>
+
+    <!-- Global Filters -->
+    <div class="card">
+        <h3>Filter</h3>
+        <div class="filter-bar" [formGroup]="filterForm">
+            <input type="text" formControlName="q" placeholder="Search (invoice no, name, ref, note)…" />
+            <select formControlName="status">
+                <option value="All">All statuses</option>
+                <option value="OPEN">OPEN</option>
+                <option value="PARTIAL">PARTIAL</option>
+                <option value="PAID">PAID</option>
+            </select>
+            <select formControlName="method">
+                <option value="All">All methods</option>
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+                <option value="check">Check</option>
+                <option value="online">Online</option>
+            </select>
+            <input type="date" formControlName="dateFrom" />
+            <input type="date" formControlName="dateTo" />
+            <input type="number" step="0.01" formControlName="min" placeholder="Min $" />
+            <input type="number" step="0.01" formControlName="max" placeholder="Max $" />
+        </div>
+    </div>
+
+    <!-- Grids -->
+    <div class="grid grid-2">
+        <!-- Invoices -->
+        <div class="card">
+            <div class="card-hdr">
+                <h3>Invoices</h3>
+                <div class="sub">{{ filteredInvoices.length }} results</div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Patient</th>
+                        <th>Status</th>
+                        <th class="ta-right">Total</th>
+                        <th>Date</th>
+                        <th class="ta-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let inv of filteredInvoices">
+                        <td>{{ inv.invoiceNo }}</td>
+                        <td>{{ patientName }}</td>
+                        <td>
+                            <span class="chip" [class.open]="inv.status === 'OPEN'"
+                                [class.partial]="inv.status === 'PARTIAL'" [class.paid]="inv.status === 'PAID'">
+                                {{ inv.status }}
+                            </span>
+                        </td>
+                        <td class="ta-right">${{ inv.total | number:'1.2-2' }}</td>
+                        <td>{{ (inv.createdAt?.toDate ? inv.createdAt.toDate() : inv.createdAt) | date:'short' }}</td>
+                        <td class="ta-right">
+                            <!-- View -->
+                            <button type="button" class="icon" (click)="openInvoiceView(inv)" title="View">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+
+                            <!-- Edit -->
+                            <button type="button" class="icon" (click)="openInvoiceEdit(inv)" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button type="button" class="icon" (click)="downloadPdf(inv)" title="Export PDF">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                            </button>
+                            <button type="button" class="icon" (click)="printInvoice(inv)" title="Print">
+                                <mat-icon>print</mat-icon>
+                            </button>
+                            <button type="button" class="icon danger" (click)="onDeleteInvoice(inv)"
+                                title="Delete invoice">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payments -->
+        <div class="card">
+            <div class="card-hdr">
+                <h3>Payments</h3>
+                <div class="sub">{{ filteredPayments.length }} results</div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Method</th>
+                        <th>Invoice</th>
+                        <th class="ta-right">Amount</th>
+                        <th>Ref</th>
+                        <th>Note</th>
+                        <th>Date</th>
+                        <th class="ta-right">Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of filteredPayments">
+                        <td>{{ patientName }}</td>
+                        <td>{{ p.method | titlecase }}</td>
+                        <td>{{ p.invoiceId ? (invMap[p.invoiceId]?.invoiceNo || '—') : '—' }}</td>
+                        <td class="ta-right">${{ p.amount | number:'1.2-2' }}</td>
+                        <td>{{ p.reference || '—' }}</td>
+                        <td class="truncate">{{ p.note || '—' }}</td>
+                        <td>{{ (p.createdAt?.toDate ? p.createdAt.toDate() : p.createdAt) | date:'short' }}</td>
+                        <td class="ta-right">
+                            <!-- Edit -->
+                            <button type="button" class="icon" (click)="openPaymentEdit(p)" title="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button type="button" class="icon danger" (click)="onDeletePayment(p)"
+                                title="Delete payment">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="error" *ngIf="err">{{ err }}</div>
+
+    <div class="loading" *ngIf="loading">
+        <mat-spinner diameter="36"></mat-spinner>
+    </div>
+</div>

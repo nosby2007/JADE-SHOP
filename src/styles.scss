@@ -1,28 +1,89 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===========================
+   Global Styles (styles.scss)
+   =========================== */
 
-body{        
+/* Brand palette (tunable) */
+:root {
+  --brand-green-50:  #f0fdf4;
+  --brand-green-100: #dcfce7;
+  --brand-green-200: #bbf7d0;
+  --brand-green-300: #86efac; /* Light button bg */
+  --brand-green-400: #4ade80;
+  --brand-green-500: #22c55e;
+  --brand-green-600: #16a34a; /* Headings */
+  --brand-green-700: #15803d;
+  --brand-green-800: #166534;
+  --brand-green-900: #14532d;
+
+  --surface: #f7f7f8;
+  --on-surface: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+
+  /* Button tokens (used below & via Angular Material CSS vars) */
+  --btn-bg: var(--brand-green-300);
+  --btn-bg-hover: var(--brand-green-400);
+  --btn-fg: #063b1b; /* dark text for contrast on light green */
+  --btn-outline: var(--brand-green-500);
+  --btn-radius: 999px; /* pill (≈ 50%) */
+
+  /* Headings */
+  --heading-color: var(--brand-green-600);
+}
+
+/* Base Reset-ish */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   margin: 0;
   padding: 0;
-  font-size: 1.5rem;
-  box-sizing: border-box;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #dee2e6;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--on-surface);
+  background-color: #dee2e6; /* keep your original background */
   background-size: cover;
+  line-height: 1.45;
+
+  /* Responsive, fluid type with clamp */
+  font-size: clamp(14px, 0.95vw + 10px, 16px);
 }
 
-nav a{
-   color: #fff;
-   text-decoration: none;
-   padding: 7px 12px;
-   display: inline-block;
+/* Headings => green + responsive sizes */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
+h1 { font-size: clamp(28px, 2.2vw + 10px, 40px); }
+h2 { font-size: clamp(24px, 1.8vw + 8px, 32px); }
+h3 { font-size: clamp(20px, 1.4vw + 6px, 28px); }
+h4 { font-size: clamp(18px, 1.2vw + 6px, 24px); }
+h5 { font-size: clamp(16px, 1.0vw + 6px, 20px); }
+h6 { font-size: clamp(14px, 0.9vw + 6px, 18px); }
+
+/* Links in nav */
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 7px 12px;
+  display: inline-block;
+}
+
+/* Print: keep your original logic */
 @media print {
- 
   #print-area, #print-area * {
-    visibility: visible; /* Affiche uniquement la zone d'impression */
+    visibility: visible;
   }
-
   #print-area {
     position: absolute;
     top: 0;
@@ -30,37 +91,178 @@ nav a{
   }
 }
 
-.mat-table {
-  border-collapse: collapse;
+/* ===========================
+   Buttons (native + Angular Material MDC)
+   =========================== */
+
+/* Native buttons & generic .btn */
+button,
+.btn {
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-outline);
+  border-radius: var(--btn-radius);
+  
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .02s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 1px rgba(0,0,0,.04);
 }
 
-.mat-header-row{
-  background-color: #ced4da;
-  height: 2px;
+button:hover,
+.btn:hover {
+  background-color: var(--btn-bg-hover);
 }
+
+button:active,
+.btn:active {
+  transform: translateY(1px);
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* Angular Material (MDC) button token overrides */
+.mat-mdc-button-base {
+  border-radius: var(--btn-radius) !important;
+}
+
+/* Text button */
+.mat-mdc-button {
+  --mdc-text-button-label-text-color: var(--btn-fg);
+  --mdc-text-button-container-shape: var(--btn-radius);
+  border: 1px solid var(--btn-outline);
+  background-color: var(--btn-bg);
+}
+.mat-mdc-button:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+/* Outlined button */
+.mat-mdc-outlined-button {
+  --mdc-outlined-button-outline-color: var(--btn-outline);
+  --mdc-outlined-button-label-text-color: var(--btn-fg);
+  --mdc-outlined-button-container-shape: var(--btn-radius);
+  background-color: var(--btn-bg);
+}
+.mat-mdc-outlined-button:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+/* Raised/Elevated button */
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  --mdc-elevated-button-container-color: var(--btn-bg);
+  --mdc-elevated-button-label-text-color: var(--btn-fg);
+  --mdc-elevated-button-container-shape: var(--btn-radius);
+  --mdc-protected-button-container-shape: var(--btn-radius);
+}
+.mat-mdc-raised-button:hover,
+.mat-mdc-unelevated-button:hover {
+  --mdc-elevated-button-container-color: var(--btn-bg-hover);
+}
+
+
+/* Focus visible (keyboard) */
+button:focus-visible,
+.mat-mdc-button-base:focus-visible {
+  outline: 2px solid var(--brand-green-600);
+  outline-offset: 2px;
+}
+
+/* ===========================
+   Inputs / Form fields
+   =========================== */
+
+/* Angular Material Outlined fields: green accents */
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-outline-color: var(--brand-green-300);
+  --mdc-outlined-text-field-hover-outline-color: var(--brand-green-500);
+  --mdc-outlined-text-field-focus-outline-color: var(--brand-green-600);
+  --mdc-outlined-text-field-label-text-color: var(--muted);
+  --mdc-outlined-text-field-input-text-color: var(--on-surface);
+  --mdc-outlined-text-field-caret-color: var(--brand-green-700);
+  border-radius: 14px !important;
+}
+
+/* Radio / Checkbox */
+.mdc-radio,
+.mdc-checkbox {
+  --mdc-theme-primary: var(--brand-green-600);
+}
+
+/* Select panel highlight */
+.mat-mdc-select-panel {
+  --mdc-list-item-hover-state-layer-color: var(--brand-green-50);
+}
+
+/* ===========================
+   Toolbar / Cards / Tables
+   =========================== */
+
+.mat-toolbar {
+  background: var(--brand-green-600) !important;
+  color: #fff !important;
+}
+
+.mat-mdc-card {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+/* Tables (keep yours, but green header) */
+.mat-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.mat-header-row {
+  background-color: var(--brand-green-100);
+}
+
 .mat-header-cell {
-  color: rgb(2, 2, 2);
-  font-weight: bolder;
-  font-size:1rem;
-  padding: 1px;
-  border-right: 1px solid #ddd;
+  color: var(--brand-green-900);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 8px 10px;
+  border-right: 1px solid var(--border);
 }
-.mat-header-row, 
-.mat-row {
+
+.mat-header-row, .mat-row {
   border-bottom: 1px solid #ffffff;
 }
 
-.mat-cell, 
-.mat-header-cell {
+.mat-cell, .mat-header-cell {
   border-right: 1px solid #545050;
 }
-.mat-column{
-  padding: 1px;
-  font-size: 1.5rem;
-  font-weight: bold;
+
+.mat-column {
+  padding: 8px 10px;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
+/* ===========================
+   Utilities
+   =========================== */
 
+.container {
+  width: min(100%, 92vw);
+  margin-inline: auto;
+}
 
+/* Subtle helper classes */
+.text-muted { color: var(--muted); }
+.border     { border: 1px solid var(--border); border-radius: 12px; }
+.shadow-sm  { box-shadow: 0 1px 2px rgba(0,0,0,.06); }
 
+/* Responsive spacing for sections */
+section {
+  padding: clamp(12px, 2.5vw, 28px);
+}
 
+/* Keep your existing styles if needed */

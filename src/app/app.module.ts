@@ -53,6 +53,10 @@ import { REGION } from '@angular/fire/compat/functions';
 import { LoginComponent } from './authetification/login/login.component';
 import { AccountDialogComponent } from './COMPONENT/account-dialog/account-dialog.component';
 import { CountDownComponent } from './COMPONENT/count-down/count-down.component';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth } from '@angular/fire/auth';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -117,6 +121,10 @@ const routes: Routes = [
     MatDatepickerModule, MatNativeDateModule,
     MatTableModule, MatIconModule, MatButtonModule,
     MatCardModule, MatPaginatorModule, MatSortModule, MatChipsModule, CommonModule,
+      BrowserModule,
+    HttpClientModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
 
     
     

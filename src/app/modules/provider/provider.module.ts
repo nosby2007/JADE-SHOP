@@ -60,6 +60,7 @@ import * as echarts from 'echarts';
 import { ViewNoteDialogComponent } from './pages/view-note-dialog/view-note-dialog.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ViewLabsDialogComponent } from './pages/view-labs-dialog/view-labs-dialog.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -106,7 +107,7 @@ import { ViewLabsDialogComponent } from './pages/view-labs-dialog/view-labs-dial
         MatButtonModule,
         MatCardModule, FormsModule, ReactiveFormsModule,
         MatDividerModule, MatInputModule, MatTableModule, MatProgressSpinnerModule,
-        MatRadioModule, MatMenuModule, MatProgressBarModule, MatTooltipModule, MatTooltipModule, MatCardModule, MatIconModule,
+        MatRadioModule, MatMenuModule, MatProgressBarModule, MatTooltipModule, MatTooltipModule, MatCardModule, MatIconModule, SharedModule,
 
         // UI
         MatSnackBarModule, MatCheckboxModule, MatNativeDateModule, MatDatepickerModule, MatSelectModule, MatTabsModule, MatDialogModule, MatInputModule,

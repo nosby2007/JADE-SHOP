@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>
+  Invoice {{ invoice.invoiceNo }}
+  <span *ngIf="mode==='view'">— View</span>
+  <span *ngIf="mode==='edit'">— Edit</span>
+</h2>
+
+<mat-dialog-content class="dialog-body">
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="OPEN">OPEN</mat-option>
+          <mat-option value="PARTIAL">PARTIAL</mat-option>
+          <mat-option value="PAID">PAID</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="items-head">
+      <h3>Items</h3>
+      <button
+        *ngIf="mode==='edit'"
+        mat-stroked-button
+        type="button"
+        (click)="addBlankItem()">
+        <mat-icon>add</mat-icon> Add item
+      </button>
+    </div>
+
+    <div formArrayName="items" class="items">
+      <div class="item-row" *ngFor="let g of itemsFA.controls; index as i" [formGroupName]="i">
+        <mat-form-field appearance="outline">
+          <mat-label>Code</mat-label>
+          <input matInput formControlName="code" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="grow">
+          <mat-label>Label</mat-label>
+          <input matInput formControlName="label" (input)="recalcRow(i)" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Unit price</mat-label>
+          <input type="number" matInput formControlName="unitPrice" (input)="recalcRow(i)" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Qty</mat-label>
+          <input type="number" matInput formControlName="qty" (input)="recalcRow(i)" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Line total</mat-label>
+          <input matInput formControlName="lineTotal" />
+        </mat-form-field>
+
+        <button *ngIf="mode==='edit'" mat-icon-button color="warn" (click)="removeItem(i)" title="Remove">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+  <button *ngIf="mode==='edit'" mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

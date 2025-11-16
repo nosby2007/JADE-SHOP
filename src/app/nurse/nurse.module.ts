@@ -52,6 +52,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ViewOrderDialogComponent } from './pages/view-order-dialog/view-order-dialog.component';
 import { NurseLabListComponent } from './pages/nurse-lab-list/nurse-lab-list.component';
+import { SkinWoundModule } from '../features/skin-wound/skin-wound.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -92,6 +94,10 @@ import { NurseLabListComponent } from './pages/nurse-lab-list/nurse-lab-list.com
     MatChipsModule, provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    SkinWoundModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    SharedModule
 ]
 })
 export class NurseModule {}

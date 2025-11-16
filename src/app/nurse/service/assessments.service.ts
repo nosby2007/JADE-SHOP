@@ -1,51 +1,40 @@
+// src/app/nurse/service/assessments.service.ts
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 import firebase from 'firebase/compat/app';
 import { environment } from 'src/environments/environment';
 
 // Home wound care model
 import { Patient, Rx, NurseTask, Assessment } from '../models/patient.model';
 
+// ✅ Use your CloudPrintService (adjust the path if different)
+import { CloudPrintService } from 'src/app/service/cloud-print.service';
+
 const DEBUG = true;
 
 const asObj = (x: any): Record<string, any> =>
   (x && typeof x === 'object' && !Array.isArray(x)) ? x : {};
 
-// Détecte les objets Firestore à préserver (ne PAS cloner)
+// Detect Firestore sentinels to preserve (no deep clone)
 function isFirestoreSpecial(x: any): boolean {
   if (!x || typeof x !== 'object') return false;
-
-  // Timestamp (compat/SDK) : possède toDate() ou seconds/nanoseconds
-  if (typeof x.toDate === 'function') return true;
+  if (typeof x.toDate === 'function') return true;                         // Timestamp (compat)
   if (typeof x.seconds === 'number' && typeof x.nanoseconds === 'number') return true;
-
-  // GeoPoint
-  if (typeof x.latitude === 'number' && typeof x.longitude === 'number') return true;
-
-  // DocumentReference (compat)
-  if (typeof x.id === 'string' && typeof x.path === 'string' && x.parent) return true;
-
-  // FieldValue (compat) – souvent porte _methodName ou une méthode isEqual
-  if (typeof x._methodName === 'string') return true;
-  if (typeof x.isEqual === 'function' && x.constructor && String(x.constructor.name).includes('FieldValue')) return true;
-
+  if (typeof x.latitude === 'number' && typeof x.longitude === 'number')  return true; // GeoPoint
+  if (typeof x.id === 'string' && typeof x.path === 'string' && x.parent) return true; // DocRef
+  if (typeof x._methodName === 'string') return true;                      // FieldValue
+  if (typeof x.isEqual === 'function' && x.constructor &&
+      String(x.constructor.name).includes('FieldValue')) return true;
   return false;
 }
 
-/** Nettoie les `undefined` mais PRÉSERVE les sentinelles/objets Firestore. */
+/** Clean `undefined` but KEEP Firestore sentinels/objects. */
 function stripUndefined<T>(value: T): T {
   if (value === undefined) return value;
-  if (Array.isArray(value)) {
-    return value.map(v => stripUndefined(v)) as unknown as T;
-  }
+  if (Array.isArray(value)) return value.map(v => stripUndefined(v)) as unknown as T;
   if (value && typeof value === 'object') {
-    // ⚠️ ne pas décomposer les objets Firestore spéciaux
     if (isFirestoreSpecial(value)) return value;
-
     const out: any = {};
     for (const [k, v] of Object.entries(value as any)) {
       if (v === undefined) continue;
@@ -56,114 +45,25 @@ function stripUndefined<T>(value: T): T {
   return value;
 }
 
-/** Safely stringify Firestore payloads containing serverTimestamp transforms */
 function safeJson(v: any): any {
-  try {
-    return JSON.parse(JSON.stringify(v));
-  } catch {
-    return v;
-  }
+  try { return JSON.parse(JSON.stringify(v)); } catch { return v; }
 }
 
 @Injectable({ providedIn: 'root' })
 export class AssessmentsService {
   private afs = inject(AngularFirestore);
   private afAuth = inject(AngularFireAuth);
-  private storage = inject(AngularFireStorage);
-  private http = inject(HttpClient);
+  private cloudPrint = inject(CloudPrintService);
+  // kept for future API needs
   private base = `${environment.apiBase || ''}`;
+
+  private readonly clinicLogoUrl =
+    'https://res.cloudinary.com/dtdpx59sc/image/upload/v1760108013/ChatGPT_Image_Oct_2_2025_03_19_58_PM_om8pic.png';
 
   private async requireUid(): Promise<string> {
     const u = await this.afAuth.currentUser;
     if (!u?.uid) throw new Error('Not authenticated');
     return u.uid;
-  }
-
-  // ---------- pdfmake (global) ----------
-  private _pdfMake?: any;
-  private getGlobalPdfMake(): any {
-    const pm = (typeof window !== 'undefined' ? (window as any).pdfMake : undefined);
-    if (!pm || !pm.vfs) throw new Error('pdfmake vfs not found');
-
-    if (!pm.fonts || !pm.fonts.Fallback) {
-      const keys = Object.keys(pm.vfs || {});
-      if (!keys.length) throw new Error('pdfmake vfs is empty');
-      const base = pm.vfs['Roboto-Regular.ttf'] ? 'Roboto-Regular.ttf' : keys[0];
-      pm.fonts = { Fallback: { normal: base, bold: base, italics: base, bolditalics: base } };
-    }
-    return pm;
-  }
-
-  private async createBlob(docDef: any): Promise<Blob> {
-    const pdfMake = this._pdfMake || (this._pdfMake = this.getGlobalPdfMake());
-    const def = docDef || {};
-    def.defaultStyle = { ...(def.defaultStyle || {}), font: 'Fallback' };
-    return new Promise((resolve) => {
-      pdfMake.createPdf(def).getBlob((b: Blob) => resolve(b));
-    });
-  }
-
-  // ===================== Branding =====================
-  private readonly clinicLogoUrl =
-    'https://res.cloudinary.com/dtdpx59sc/image/upload/v1760108013/ChatGPT_Image_Oct_2_2025_03_19_58_PM_om8pic.png';
-  private _logoDataUrl?: string;
-
-  private async getLogoDataUrl(): Promise<string> {
-    if (this._logoDataUrl) return this._logoDataUrl;
-    const blob = await firstValueFrom(this.http.get(this.clinicLogoUrl, { responseType: 'blob' }));
-    this._logoDataUrl = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-    return this._logoDataUrl!;
-  }
-
-  private clinicHeaderBlock(): any[] {
-    const leftCol = [
-      { text: '211 RUSTY PLOW LANE PERRY GA', fontSize: 9, margin: [0, 0, 0, 2] },
-      { text: '31069', fontSize: 9, margin: [0, 0, 0, 6] },
-      { text: 'Website:', bold: true, fontSize: 9, margin: [0, 0, 0, 0] },
-      {
-        text: 'https://perryhomewoundcare.network',
-        fontSize: 9,
-        link: 'https://perryhomewoundcare.network',
-        color: '#1a0dab'
-      },
-    ];
-
-    const rightCol = [
-      { text: 'Willy A Yougang Tchoutang, AGNP', bold: true, italics: true, alignment: 'right', fontSize: 11, margin: [0, 0, 0, 4] },
-      { text: 'Co-founder chief clinical Director', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
-      { text: 'Nurse Practitioner', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
-      { text: 'Tel: (423)521-2298', alignment: 'right', fontSize: 9, margin: [0, 0, 0, 4] },
-      {
-        text: 'Email: support@perryhomewoundcare.network',
-        alignment: 'right',
-        fontSize: 8,
-        link: 'mailto:support@perryhomewoundcare.network',
-        color: '#1a0dab',
-        margin: [0, 0, 0, 4]
-      }
-    ];
-
-    return [
-      {
-        table: {
-          widths: [200, 80, 220],
-          body: [[
-            { stack: leftCol, border: [false, false, false, false] },
-            { image: 'clinicLogo', width: 64, alignment: 'center', border: [false, false, false, false] },
-            { stack: rightCol, border: [false, false, false, false] }
-          ]]
-        },
-        layout: 'noBorders',
-        alignment: 'center',
-        margin: [0, 0, 0, 6]
-      },
-      { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 }], margin: [0, 4, 0, 10] }
-    ];
   }
 
   // ===================== Assessments (CRUD) =====================
@@ -177,7 +77,7 @@ export class AssessmentsService {
     ).valueChanges({ idField: 'id' });
   }
 
-  /** Add a new assessment and auto-generate/upload its PDF. (Conforms to Firestore Rules) */
+  /** Add a new assessment and auto-generate + attach its PDF URL via Cloud Function. */
   async addAssessment(
     pid: string,
     data: Partial<Assessment> & { program: Assessment['program'] }
@@ -189,7 +89,7 @@ export class AssessmentsService {
       ...asObj(data),
       patientId: pid,                         // REQUIRED by rules
       createdBy: uid,                         // REQUIRED by rules
-      createdAt: now,                         // REQUIRED by rules (serverTimestamp)
+      createdAt: now,                         // REQUIRED by rules
       updatedAt: now,
       status: (data.status ?? 'submitted')
     });
@@ -200,7 +100,7 @@ export class AssessmentsService {
       console.log('[ADD] fsPayload', safeJson(fsPayload));
     }
 
-    // CREATE (this is where "permission-denied" happens if canCreateSub() échoue)
+    // 1) CREATE (rules check here)
     let ref;
     try {
       ref = await this.afs.collection(`patients/${pid}/assessments`).add(fsPayload);
@@ -212,41 +112,36 @@ export class AssessmentsService {
     const id = ref.id;
     if (DEBUG) console.log('[ADD] CREATE ok, id=', id);
 
-    // PDF create + upload
+    // 2) Render PDF server-side (no client Storage writes)
     let pdfUrl: string | undefined;
     try {
-      const pdfBlob = await this.makeAssessmentPdfBlob(pid, ({ ...fsPayload, id } as unknown) as Assessment);
-      const path = `patients/${pid}/assessments/${id}.pdf`;
-      if (DEBUG) console.log('[ADD] UPLOAD path', path);
-      const task = await this.storage.upload(path, pdfBlob, { contentType: 'application/pdf' });
-      pdfUrl = await task.ref.getDownloadURL();
-      if (DEBUG) console.log('[ADD] UPLOAD ok, url=', pdfUrl);
+      const printable = this.toPrintableAssessment(pid, id, fsPayload);
+      const resp = await this.cloudPrint.print('assessment', printable, { urlExpiryHours: 168 });
+      pdfUrl = resp?.url;
+      if (DEBUG) console.log('[ADD] PRINT ok, url=', pdfUrl);
     } catch (e) {
-      console.error('[ADD] PDF/UPLOAD failed (Storage rules?)', e);
-      // On continue sans PDF pour ne pas supprimer le doc créé
+      console.error('[ADD] PRINT failed', e);
+      // Do not fail the whole operation if print fails
     }
 
-    // UPDATE (ajout pdfUrl + updatedAt) — nécessite canUpdateSub() (updatedAt timestamp/serverTS)
+    // 3) UPDATE doc with pdfUrl + updatedAt
     try {
-      const updatePayload: any = {
-        updatedAt: now
-      };
+      const updatePayload: any = { updatedAt: now };
       if (pdfUrl) updatePayload.pdfUrl = pdfUrl;
-
       if (DEBUG) console.log('[ADD] UPDATE payload', safeJson(updatePayload));
       await this.afs.doc(`patients/${pid}/assessments/${id}`).update(updatePayload);
       if (DEBUG) console.log('[ADD] UPDATE ok');
     } catch (e) {
       console.error('[ADD] UPDATE failed (rules updatedAt?)', e);
-      // Le doc reste créé; seul l'update échoue.
     }
 
     return id;
   }
 
-  // ===================== Compilations (PDFs) =====================
+  // ===================== Admission/Discharge Compilations (via Cloud Print) =====================
 
-  async compileAdmission(pid: string) {
+  /** Compile an Admission PDF using the Cloud Function (type=custom) and return the signed URL. */
+  async compileAdmission(pid: string): Promise<string> {
     try {
       const [patSnap, assSnap, rxSnap, tasksSnap] = await Promise.all([
         this.afs.doc(`patients/${pid}`).ref.get(),
@@ -260,25 +155,24 @@ export class AssessmentsService {
       const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Rx[];
       const tasks = tasksSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as NurseTask[];
 
-      const docDef = this.admissionDocDefHome(patient, prescriptions, assessments, tasks);
-      const logo = await this.getLogoDataUrl();
-      (docDef as any).images = { clinicLogo: logo };
-      (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
+      const html = this.admissionHtml(patient, prescriptions, assessments, tasks);
+      const resp = await this.cloudPrint.print('custom', {
+        title: 'Admission Record',
+        subtitle: patient?.name ? `Patient: ${patient.name}` : '',
+        html
+      }, { urlExpiryHours: 168 });
 
-      const blob = await this.createBlob(docDef);
-      const path = `patients/${pid}/reports/admission-${Date.now()}.pdf`;
-      if (DEBUG) console.log('[ADMISSION] upload path', path);
-      const task = await this.storage.upload(path, blob, { contentType: 'application/pdf' });
-      const url = await task.ref.getDownloadURL();
-      if (DEBUG) console.log('[ADMISSION] url', url);
-      return url;
+      if (!resp?.url) throw new Error('No URL returned by print');
+      if (DEBUG) console.log('[ADMISSION] url', resp.url);
+      return resp.url;
     } catch (e) {
       console.error('[ADMISSION] failed', e);
       throw e;
     }
   }
 
-  async compileDischarge(pid: string) {
+  /** Compile a Discharge PDF via Cloud Print and return the signed URL. */
+  async compileDischarge(pid: string): Promise<string> {
     try {
       const [patSnap, assSnap, rxSnap] = await Promise.all([
         this.afs.doc(`patients/${pid}`).ref.get(),
@@ -290,235 +184,163 @@ export class AssessmentsService {
       const assessments = assSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Assessment[];
       const prescriptions = rxSnap.docs.map(d => ({ id: d.id, ...asObj(d.data()) })) as Rx[];
 
-      const docDef = this.dischargeDocDefHome(patient, prescriptions, assessments);
-      const logo = await this.getLogoDataUrl();
-      (docDef as any).images = { clinicLogo: logo };
-      (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
+      const html = this.dischargeHtml(patient, prescriptions, assessments);
+      const resp = await this.cloudPrint.print('custom', {
+        title: 'Discharge Summary',
+        subtitle: patient?.name ? `Patient: ${patient.name}` : '',
+        html
+      }, { urlExpiryHours: 168 });
 
-      const blob = await this.createBlob(docDef);
-      const path = `patients/${pid}/reports/discharge-${Date.now()}.pdf`;
-      if (DEBUG) console.log('[DISCHARGE] upload path', path);
-      const task = await this.storage.upload(path, blob, { contentType: 'application/pdf' });
-      const url = await task.ref.getDownloadURL();
-      if (DEBUG) console.log('[DISCHARGE] url', url);
-      return url;
+      if (!resp?.url) throw new Error('No URL returned by print');
+      if (DEBUG) console.log('[DISCHARGE] url', resp.url);
+      return resp.url;
     } catch (e) {
       console.error('[DISCHARGE] failed', e);
       throw e;
     }
   }
 
-  // ===================== Assessment PDF =====================
+  // ===================== Printable mappers =====================
 
-  private async makeAssessmentPdfBlob(_pid: string, a: Assessment): Promise<Blob> {
-    const docDef = this.assessmentDocDefHome(a);
-    const logo = await this.getLogoDataUrl();
-    (docDef as any).images = { clinicLogo: logo };
-    (docDef as any).content = [...this.clinicHeaderBlock(), ...(docDef as any).content];
-    return this.createBlob(docDef);
-  }
+  /** Shape Firestore payload into the Cloud Function's `assessment` template shape. */
+  private toPrintableAssessment(pid: string, id: string, fsPayload: any) {
+    const ans = asObj(fsPayload?.answers);
+    const vitals = asObj(ans?.['vitals']);
 
-  // ===================== PDF Document Definitions =====================
+    // Try to normalize vitals from various forms
+    const bpStr = ans?.['bloodPressure'] ?? vitals?.['bp'] ?? '';
+    const hrStr = ans?.['heartRate'] ?? vitals?.['hr'] ?? '';
+    const tempStr = ans?.['temperatureC'] ?? vitals?.['temp'] ?? '';
+    const rrStr = ans?.['respiratoryRate'] ?? vitals?.['rr'] ?? '';
+    const spo2Str = ans?.['spo2'] ?? vitals?.['spo2'] ?? '';
+    const weightStr = ans?.['weight'] ?? vitals?.['weight'] ?? '';
 
-  private assessmentDocDefHome(a: Assessment): any {
-    const header = { text: `Assessment: ${a.program}`, style: 'h1', color: 'black' };
-    const meta = { text: `Assessed: ${this.fmtDate((a as any).assessedAt)} • Status: ${a.status || '—'}`, margin:[0,0,0,8] };
-    const body: any[] = [header, meta];
-
-    if ((a as any).answers && typeof (a as any).answers === 'object') {
-      const rows = Object.entries((a as any).answers).map(([k, v]) => [
-        { text: String(k), bold: true },
-        (typeof v === 'object' ? JSON.stringify(stripUndefined(v), null, 0) : String(v ?? '—'))
-      ]);
-      body.push({
-        table: { widths: ['*','*'], body: rows.length ? rows : [['No data','—']] },
-        layout: 'lightHorizontalLines',
-        margin: [0, 6, 0, 0]
-      });
-    } else {
-      body.push({ text: 'No answers provided.', italics: true, margin:[0,6,0,0] });
-    }
-
-    if (typeof (a as any).score === 'number') {
-      body.push({ text: `Score: ${(a as any).score}`, margin:[0,6,0,0] });
-    }
+    const findingsArray = Array.isArray(ans?.['findings']) ? ans['findings'] : [];
 
     return {
-      content: body,
-      styles: { h1:{fontSize:16,bold:true}, h2:{fontSize:12,bold:true} },
-      defaultStyle: { font: 'Fallback', fontSize: 10 }
+      id,
+      patient: {
+        name: (fsPayload?.patientName ?? '') || (fsPayload?.patient?.name ?? ''),
+        dob: (fsPayload?.patientDob ?? '') || (fsPayload?.patient?.dob ?? ''),
+        id: pid
+      },
+      date: this.fmtDate(fsPayload?.assessedAt || fsPayload?.createdAt),
+      assessor: ans?.['eSignature']?.signerName ?? '',
+      location: fsPayload?.location ?? '',
+      vitals: {
+        bp: String(bpStr || ''),
+        hr: String(hrStr || ''),
+        temp: String(tempStr || ''),
+        rr: String(rrStr || ''),
+        spo2: String(spo2Str || ''),
+        weight: String(weightStr || '')
+      },
+      findings: findingsArray,   // [{ description, severity, notes }, ...] if you have them
+      signatures: null           // add {left,right} if you capture signature images later
     };
   }
 
-  private admissionDocDefHome(
-    patient: Patient,
-    prescriptions: Rx[],
-    assessments: Assessment[],
-    tasks: NurseTask[]
-  ) {
-    const val = (x: any, d: any = '—') => (x ?? d);
-    const dt  = (x: any) => this.fmtDate(x);
-    const section = (t: string) => ({ text: t, style: 'h2', margin: [0, 12, 0, 6] });
+  // ===================== Simple HTML builders for custom prints =====================
 
-    const twoCol = (rows: any[][]) => ({
-      table: { widths: ['*','*'], body: rows },
-      layout: 'lightHorizontalLines'
-    });
+  private admissionHtml(patient: Patient, prescriptions: Rx[], assessments: Assessment[], tasks: NurseTask[]) {
+    const esc = (s: any) => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]!));
+    const dt = (v: any) => esc(this.fmtDate(v));
+    const val = (x: any, d = '—') => esc(x ?? d);
 
-    const tableN = (headerRow: any[], rows: any[][], widths?: (string | number)[]) => ({
-      table: {
-        headerRows: 1,
-        widths: widths && widths.length ? widths : Array(headerRow.length).fill('*'),
-        body: [headerRow, ...rows]
-      },
-      layout: 'lightHorizontalLines'
-    });
+    const medsRows = (prescriptions || []).map(r => `
+      <tr><td>${val((r as any).name)}</td><td>${val((r as any).dose)}</td><td>${val((r as any).route)}</td><td>${val((r as any).frequency)}</td></tr>
+    `).join('') || `<tr><td colspan="4">—</td></tr>`;
 
-    const headerBlock = [
-      { text: 'PERRY HOME WOUND CARE • ADMISSION RECORD', style: 'h1', color: 'black' },
-      { text: `${val((patient as any).name)} • Created: ${dt((patient as any).createdAt)} • Phone: ${val((patient as any).phone)}`, margin:[0,0,0,8] }
-    ];
-
-    const fullAddr = [val((patient as any).address), val((patient as any).address1), val((patient as any).address2), val((patient as any).city), val((patient as any).state), val((patient as any).zip)]
-      .filter(Boolean).join(', ') || '—';
-
-    const patientInfo = twoCol([
-      [{ text: 'Name', bold: true }, val((patient as any).name)],
-      [{ text: 'Preferred Name', bold: true }, val((patient as any).preferredName)],
-      [{ text: 'Gender', bold: true }, val((patient as any).gender)],
-      [{ text: 'Date of Birth', bold: true }, dt((patient as any).dob)],
-      [{ text: 'Phone', bold: true }, val((patient as any).phone)],
-      [{ text: 'Email', bold: true }, val((patient as any).email)],
-      [{ text: 'Address', bold: true }, fullAddr],
-      [{ text: 'Emergency Contact', bold: true }, val((patient as any).emergencyContact?.name || (patient as any).emergencyContactName)],
-      [{ text: 'Emergency Phone', bold: true }, val((patient as any).emergencyContact?.phone || (patient as any).emergencyContactPhone)],
-      [{ text: 'Emergency Relation', bold: true }, val((patient as any).emergencyContact?.relation || (patient as any).emergencyRelation)],
-      [{ text: 'Admission Date', bold: true }, dt((patient as any).admissionDate)],
-      [{ text: 'Reason for Admission', bold: true }, val((patient as any).reasonForAdmission || (patient as any).reason)],
-      [{ text: 'Primary Care Provider', bold: true }, val((patient as any).primaryCareProvider)],
-      [{ text: 'Referring Provider', bold: true }, val((patient as any).referringProvider)],
-      [{ text: 'Preferred Pharmacy', bold: true }, val((patient as any).preferredPharmacy)],
-      [{ text: 'Code Status', bold: true }, val((patient as any).codeStatus)],
-      [{ text: 'Height (cm)', bold: true }, val((patient as any).heightCm)],
-      [{ text: 'Weight (kg)', bold: true }, val((patient as any).weightKg)],
-      [{ text: 'Allergies', bold: true }, Array.isArray((patient as any).allergies) ? (patient as any).allergies.join(', ') : ((patient as any).allergies ?? '—')],
-      [{ text: 'Diagnoses', bold: true }, Array.isArray((patient as any).diagnoses) ? (patient as any).diagnoses.join(', ') : ((patient as any).diagnoses ?? '—')],
-      [{ text: 'Insurance', bold: true }, [val((patient as any).insuranceProvider), val((patient as any).insuranceId)].filter(Boolean).join('  •  ') || '—'],
-      [{ text: 'Payor / Policy', bold: true }, [val((patient as any).payor), val((patient as any).policyHolder), val((patient as any).groupNumber)].filter(Boolean).join('  •  ') || '—'],
-      [{ text: 'Occupation', bold: true }, val((patient as any).occupation)]
-    ]);
-
-    const medsRows = (prescriptions || []).map(r => [
-      val((r as any).name), val((r as any).dose), val((r as any).route), val((r as any).frequency),
-      [val((r as any).medicationType), val((r as any).medicationForm)].filter(Boolean).join(' / ') || '—',
-      val((r as any).prescriber)
-    ]);
-
-    const medsTable = tableN(
-      ['Medication', 'Dose', 'Route', 'Frequency', 'Type/Form', 'Prescriber'],
-      medsRows.length ? medsRows : [['—','—','—','—','—','—']],
-      ['*','auto','auto','auto','auto','auto']
-    );
-
-    const latestAssess = (assessments || [])
+    const assessRows = (assessments || [])
       .sort((a,b) => +new Date((b as any)?.createdAt?.toDate?.() ?? (b as any)?.createdAt ?? 0) - +new Date((a as any)?.createdAt?.toDate?.() ?? (a as any)?.createdAt ?? 0))
       .slice(0, 6)
-      .map(a => [val((a as any).program), val((a as any).status || '—'), dt((a as any).assessedAt), (typeof (a as any).score === 'number' ? (a as any).score : '—')]);
+      .map(a => `<tr><td>${val((a as any).program)}</td><td>${val((a as any).status)}</td><td>${dt((a as any).assessedAt)}</td><td>${val((a as any).score)}</td></tr>`)
+      .join('') || `<tr><td colspan="4">—</td></tr>`;
 
-    const assessTable = tableN(
-      ['Program', 'Status', 'Assessed At', 'Score'],
-      latestAssess.length ? latestAssess : [['—','—','—','—']]
-    );
-
-    const openTasks = (tasks || [])
+    const taskRows = (tasks || [])
       .filter(t => !(t as any).completed)
-      .sort((a,b) => +new Date((a as any)?.dueAt?.toDate?.() ?? (a as any)?.dueAt ?? 0) - +new Date((b as any)?.dueAt?.toDate?.() ?? (b as any)?.dueAt ?? 0))
       .slice(0, 8)
-      .map(t => [val((t as any).type), val((t as any).title), dt((t as any).dueAt), val((t as any).details)]);
+      .map(t => `<tr><td>${val((t as any).type)}</td><td>${val((t as any).title)}</td><td>${dt((t as any).dueAt)}</td><td>${val((t as any).details)}</td></tr>`)
+      .join('') || `<tr><td colspan="4">—</td></tr>`;
 
-    const taskTable = tableN(
-      ['Type', 'Title', 'Due', 'Details'],
-      openTasks.length ? openTasks : [['—','—','—','—']]
-    );
+    return `
+      <div style="font-family: Arial, Helvetica, sans-serif; color:#222; font-size:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div>
+            <div style="font-size:20px;font-weight:700">PERRY HOME WOUND CARE • ADMISSION RECORD</div>
+            <div>${val((patient as any).name)} • Created: ${dt((patient as any).createdAt)} • Phone: ${val((patient as any).phone)}</div>
+          </div>
+          <img src="${this.clinicLogoUrl}" style="height:56px"/>
+        </div>
+        <hr/>
+        <h3>Patient</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Name</th><td>${val((patient as any).name)}</td><th>DOB</th><td>${dt((patient as any).dob)}</td></tr>
+          <tr><th>Phone</th><td>${val((patient as any).phone)}</td><th>Email</th><td>${val((patient as any).email)}</td></tr>
+          <tr><th>Admission Date</th><td>${dt((patient as any).admissionDate)}</td><th>Code Status</th><td>${val((patient as any).codeStatus)}</td></tr>
+        </table>
 
-    return {
-      content: [
-        ...headerBlock,
-        section('PATIENT INFORMATION'),
-        patientInfo,
-        section('MEDICATIONS'),
-        medsTable,
-        section('ASSESSMENTS (Latest)'),
-        assessTable,
-        section('OPEN NURSE TASKS'),
-        taskTable
-      ],
-      styles: {
-        h1: { fontSize: 18, bold: true },
-        h2: { fontSize: 12, bold: true }
-      },
-      defaultStyle: { font: 'Fallback', fontSize: 10 },
-      footer: (currentPage: number, pageCount: number) =>
-        ({ text: `Page ${currentPage} of ${pageCount}`, alignment: 'right', margin: [0,10,20,0], fontSize: 9 })
-    };
+        <h3 style="margin-top:12px">Medications</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Medication</th><th>Dose</th><th>Route</th><th>Frequency</th></tr>
+          ${medsRows}
+        </table>
+
+        <h3 style="margin-top:12px">Assessments (Latest)</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Program</th><th>Status</th><th>Assessed At</th><th>Score</th></tr>
+          ${assessRows}
+        </table>
+
+        <h3 style="margin-top:12px">Open Nurse Tasks</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Type</th><th>Title</th><th>Due</th><th>Details</th></tr>
+          ${taskRows}
+        </table>
+      </div>
+    `;
   }
 
-  private dischargeDocDefHome(patient: Patient, prescriptions: Rx[], assessments: Assessment[]) {
-    const val = (x: any, d: any = '—') => (x ?? d);
-    const dt  = (x: any) => this.fmtDate(x);
-    const section = (t: string) => ({ text: t, style: 'h2', margin: [0, 12, 0, 6] });
+  private dischargeHtml(patient: Patient, prescriptions: Rx[], assessments: Assessment[]) {
+    const esc = (s: any) => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]!));
+    const dt = (v: any) => esc(this.fmtDate(v));
+    const val = (x: any, d = '—') => esc(x ?? d);
 
-    const twoCol = (rows: any[][]) => ({
-      table: { widths: ['*','*'], body: rows },
-      layout: 'lightHorizontalLines'
-    });
-
-    const meds = (prescriptions || []).map(r => [
-      val((r as any).name), val((r as any).dose), val((r as any).route), val((r as any).frequency)
-    ]);
+    const medsRows = (prescriptions || []).map(r => `
+      <tr><td>${val((r as any).name)}</td><td>${val((r as any).dose)}</td><td>${val((r as any).route)}</td><td>${val((r as any).frequency)}</td></tr>
+    `).join('') || `<tr><td colspan="4">—</td></tr>`;
 
     const assessRows = (assessments || [])
       .sort((a,b) => +new Date((a as any)?.createdAt?.toDate?.() ?? (a as any)?.createdAt ?? 0) - +new Date((b as any)?.createdAt?.toDate?.() ?? (b as any)?.createdAt ?? 0))
       .slice(-10)
-      .map(a => [val((a as any).program), val((a as any).status || '—'), dt((a as any).assessedAt), (typeof (a as any).score === 'number' ? (a as any).score : '—')]);
+      .map(a => `<tr><td>${val((a as any).program)}</td><td>${val((a as any).status)}</td><td>${dt((a as any).assessedAt)}</td><td>${val((a as any).score)}</td></tr>`)
+      .join('') || `<tr><td colspan="4">—</td></tr>`;
 
-    return {
-      content: [
-        { text: 'PERRY HOME WOUND CARE • DISCHARGE SUMMARY', style: 'h1', color: 'black' },
-        twoCol([
-          [{ text: 'Patient', bold: true }, val((patient as any).name)],
-          [{ text: 'DOB', bold: true }, dt((patient as any).dob)],
-          [{ text: 'Phone', bold: true }, val((patient as any).phone)],
-          [{ text: 'Address', bold: true }, [val((patient as any).address), val((patient as any).city), val((patient as any).state), val((patient as any).zip)].filter(Boolean).join(', ') || '—'],
-          [{ text: 'Emergency Contact', bold: true }, val((patient as any).emergencyContact?.name || (patient as any).emergencyContactName)],
-          [{ text: 'Admission Date', bold: true }, dt((patient as any).admissionDate)],
-        ]),
+    return `
+      <div style="font-family: Arial, Helvetica, sans-serif; color:#222; font-size:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-size:20px;font-weight:700">PERRY HOME WOUND CARE • DISCHARGE SUMMARY</div>
+          <img src="${this.clinicLogoUrl}" style="height:56px"/>
+        </div>
+        <hr/>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Patient</th><td>${val((patient as any).name)}</td><th>DOB</th><td>${dt((patient as any).dob)}</td></tr>
+          <tr><th>Phone</th><td>${val((patient as any).phone)}</td><th>Admission Date</th><td>${dt((patient as any).admissionDate)}</td></tr>
+        </table>
 
-        section('PRESCRIPTIONS AT DISCHARGE'),
-        {
-          table: {
-            headerRows: 1, widths: ['*','auto','auto','auto'],
-            body: [['Medication', 'Dose', 'Route', 'Frequency'],
-              ...(meds.length ? meds : [['—','—','—','—']])]
-          },
-          layout: 'lightHorizontalLines'
-        },
+        <h3 style="margin-top:12px">Prescriptions at Discharge</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Medication</th><th>Dose</th><th>Route</th><th>Frequency</th></tr>
+          ${medsRows}
+        </table>
 
-        section('ASSESSMENT HISTORY (Recent)'),
-        {
-          table: {
-            headerRows: 1, widths: ['*','auto','auto','auto'],
-            body: [['Program','Status','Assessed At','Score'],
-              ...(assessRows.length ? assessRows : [['—','—','—','—']])]
-          },
-          layout: 'lightHorizontalLines'
-        }
-      ],
-      styles: { h1: { fontSize: 18, bold: true }, h2: { fontSize: 13, bold: true } },
-      defaultStyle: { font: 'Fallback', fontSize: 10 },
-      footer: (currentPage: number, pageCount: number) =>
-        ({ text: `Page ${currentPage} of ${pageCount}`, alignment: 'right', margin: [0,10,20,0], fontSize: 9 })
-    };
+        <h3 style="margin-top:12px">Assessment History (Recent)</h3>
+        <table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="4">
+          <tr><th>Program</th><th>Status</th><th>Assessed At</th><th>Score</th></tr>
+          ${assessRows}
+        </table>
+      </div>
+    `;
   }
 
   // ===================== Utilities =====================
@@ -531,7 +353,7 @@ export class AssessmentsService {
     return isNaN(+d) ? '—' : d.toLocaleString();
   }
 
-  // ===================== Back-compat for old components =====================
+  // ===================== Back-compat wrappers =====================
 
   private toProgramFromType(kind: string): 'Braden' | 'FallRisk' | 'Nutrition' | 'Wound' {
     return kind === 'braden' ? 'Braden' : 'Wound'; // others fold under Wound
@@ -578,9 +400,20 @@ export class AssessmentsService {
   getAssessment(pid: string, id: string) {
     return this.afs.doc<Assessment>(`patients/${pid}/assessments/${id}`).valueChanges({ idField: 'id' });
   }
-  async viewAssessment(id: string) {
-    const uid = await this.requireUid();
-    return this.getAssessment(uid, id);
+
+  // Optional helper if you want to trigger print later manually
+  async addAndAttachPdf(patientId: string, docId: string, printable: any) {
+    try {
+      const resp = await this.cloudPrint.print('assessment', printable, { urlExpiryHours: 168 });
+      const updatePayload: any = {
+        pdfUrl: resp?.url ?? '',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      };
+      await this.afs.doc(`patients/${patientId}/assessments/${docId}`).update(updatePayload);
+    } catch (e) {
+      console.error('[addAndAttachPdf] failed', e);
+      throw e;
+    }
   }
 
   async updateAssessment(a: string, b: any, c?: Partial<Assessment>) {

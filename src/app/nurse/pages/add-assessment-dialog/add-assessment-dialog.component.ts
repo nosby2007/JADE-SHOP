@@ -1,3 +1,4 @@
+// src/app/nurse/pages/nurse-assessment/add-assessment-dialog.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
@@ -46,7 +47,6 @@ export class AddAssessmentDialogComponent implements OnInit {
     { key: 'other', label: 'Other (specify below)' }
   ];
 
-  // clinician-friendly body-site list (front + posterior + pressure areas)
   bodySites = [
     'Scalp', 'Forehead', 'Face', 'Nose', 'Mouth/Lips', 'Chin',
     'Neck (Anterior)', 'Clavicle', 'Sternum/Chest', 'Breast (L/R)',
@@ -69,41 +69,22 @@ export class AddAssessmentDialogComponent implements OnInit {
 
   skinWeeklyFG: FormGroup = this.fb.group({
     effectiveDate: [new Date(), Validators.required],
-    // conditions
-    cond_intact: [false],
-    cond_dry: [false],
-    cond_rash: [false],
-    cond_plaques: [false],
-    cond_callouses: [false],
-    cond_redness: [false],
-    cond_skinTears: [false],
-    cond_blisters: [false],
-    cond_openAreas: [false],
-    cond_other: [false],
-    cond_otherText: [''],
-    // new since last eval?
+    cond_intact: [false], cond_dry: [false], cond_rash: [false], cond_plaques: [false],
+    cond_callouses: [false], cond_redness: [false], cond_skinTears: [false], cond_blisters: [false],
+    cond_openAreas: [false], cond_other: [false], cond_otherText: [''],
     openAreasNew: ['no'],
-    // site/description rows
     sites: this.fb.array([
       this.fb.group({ site: [''], description: [''] }),
       this.fb.group({ site: [''], description: [''] }),
       this.fb.group({ site: [''], description: [''] })
     ]),
-    // edema present?
     edema: ['no'],
-    // comments
     comments: ['']
   });
 
-  get sitesFA(): FormArray {
-    return this.skinWeeklyFG.get('sites') as FormArray;
-  }
-  addSiteRow(): void {
-    this.sitesFA.push(this.fb.group({ site: [''], description: [''] }));
-  }
-  removeSiteRow(i: number): void {
-    if (this.sitesFA.length > 1) this.sitesFA.removeAt(i);
-  }
+  get sitesFA(): FormArray { return this.skinWeeklyFG.get('sites') as FormArray; }
+  addSiteRow(): void { this.sitesFA.push(this.fb.group({ site: [''], description: [''] })); }
+  removeSiteRow(i: number): void { if (this.sitesFA.length > 1) this.sitesFA.removeAt(i); }
 
   /** E-SIGNATURE */
   esignFG: FormGroup = this.fb.group({
@@ -192,7 +173,7 @@ export class AddAssessmentDialogComponent implements OnInit {
     date: [new Date()]
   });
 
-  /** Generic form (PressureInjury, Braden, ProgressNote, CarePlan) */
+  /** Generic form */
   form: FormGroup = this.fb.group({
     // pressureInjuryWeekly
     stage: ['2'],
@@ -330,7 +311,6 @@ export class AddAssessmentDialogComponent implements OnInit {
       if (u?.email) this.esignFG.patchValue({ signerEmail: u.email });
       if (u?.displayName) this.esignFG.patchValue({ signerName: u.displayName });
     });
-    // ensure type
     this.type = (this.data?.type as unknown as LocalType) ?? 'braden';
   }
 
@@ -433,8 +413,6 @@ export class AddAssessmentDialogComponent implements OnInit {
             edema: f['edema'] === 'yes',
             comments: (f['comments'] || '').trim() || null
           };
-          // convenience summary
-          // convenience summary
           payload['findings'] = [
             ...Object.entries(conditions)
               .filter(([k, v]) => k !== 'otherText' && v === true)
@@ -584,9 +562,7 @@ export class AddAssessmentDialogComponent implements OnInit {
               codeStatus: n['codeStatus'],
               tobaccoUse: n['tobaccoUse'],
               allergies: (n['allergies'] || '')
-                .split(',')
-                .map((s: string) => s.trim())
-                .filter(Boolean)
+                .split(',').map((s: string) => s.trim()).filter(Boolean)
             },
             adl: {
               sitToStand: n['adl_sitToStand'],
@@ -621,14 +597,11 @@ export class AddAssessmentDialogComponent implements OnInit {
             dischargePlan: n['dischargePlan'],
             narrative: n['narrative']
           };
-          // convenience fields
-          // convenience fields
           payload['admissionSource'] = n['admissionSource'] || null;
           payload['codeStatus'] = n['codeStatus'] || null;
           break;
         }
-        default:
-          break;
+        default: break;
       }
 
       const esign = {

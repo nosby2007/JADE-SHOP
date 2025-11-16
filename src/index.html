@@ -65,11 +65,19 @@
       document.getElementById(cityName).style.display = "block";
       elmnt.style.backgroundColor = color;
     
-    }document.getElementById("defaultOpen").click();
-    // Get the element with id="defaultOpen" and click on it
+    }
+    
+    
 
     
     
     </script>
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('SOME_BUTTON_ID'); // the one you try to click
+    if (el) { el.click(); }
+  });
+</script>
+
 </body>
 </html>

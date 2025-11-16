@@ -7,6 +7,7 @@ import { PatientApiService } from 'src/app/core/patient-api.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { Location } from '@angular/common'; // ⬅️ add
 import { Patient } from 'src/app/nurse/models/patient.model';
+import { NurseDataService } from 'src/app/nurse/service/nurse-data.service';
 
 
 @Component({
@@ -15,42 +16,35 @@ import { Patient } from 'src/app/nurse/models/patient.model';
   styleUrls: ['./patient-detail.component.scss']
 })
 export class PatientDetailComponent implements OnInit {
-  patientId!: string;
-  patient$!: Observable<Patient | null>;
-  useApi = !!environment.apiBase;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private api: PatientApiService,
-    private fs: PatientService,
-    private location: Location   
-  ) {}
-
-  ngOnInit(): void {
-    this.patientId = this.route.snapshot.paramMap.get('id')!;
-    this.patient$ = this.useApi
-      ? (this.api.get(this.patientId) as Observable<Patient>).pipe(catchError(() => of(null)))
-      : (this.fs.get(this.patientId) as Observable<Patient | undefined>).pipe(
-          catchError(() => of(undefined)),
-          // normaliser en null
-          (src) => new Observable<Patient | null>(obs => src.subscribe(v => obs.next(v ?? null)))
-        );
-  }
-
-  // Safe address builder for template (avoids arrow functions in bindings)
-address(p: any): string {
-  const d = (p?.demographics as any) || {};
-  const parts: string[] = [];
-  if (d.address1) parts.push(d.address1);
-  if (d.address2) parts.push(d.address2);
-  const flat = (p as any)?.address;
-  const out = parts.join(', ') || flat || '—';
-  return out;
-}
-
-  gotoWounds(p: Patient) {
-    this.router.navigate(['/skin-wound', p.id, 'assessments']);
-  }
+ patientId!: string;
+   patient$!: Observable<any>;
+   loading = true;
+ 
+   constructor(
+     private route: ActivatedRoute,
+     private data: NurseDataService,
+     private router: Router
+ 
+   ) {}
+ 
+   ngOnInit(): void {
+     this.patientId = this.route.snapshot.paramMap.get('id')!;
+     // Si ton service expose getPatient :
+     const obs = this.data.getPatient ? this.data.getPatient(this.patientId) : of(null);
+     this.patient$ = obs;
+     // tu peux brancher un finalize() dans le service ; ici simple délestage :
+     setTimeout(() => (this.loading = false), 50);
+   }
+ 
+   toDate(v: any): Date | null {
+     if (!v) return null;
+     if (v?.toDate) return v.toDate();
+     if (v instanceof Date) return v;
+     const d = new Date(v);
+     return isNaN(+d) ? null : d;
+   }
+    gotoWounds(p: Patient) {
+        this.router.navigate(['/skin-wound', p.id, 'assessments']);
+      }
   
 }

@@ -46,6 +46,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { environment } from 'src/environments/environment';
 import { NurseRoutingModule } from '../nurse/nurse-routing.module';
 import * as echarts from 'echarts';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -95,6 +96,7 @@ import * as echarts from 'echarts';
         MatChipsModule, provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAuth(() => getAuth()),
         provideFirestore(() => getFirestore()),
+        SharedModule
     
     
   ],

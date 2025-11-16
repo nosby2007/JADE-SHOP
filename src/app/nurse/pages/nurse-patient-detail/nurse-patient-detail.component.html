@@ -85,13 +85,33 @@
     <!-- Onglet 4 : SKIN AND WOUND (placeholder) -->
     <mat-tab label="skin and Wound" *ngIf="patient$ | async as p; else loadingTpl">
       <div class="pad">
+        <app-assessment-list> </app-assessment-list>
+
         <button mat-stroked-button (click)="gotoWounds(p)">
           <mat-icon>healing</mat-icon>&nbsp;Wounds
         </button>
       </div>
     </mat-tab>
+
+    <!--Document-->
+    <mat-tab label="Documents">
+      <div class="pad">
+        <app-document></app-document>
+      </div>
+    </mat-tab>
+     <!--Appointment-->
+    <mat-tab label="--Appointment--">
+      <div class="pad" *ngIf="patient$ | async as p; else loadingTpl">
+       <patient-appointments
+  [patientId]="p?.id"
+  [patientName]="p?.fullName">
+</patient-appointments>
+</div>
+    </mat-tab>
   </mat-tab-group>
 </mat-card>
+
+
 
 <ng-template #loadingTpl>
   <div class="center pad">

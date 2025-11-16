@@ -4,15 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { NurseDataService } from '../../service/nurse-data.service';
 import { Patient } from '../../models/patient.model';
+import { AssessmentListComponent } from 'src/app/features/skin-wound/pages/assessment-list/assessment-list.component';
 
 
 
 
 
 @Component({
+
   selector: 'app-nurse-patient-detail',
   templateUrl: './nurse-patient-detail.component.html',
-  styleUrls: ['./nurse-patient-detail.component.scss']
+  styleUrls: ['./nurse-patient-detail.component.scss'],
 })
 export class NursePatientDetailComponent implements OnInit {
   patientId!: string;

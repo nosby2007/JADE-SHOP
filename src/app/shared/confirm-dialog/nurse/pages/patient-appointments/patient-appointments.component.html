@@ -1,0 +1,97 @@
+<div class="appt-card">
+  <div class="header">
+    <h3>Appointments</h3>
+    <div class="spacer"></div>
+    <button class="ghost" type="button" (click)="openDialog()">Open dialog</button>
+  </div>
+
+  <div class="status loading" *ngIf="loading">Working…</div>
+  <div class="status error" *ngIf="error">{{ error }}</div>
+
+  <!-- Inline quick-add form (optional) 
+  <form class="appt-form" [formGroup]="form" (ngSubmit)="add()">
+    <div class="row">
+      <label>
+        Date
+        <input type="date" formControlName="date" required />
+      </label>
+      <label>
+        Time
+        <input type="time" formControlName="time" required />
+      </label>
+    </div>
+
+    <div class="row">
+      <label class="flex-1">
+        Reason
+        <input type="text" formControlName="reason" placeholder="(optional)" />
+      </label>
+      <label class="flex-1">
+        Notes
+        <input type="text" formControlName="notes" placeholder="(optional)" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" type="submit" [disabled]="form.invalid || loading">Add</button>
+    </div>
+  </form>-->
+
+  <div class="appt-table-wrap" *ngIf="(appts$ | async) as list">
+    <table class="appt-table">
+      <thead>
+        <tr>
+          <th>Date/Time</th>
+          <th>Status</th>
+          <th>Reason</th>
+          <th>Notes</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of list; trackBy: trackById">
+          <td>{{ a.date.toDate() | date:'medium' }}</td>
+          <td>{{ a.status }}</td>
+          <td>{{ a.reason || '—' }}</td>
+          <td>{{ a.notes || '—' }}</td>
+          <td class="col-actions">
+            <div class="btns">
+              <button title="Check-in" (click)="setStatus(a, 'checked_in')">✔</button>
+              <button title="Complete" (click)="setStatus(a, 'completed')">✓✓</button>
+              <button title="Cancel"   (click)="setStatus(a, 'cancelled')">✖</button>
+              <button title="No-show"  (click)="setStatus(a, 'no_show')">⊘</button>
+              <button title="Delete" class="danger" (click)="remove(a)">🗑</button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="list.length === 0">
+          <td colspan="5" class="empty">No appointments yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .appt-card { border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#fff; }
+  .header { display:flex; align-items:center; gap:12px; }
+  .spacer { flex:1; }
+  .ghost { padding:6px 10px; border-radius:8px; border:1px solid #d1d5db; background:#fff; }
+  .status { font-size:12px; margin-top:6px; }
+  .status.error { color:#b91c1c; }
+  .status.loading { color:#2563eb; }
+  .row { display:flex; gap:12px; margin:6px 0; }
+  label { font-size:12px; color:#374151; display:flex; flex-direction:column; gap:4px; }
+  input { padding:8px 10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; }
+  .flex-1 { flex:1; }
+  .actions { display:flex; justify-content:flex-end; margin-top:8px; }
+  .primary { padding:6px 10px; border-radius:8px; border:1px solid #c7d2fe; background:#eef2ff; cursor:pointer; }
+  .danger { border-color:#fecaca; background:#fff1f2; color:#b91c1c; }
+  .appt-table-wrap { overflow:auto; margin-top:8px; }
+  .appt-table { width:100%; border-collapse:collapse; }
+  .appt-table thead th { text-align:left; font-weight:600; font-size:13px; color:#6b7280; padding:8px; border-bottom:1px solid #e5e7eb; }
+  .appt-table tbody td { padding:10px 8px; border-bottom:1px solid #f3f4f6; vertical-align:top; }
+  .btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .col-actions { width:220px; }
+  .empty { text-align:center; color:#6b7280; }
+</style>

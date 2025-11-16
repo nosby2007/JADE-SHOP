@@ -1,0 +1,86 @@
+<h2 mat-dialog-title>Appointments</h2>
+
+<div class="status error" *ngIf="error">{{ error }}</div>
+<div class="status loading" *ngIf="loading">Working…</div>
+
+<form class="appt-form" (ngSubmit)="create()" [formGroup]="form" mat-dialog-content>
+  <div class="row">
+    <label>
+      Date
+      <input type="date" formControlName="date" required />
+    </label>
+    <label>
+      Time
+      <input type="time" formControlName="time" required />
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="flex-1">
+      Reason
+      <input type="text" formControlName="reason" placeholder="(optional)" />
+    </label>
+    <label class="flex-1">
+      Notes
+      <input type="text" formControlName="notes" placeholder="(optional)" />
+    </label>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button type="submit" [disabled]="form.invalid || loading">Add</button>
+  </div>
+</form>
+
+<!--<div class="appt-table-wrap" mat-dialog-content>
+  <table class="appt-table">
+    <thead>
+      <tr>
+        <th>Date/Time</th>
+        <th>Status</th>
+        <th>Reason</th>
+        <th>Notes</th>
+        <th class="col-actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="(appts$ | async) as list">
+      <tr *ngFor="let a of list; trackBy: trackById">
+        <td>{{ a.date.toDate() | date:'medium' }}</td>
+        <td>
+          <select [value]="a.status" (change)="changeStatus(a, $any($event.target).value)">
+            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+          </select>
+        </td>
+        <td>{{ a.reason || '—' }}</td>
+        <td>{{ a.notes || '—' }}</td>
+        <td class="col-actions">
+          <button mat-stroked-button color="warn" type="button" (click)="delete(a)">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="list.length === 0">
+        <td colspan="5" class="empty">No appointments yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>-->
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</div>
+
+<style>
+  .status { font-size: 12px; margin: 4px 0 8px; }
+  .status.error { color: #b91c1c; }
+  .status.loading { color: #2563eb; }
+  .row { display: flex; gap: 12px; margin: 6px 0; }
+  label { font-size:12px; color:#374151; display:flex; flex-direction:column; gap:4px; }
+  input, select { padding:8px 10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; }
+  .flex-1 { flex:1; }
+  .actions { display:flex; justify-content:flex-end; margin-top:8px; }
+
+  .appt-table-wrap { margin-top: 8px; overflow:auto; }
+  .appt-table { width:100%; border-collapse:collapse; }
+  .appt-table thead th { text-align:left; font-weight:600; font-size:13px; color:#6b7280; padding:8px; border-bottom:1px solid #e5e7eb; }
+  .appt-table tbody td { padding:10px 8px; border-bottom:1px solid #f3f4f6; vertical-align:top; }
+  .col-actions { width: 120px; }
+  .empty { text-align:center; color:#6b7280; }
+</style>

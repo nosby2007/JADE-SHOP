@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Upload patient document</h2>
+
+<!-- Warning if dialog opened without a patient id -->
+<mat-card class="warn" *ngIf="!data?.patientId">
+  <mat-card-content>
+    This dialog was opened without a patient id. Please pass
+    <code>&#123; patientId &#125;</code> when opening to ensure documents
+    are saved under the correct patient and not visible to others.
+  </mat-card-content>
+</mat-card>
+
+<mat-dialog-content class="dialog-content">
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <!-- Document Type -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Document type</mat-label>
+    <mat-select [(ngModel)]="type" name="type" required>
+      <mat-option *ngFor="let t of docTypes" [value]="t.value">{{ t.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Visibility -->
+  <div class="field">
+    <label class="field-label">Visibility</label>
+    <mat-radio-group [(ngModel)]="visibility" name="visibility">
+      <mat-radio-button value="careTeam">Care team</mat-radio-button>
+      <mat-radio-button value="patientAndTeam">Patient &amp; care team</mat-radio-button>
+      <mat-radio-button value="adminOnly">Admin only</mat-radio-button>
+    </mat-radio-group>
+    <div class="hint">
+      Choose who can access this file. Your Firestore rules must enforce these scopes.
+    </div>
+  </div>
+
+  <!-- Description -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      [(ngModel)]="description"
+      name="description"
+      placeholder="Optional notes shown with this file"
+    ></textarea>
+  </mat-form-field>
+
+  <!-- File input -->
+  <div class="file-input-wrapper">
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      multiple
+      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.csv,.txt,.rtf,.ppt,.pptx,.heic,.webp"
+    />
+  </div>
+
+  <!-- Selected files preview -->
+  <div class="selected-files" *ngIf="selectedFiles.length > 0">
+    <p><strong>Selected files:</strong></p>
+    <ul>
+      <li *ngFor="let file of selectedFiles">{{ file.name }}</li>
+    </ul>
+    <button mat-stroked-button color="primary" (click)="clearSelection()">Clear selection</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="upload()"
+    [disabled]="!type || selectedFiles.length === 0 || isLoading"
+  >
+    <mat-icon>cloud_upload</mat-icon>
+    {{ isLoading ? 'Uploading…' : 'Save' }}
+  </button>
+</mat-dialog-actions>
